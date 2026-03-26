@@ -1,11 +1,16 @@
 import "./Home.css";
 import logo from "../assets/logoWhite.png";
+import islandVideo from "../assets/islandVideo.mp4";
 
 function Home() {
   return (
     <div>
       {/* HERO */}
       <section className="hero">
+        <video autoPlay loop muted playsInline className="hero-video">
+          <source src={islandVideo} type="video/mp4" />
+        </video>
+
         <div className="overlay">
           <img
             src={logo}
@@ -13,13 +18,36 @@ function Home() {
             style={{ height: "160px", marginRight: "20px" }}
           />
           <p>Escape to a lavender island paradise</p>
+        </div>
+      </section>
 
-          <div className="search-box">
-            <input type="text" placeholder="Location" />
-            <input type="date" />
-            <input type="date" />
-            <button>Explore</button>
-          </div>
+      {/* REVIEW BAR */}
+      <section className="review-bar">
+        <div className="review-item">
+          <h3>4.7<span>/5</span></h3>
+          <p>Excellent<br />based on 369 reviews</p>
+        </div>
+
+        <div className="divider"></div>
+
+        <div className="review-item">
+          <p>Trip Advisor</p>
+          <h3>4.8<span>/5</span></h3>
+        </div>
+
+        <div className="review-item">
+          <p>Booking.com</p>
+          <h3>9.0<span>/10</span></h3>
+        </div>
+
+        <div className="review-item">
+          <p>Hotels.com</p>
+          <h3>9.6<span>/10</span></h3>
+        </div>
+
+        <div className="review-item">
+          <p>Expedia</p>
+          <h3>9.6<span>/10</span></h3>
         </div>
       </section>
 
