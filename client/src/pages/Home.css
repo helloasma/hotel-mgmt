@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600&display=swap');
+
 .hero {
-  position: relative;
+  position: relative;   /* 👈 key change */
   height: 90vh;
   overflow: hidden;
+  z-index: -1; 
 }
 
 /* VIDEO BACKGROUND */
@@ -19,12 +22,12 @@
 /* OVERLAY */
 .overlay {
   position: relative;
-  background: rgba(18, 40, 75, 0.7);
-  height: 100%;
-  color: #bfb6ce;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  background: rgba(18, 40, 75, 0.7); 
+  height: 100%; 
+  color: #bfb6ce; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
   align-items: center;
 }
 
@@ -35,6 +38,7 @@
 }
 
 .hero p {
+  font-family: 'Roboto Slab', serif;
   font-size: 20px;
 }
 
@@ -64,7 +68,7 @@
   color: #bfb6ce;
   font-family: 'Roboto Slab', serif;
   padding: 15px 40px; /* thin height */
-  display: flex;
+  display: flex; 
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;

@@ -10,7 +10,7 @@
 }
 
 .site-header {
-  background: #12284b;
+  background: #08143d;
   padding: 10px 20px;
 
   position: sticky;
@@ -81,7 +81,8 @@
 
 /* BOOK NOW BUTTON */
 .book-btn {
-  background: #406d61;
+  background: #08143d;
+  border: 1px solid white;
   color: white;
   padding: 10px 18px;
   border-radius: 8px;
