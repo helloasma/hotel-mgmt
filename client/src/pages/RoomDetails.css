@@ -1,0 +1,249 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+.room-detail-page {
+  background: #f7f3ee;
+  min-height: 100vh;
+  color: #1f1a17;
+  padding: 48px 0 80px;
+}
+
+.room-detail-container {
+  width: min(1280px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.room-detail-back {
+  display: inline-block;
+  margin-bottom: 24px;
+  text-decoration: none;
+  color: #544c45;
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  transition: opacity 0.2s ease;
+}
+
+.room-detail-back:hover {
+  opacity: 0.72;
+}
+
+.room-detail-layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 44px;
+  align-items: start;
+}
+
+.room-detail-gallery {
+  position: relative;
+}
+
+.room-detail-image-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #ddd4ca;
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.10);
+}
+
+.room-detail-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 1.12 / 0.78;
+}
+
+.room-detail-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #1f1a17;
+  font-size: 1.55rem;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.room-detail-arrow:hover {
+  background: white;
+}
+
+.room-detail-arrow--prev {
+  left: 16px;
+}
+
+.room-detail-arrow--next {
+  right: 16px;
+}
+
+.room-detail-dots {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.room-detail-dot {
+  width: 34px;
+  height: 3px;
+  border: none;
+  background: rgba(31, 26, 23, 0.18);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.room-detail-dot.active {
+  background: #1f1a17;
+}
+
+.room-detail-content {
+  padding-top: 6px;
+}
+
+.room-detail-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  line-height: 0.98;
+  font-weight: 500;
+  color: #1f1a17;
+}
+
+.room-detail-occupancy {
+  margin: 16px 0 0;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #6a6057;
+}
+
+.room-detail-description {
+  margin: 22px 0 0;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.95;
+  color: #544c45;
+}
+
+.room-detail-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(31, 26, 23, 0.12);
+}
+
+.room-detail-fact {
+  font-family: "Inter", sans-serif;
+  font-size: 0.98rem;
+  color: #433d37;
+}
+
+.room-detail-fact strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a7d70;
+}
+
+.room-detail-section-title {
+  margin: 30px 0 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(31, 26, 23, 0.12);
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2f2924;
+}
+
+.room-detail-amenities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.room-detail-amenities li {
+  font-family: "Inter", sans-serif;
+  font-size: 0.97rem;
+  line-height: 1.6;
+  color: #554d46;
+  position: relative;
+  padding-left: 18px;
+}
+
+.room-detail-amenities li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #8a7d70;
+}
+
+.room-detail-book-btn {
+  margin-top: 28px;
+  padding: 15px 28px;
+  min-width: 220px;
+  border: none;
+  background: #20242b;
+  color: white;
+  font-family: "Inter", sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.room-detail-book-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.93;
+}
+
+.room-detail-not-found {
+  padding: 80px 0;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+@media (max-width: 980px) {
+  .room-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .room-detail-content {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .room-detail-page {
+    padding: 28px 0 60px;
+  }
+
+  .room-detail-container {
+    width: min(100% - 24px, 1280px);
+  }
+
+  .room-detail-facts,
+  .room-detail-amenities {
+    grid-template-columns: 1fr;
+  }
+
+  .room-detail-arrow {
+    width: 40px;
+    height: 40px;
+  }
+}

@@ -2,8 +2,19 @@ import { Link } from "react-router-dom";
 
 function RoomCard({ room }) {
   return (
-    <Link to={`/rooms/${room.id}`} className="rb-room-card">
-      <div className="rb-room-card-image-wrap">
+    <Link
+      to={`/rooms/${room.id}`}
+      className="rb-room-card"
+      style={{
+        display: "block",
+        textDecoration: "none",
+        color: "inherit",
+      }}
+    >
+      <div
+        className="rb-room-card-image-wrap"
+        style={{ pointerEvents: "none" }}
+      >
         <img
           src={room.image}
           alt={room.title}
@@ -21,7 +32,10 @@ function RoomCard({ room }) {
             ${room.price}
             <span> / night</span>
           </p>
-          <span className="rb-view-details">View Details →</span>
+
+          <span className="rb-view-details">
+            View Room →
+          </span>
         </div>
       </div>
     </Link>
