@@ -1,0 +1,277 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+.rooms-page {
+  background: #f6f2eb;
+  color: #1f1a17;
+}
+
+/* =========================
+   HERO
+========================= */
+.rooms-hero {
+  position: relative;
+  height: 92vh;
+  min-height: 700px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.rooms-hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rooms-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(20, 16, 14, 0.30), rgba(20, 16, 14, 0.48)),
+    linear-gradient(to right, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.12));
+}
+
+.rooms-hero__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 56px 110px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  text-align: center;
+}
+
+.rooms-hero__inner {
+  max-width: 900px;
+  color: #f8f3ec;
+}
+
+.rooms-hero__eyebrow {
+  margin: 0 0 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  opacity: 0.95;
+}
+
+.rooms-hero__title {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rooms-hero__subtitle {
+  margin: 22px auto 0;
+  max-width: 720px;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  font-weight: 300;
+  color: rgba(248, 243, 236, 0.92);
+}
+
+/* =========================
+   INTRO SECTION
+========================= */
+.rooms-intro {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 90px 56px 40px;
+  text-align: center;
+}
+
+.rooms-intro__label {
+  margin: 0 0 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.80rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #7b7065;
+}
+
+.rooms-intro__heading {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.3rem, 4.8vw, 4.3rem);
+  font-weight: 500;
+  line-height: 1.03;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #201a17;
+}
+
+.rooms-intro__text {
+  max-width: 780px;
+  margin: 22px auto 0;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: #5f564e;
+}
+
+/* =========================
+   LISTING
+========================= */
+.rooms-listing {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 56px 110px;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px 30px;
+}
+
+.room-card-luxury {
+  display: flex;
+  flex-direction: column;
+}
+
+.room-card-luxury__image-wrap {
+  overflow: hidden;
+  background: #ddd4ca;
+  aspect-ratio: 1 / 0.82;
+}
+
+.room-card-luxury__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.room-card-luxury:hover .room-card-luxury__image {
+  transform: scale(1.04);
+}
+
+.room-card-luxury__content {
+  padding-top: 24px;
+}
+
+.room-card-luxury__title {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 2.5vw, 2.45rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #1f1a17;
+}
+
+.room-card-luxury__description {
+  margin: 16px 0 0;
+  max-width: 90%;
+  font-family: "Inter", sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: #61584f;
+}
+
+.room-card-luxury__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 26px;
+  margin: 22px 0 0;
+  padding: 18px 0 0;
+  border-top: 1px solid rgba(31, 26, 23, 0.18);
+}
+
+.room-card-luxury__meta-item {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #5b534c;
+}
+
+.room-card-luxury__actions {
+  margin-top: 26px;
+}
+
+.room-card-luxury__button {
+  display: inline-block;
+  padding: 0 0 6px;
+  border: none;
+  border-bottom: 1px solid #1f1a17;
+  background: transparent;
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1f1a17;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.room-card-luxury__button:hover {
+  opacity: 0.68;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1100px) {
+  .rooms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .room-card-luxury__description {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .rooms-hero {
+    min-height: 560px;
+    height: 78vh;
+  }
+
+  .rooms-hero__content,
+  .rooms-intro,
+  .rooms-listing {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .rooms-hero__content {
+    padding-bottom: 70px;
+  }
+
+  .rooms-intro {
+    padding-top: 64px;
+    padding-bottom: 28px;
+  }
+
+  .rooms-listing {
+    padding-top: 22px;
+    padding-bottom: 72px;
+  }
+
+  .rooms-hero__subtitle,
+  .rooms-intro__text,
+  .room-card-luxury__description {
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+
+  .room-card-luxury__meta {
+    gap: 12px 18px;
+  }
+}
