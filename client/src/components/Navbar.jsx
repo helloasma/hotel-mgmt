@@ -32,7 +32,7 @@ function Navbar() {
 
           {/* RIGHT SIDE */}
           <div className="nav-right">
-            <Link to="/Rooms" className="book-btn">Book Now</Link>
+            <Link to="/booking" className="book-btn">Book Now</Link>
 
             <Link to="/Account" className="icon-btn">
               <img src={accountIcon} alt="account" className="icon-img" />
