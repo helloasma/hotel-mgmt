@@ -7,7 +7,9 @@ import About from "../pages/About";
 import Packages from "../pages/Packages";
 import Booking from "../pages/Booking";
 import RoomDetails from "../pages/RoomDetails";
-
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
+import Validation from "../pages/Validation";
 
 function AppRoutes() {
   return (
@@ -20,6 +22,9 @@ function AppRoutes() {
       <Route path="/Packages" element={<Packages />} />
       <Route path="/Contact" element={<Contact />} />
       <Route path="/About" element={<About />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/Signup" element={<Signup />} />
+      <Route path="/Validation" element={<Validation />} />
     </Routes>
   );
 }
