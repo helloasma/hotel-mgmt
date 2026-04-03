@@ -10,12 +10,12 @@ function RoomDetails() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // ✅ Reset image when changing rooms
+  // ✅ Scroll to top when room changes
   useEffect(() => {
-  window.scrollTo(0, 0);
-}, [id]);
+    window.scrollTo(0, 0);
+  }, [id]);
 
-  // ✅ FIXED CONDITION (this was your error)
+  // ✅ Handle invalid room safely
   if (!room) {
     return (
       <main className="room-detail-page">
@@ -30,12 +30,14 @@ function RoomDetails() {
     );
   }
 
+  // ✅ Always fallback to at least 1 image
   const images = room.images?.length ? room.images : [room.image];
 
+  // ✅ Prevent out-of-bounds issues
   const safeIndex =
-  currentImageIndex >= images.length ? 0 : currentImageIndex;
-  const currentImage = images[safeIndex];
+    currentImageIndex >= images.length ? 0 : currentImageIndex;
 
+  const currentImage = images[safeIndex];
   const hasMultipleImages = images.length > 1;
 
   const goToPrevious = () => {
@@ -56,7 +58,8 @@ function RoomDetails() {
 
   return (
     <main className="room-detail-page">
-      <div className="room-detail-container">
+      {/* ✅ KEY forces full reset when room changes */}
+      <div className="room-detail-container" key={id}>
         <Link to="/rooms" className="room-detail-back">
           ← Back to Rooms
         </Link>

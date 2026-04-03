@@ -165,19 +165,13 @@
 .room-card-luxury__title {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
-
-  /* 🔥 slightly smaller so it fits in one line */
   font-size: clamp(1.8rem, 2.2vw, 2.1rem);
-
   font-weight: 500;
   line-height: 1.1;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #1f1a17;
-
-  /* 🔥 KEY FIX: SAME HEIGHT FOR ALL TITLES */
   min-height: 52px;
-
   display: flex;
   align-items: flex-end;
 }
@@ -203,12 +197,16 @@
 .room-card-luxury__meta-item {
   font-family: "Inter", sans-serif;
   font-size: 0.95rem;
-  font-weight: 400;
   color: #5b534c;
 }
 
+/* ✅ UPDATED ACTIONS (BUTTON + PRICE ALIGNMENT) */
 .room-card-luxury__actions {
   margin-top: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .room-card-luxury__button {
@@ -231,6 +229,22 @@
 .room-card-luxury__button:hover {
   opacity: 0.68;
   transform: translateY(-1px);
+}
+
+/* ✅ PRICE STYLE */
+.room-card-luxury__price {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #1f1a17;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.room-card-luxury__price span {
+  color: #6b6259;
+  font-weight: 400;
 }
 
 /* =========================
@@ -276,11 +290,28 @@
   .rooms-hero__subtitle,
   .rooms-intro__text,
   .room-card-luxury__description {
-    font-size: 0.95rem;
-    line-height: 1.75;
-  }
+  margin: 16px 0 0;
+  max-width: 90%;
+  font-family: "Inter", sans-serif;
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: #61584f;
+
+  min-height: 72px;   /* minimum */
+  max-height: 72px;   /* lock height */
+  overflow: hidden;   /* prevent pushing layout */
+}
 
   .room-card-luxury__meta {
     gap: 12px 18px;
+  }
+
+  /* ✅ MOBILE PRICE FIX */
+  .room-card-luxury__actions {
+    gap: 14px;
+  }
+
+  .room-card-luxury__price {
+    font-size: 0.92rem;
   }
 }

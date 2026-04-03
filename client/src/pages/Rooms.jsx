@@ -72,6 +72,7 @@ function Rooms() {
                   </span>
                 </div>
 
+                {/* ✅ UPDATED ACTIONS (BUTTON + PRICE) */}
                 <div className="room-card-luxury__actions">
                   <Link
                     to={`/rooms/${room.id}`}
@@ -79,6 +80,11 @@ function Rooms() {
                   >
                     View Room
                   </Link>
+
+                  <p className="room-card-luxury__price">
+                    ${room.price}
+                    <span> / night</span>
+                  </p>
                 </div>
               </div>
             </article>

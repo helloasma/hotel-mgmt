@@ -1,10 +1,8 @@
-// EXISTING IMAGES
-import roomPenthouse from "../assets/room-penthouse.jpg";
-import roomFamilySuite from "../assets/room-family-suite.jpg";
 import roomHoneymoon from "../assets/room-honeymoon.jpg";
-import roomStandard from "../assets/room-standard.jpg";
+import basicRoom from "../assets/basic.jpg";
+import basicBathroom from "../assets/basic-bathroom.jpg";
+import honeymoonBathroom from "../assets/honeymoon-bathroom.jpg";
 
-// NEW BUNGALOW IMAGES
 import bungalowRoom from "../assets/bungalow-room.jpg";
 import bungalowBathroom from "../assets/bungalow-bathroom.jpg";
 import bungalowOutside from "../assets/bungalow-outside.jpg";
@@ -13,15 +11,31 @@ import bungalowRoomSuite from "../assets/bungalow-room-suite.jpg";
 import bungalowBathroomSuite from "../assets/bungalow-bathroom-suite.jpg";
 import bungalowOutsideSuite from "../assets/bungalow-outside-suite.jpg";
 
+import forestCabinRoom from "../assets/forest-cabin.jpg";
+import forestCabinBathroom from "../assets/forest-caabin-bathroom.jpg";
+import forestCabinOutside from "../assets/forest-cabin-outside.jpg";
+
+import forestCabinSuiteRoom from "../assets/forest-cabin-suite.jpg";
+import forestCabinSuiteBathroom from "../assets/forest-cabin-bathroom-suite.jpg";
+import forestCabinSuiteInside from "../assets/forest-cabin-suite-inside.jpg";
+import forestCabinSuiteOutside from "../assets/forest-cabin-suite-outside.jpg";
+
+import mountainRoom from "../assets/mountain-room.jpg";
+import mountainBathroom from "../assets/mountain-bathroom.jpg";
+import mountainOutside from "../assets/mountain-outside.jpg";
+
+import mountainRoomSuite from "../assets/mountain-room-suite.jpg";
+import mountainBathroomSuite from "../assets/mountain-bathroom-suite.jpg";
+
 export const rooms = [
   {
     id: "overwater-bungalows",
     title: "Overwater Bungalows",
     price: 520,
     shortDescription:
-      "Wake up above crystal-clear water with direct ocean access and uninterrupted island views.",
+    "Wake up above crystal-clear water with direct ocean access, natural textures, and uninterrupted island views.",
     description:
-      "Suspended above turquoise waters, the Overwater Bungalows redefine serene luxury. Floor-to-ceiling glass frames endless ocean horizons, while a private deck invites you to step directly into the lagoon. Inside, warm wood textures, soft linens, and curated island décor create a tranquil retreat. The spa-inspired bathroom features a freestanding soaking tub overlooking the sea, turning every moment into a quiet escape.",
+      "Wake up above crystal-clear waters where the horizon stretches endlessly. Designed with natural textures, warm woods, and open space, this bungalow invites calm, privacy, and uninterrupted ocean views.",
     image: bungalowRoom,
     images: [bungalowRoom, bungalowBathroom, bungalowOutside],
     amenities: [
@@ -30,8 +44,8 @@ export const rooms = [
       "Freestanding Soaking Tub",
       "Panoramic Windows",
       "Premium Linen",
-      "Smart TV",
       "Mini Bar",
+      "Smart TV",
       "Room Service",
     ],
     maxGuests: 2,
@@ -47,9 +61,9 @@ export const rooms = [
     title: "Overwater Bungalows Suite",
     price: 720,
     shortDescription:
-      "An expansive overwater suite with elevated privacy, luxury finishes, and panoramic lagoon views.",
+  "An expansive overwater suite with elevated privacy, refined finishes, and uninterrupted panoramic lagoon views.",
     description:
-      "The Overwater Bungalows Suite offers a more expansive and elevated island experience. Featuring a larger bedroom, extended outdoor terrace, and refined architectural details, this suite is designed for those who seek both privacy and indulgence. Relax in a beautifully crafted bathroom with double vanities and rainfall shower, or unwind on your private deck as the sun melts into the ocean horizon. Every detail is designed to feel exclusive, peaceful, and unforgettable.",
+      "An elevated overwater experience with expanded space, refined finishes, and panoramic lagoon views. Designed for privacy, comfort, and a more exclusive island stay.",
     image: bungalowRoomSuite,
     images: [
       bungalowRoomSuite,
@@ -61,10 +75,10 @@ export const rooms = [
       "Lagoon Views",
       "Rainfall Shower",
       "Double Vanity Bathroom",
-      "Premium Bar Setup",
+      "Luxury Bar Setup",
       "Smart TV",
       "Coffee Station",
-      "Luxury Linen",
+      "Premium Linen",
     ],
     maxGuests: 2,
     size: "92 m²",
@@ -75,79 +89,140 @@ export const rooms = [
   },
 
   {
-    id: "skyline-penthouse",
-    title: "Skyline Penthouse",
-    price: 560,
+    id: "forest-cabins",
+    title: "Forest Cabins",
+    price: 480,
     shortDescription:
-      "Top-floor indulgence with panoramic views and generous space.",
+  "Private forest cabins surrounded by nature, offering warm interiors, soft light, and a calm outdoor setting.",
     description:
-      "Our Skyline Penthouse is designed for guests who want the most elevated stay possible. From the expansive lounge to the private dining area and oversized terrace, every corner is crafted to feel exclusive, spacious, and effortlessly refined.",
-    image: roomPenthouse,
-    images: [roomPenthouse],
+      "Surrounded by nature, these cabins offer a grounding escape. Large windows, soft tones, and wood textures create a calm and relaxing environment designed for quiet luxury.",
+    image: forestCabinRoom,
+    images: [forestCabinRoom, forestCabinBathroom, forestCabinOutside],
     amenities: [
-      "Private Terrace",
-      "Dining Area",
-      "Lounge",
-      "Premium Bar",
-      "Panoramic Windows",
+      "Private Outdoor Space",
+      "Forest View Terrace",
+      "Luxury Bathroom",
+      "Premium Linen",
+      "Smart TV",
+      "Coffee Station",
       "Free WiFi",
-      "Luxury Bath",
       "Room Service",
     ],
     maxGuests: 4,
-    size: "96 m²",
+    size: "72 m²",
     occupancy: "Maximum Occupancy: 4 Adults",
     bed: "1 King Bed",
-    view: "Skyline View",
+    view: "Forest View",
     guests: "4 Guests",
   },
 
   {
-    id: "family-suite",
-    title: "Family Suite",
-    price: 390,
+    id: "forest-cabins-suites",
+    title: "Forest Cabins Suites",
+    price: 650,
     shortDescription:
-      "Spacious comfort designed for unforgettable group stays.",
+  "A spacious forest suite designed for comfort, privacy, and a more refined experience surrounded by nature.",
     description:
-      "Created for families and small groups, the Family Suite blends practicality with boutique comfort. Multiple sleeping areas, extra storage, and a welcoming shared lounge provide a calming environment for both rest and play.",
-    image: roomFamilySuite,
-    images: [roomFamilySuite],
+      "A more spacious forest retreat designed for comfort and privacy. Multiple living areas and refined interior details create an elevated stay surrounded by nature.",
+    image: forestCabinSuiteRoom,
+    images: [
+      forestCabinSuiteRoom,
+      forestCabinSuiteBathroom,
+      forestCabinSuiteInside,
+      forestCabinSuiteOutside,
+    ],
     amenities: [
-      "Separate Living Area",
-      "King + Twin Beds",
-      "Free WiFi",
-      "Air Conditioning",
-      "Safe",
-      "Crib Available",
+      "Expanded Suite Layout",
+      "Private Outdoor Lounge",
+      "Luxury Bathroom",
+      "Premium Linen",
       "Smart TV",
-      "Rain Shower",
+      "Coffee Station",
+      "Free WiFi",
+      "Room Service",
     ],
     maxGuests: 5,
-    size: "72 m²",
+    size: "96 m²",
     occupancy: "Maximum Occupancy: 5 Guests",
     bed: "King + Twin Beds",
-    view: "Courtyard View",
+    view: "Forest View",
     guests: "5 Guests",
+  },
+
+  {
+    id: "mountain-hotel-rooms",
+    title: "Mountain Hotel Rooms",
+    price: 340,
+    shortDescription:
+  "Modern mountain-view rooms with clean interiors, natural light, and a calm atmosphere for a relaxed stay.",
+    description:
+      "Clean, modern interiors meet scenic mountain surroundings. Designed for balance, comfort, and relaxation with natural light and understated luxury.",
+    image: mountainRoom,
+    images: [mountainRoom, mountainBathroom, mountainOutside],
+    amenities: [
+      "Mountain View",
+      "Work Desk",
+      "Luxury Bathroom",
+      "Premium Linen",
+      "Smart TV",
+      "Coffee Station",
+      "Free WiFi",
+      "Daily Housekeeping",
+    ],
+    maxGuests: 2,
+    size: "48 m²",
+    occupancy: "Maximum Occupancy: 2 Adults",
+    bed: "1 King Bed",
+    view: "Mountain View",
+    guests: "2 Guests",
+  },
+
+  {
+    id: "mountain-hotel-suites",
+    title: "Mountain Hotel Suites",
+    price: 520,
+    shortDescription:
+  "Spacious mountain suites with elevated comfort, refined details, and peaceful views of the surrounding landscape.",
+    description:
+      "A refined mountain suite offering more space and a stronger connection to the surrounding landscape. Ideal for guests seeking elevated comfort and privacy.",
+    image: mountainRoomSuite,
+    images: [mountainRoomSuite, mountainBathroomSuite, mountainOutside],
+    amenities: [
+      "Suite Layout",
+      "Mountain View",
+      "Luxury Bathroom",
+      "Premium Linen",
+      "Smart TV",
+      "Coffee Station",
+      "Free WiFi",
+      "Room Service",
+    ],
+    maxGuests: 3,
+    size: "68 m²",
+    occupancy: "Maximum Occupancy: 3 Adults",
+    bed: "1 King Bed",
+    view: "Mountain View",
+    guests: "3 Guests",
   },
 
   {
     id: "honeymoon-retreat",
     title: "Sunset Honeymoon Retreat",
-    price: 480,
+    price: 550,
     shortDescription:
-      "Romance and golden sunsets from your private balcony.",
+  "A romantic private retreat with sunset views, soft textures, and an intimate setting designed for special moments.",
     description:
-      "Designed for celebrating love, the Honeymoon Retreat features a four-poster bed, private balcony, and intimate luxury details throughout.",
+      "Designed for romance, this private retreat captures golden sunsets and intimate moments. Soft textures and ambient lighting create a peaceful and unforgettable stay.",
     image: roomHoneymoon,
-    images: [roomHoneymoon],
+    images: [roomHoneymoon, honeymoonBathroom],
     amenities: [
-      "Sunset Balcony",
+      "Private Balcony",
+      "Sunset Views",
       "Four-Poster Bed",
-      "Free WiFi",
-      "Champagne",
+      "Luxury Bathroom",
+      "Champagne Service",
       "Couples Spa Access",
       "Petal Turndown",
-      "Luxury Linen",
       "Ambient Lighting",
     ],
     maxGuests: 2,
@@ -161,13 +236,13 @@ export const rooms = [
   {
     id: "standard-room",
     title: "Classic Standard Room",
-    price: 170,
+    price: 180,
     shortDescription:
-      "Clean, calm comfort with warm wood finishes.",
+  "A calm and comfortable space with clean design, warm finishes, and essential amenities for a relaxed stay.",
     description:
-      "Our Classic Standard Room is designed for guests who want elegant simplicity with comfort and functionality.",
-    image: roomStandard,
-    images: [roomStandard],
+      "A calm and thoughtfully designed space that balances simplicity with comfort. Ideal for guests who appreciate understated luxury and functionality.",
+    image: basicRoom,
+    images: [basicRoom, basicBathroom],
     amenities: [
       "Free WiFi",
       "Smart TV",
