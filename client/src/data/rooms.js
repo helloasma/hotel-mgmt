@@ -1,68 +1,85 @@
-import roomOceanSuite from "../assets/room-ocean-suite.jpg";
-import roomGardenDeluxe from "../assets/room-garden-deluxe.jpg";
+// EXISTING IMAGES
 import roomPenthouse from "../assets/room-penthouse.jpg";
 import roomFamilySuite from "../assets/room-family-suite.jpg";
 import roomHoneymoon from "../assets/room-honeymoon.jpg";
 import roomStandard from "../assets/room-standard.jpg";
 
+// NEW BUNGALOW IMAGES
+import bungalowRoom from "../assets/bungalow-room.jpg";
+import bungalowBathroom from "../assets/bungalow-bathroom.jpg";
+import bungalowOutside from "../assets/bungalow-outside.jpg";
+
+import bungalowRoomSuite from "../assets/bungalow-room-suite.jpg";
+import bungalowBathroomSuite from "../assets/bungalow-bathroom-suite.jpg";
+import bungalowOutsideSuite from "../assets/bungalow-outside-suite.jpg";
+
 export const rooms = [
   {
-    id: "ocean-suite",
-    title: "Ocean View Suite",
-    price: 320,
-    shortDescription: "Wake up to endless blue horizons and a private balcony.",
+    id: "overwater-bungalows",
+    title: "Overwater Bungalows",
+    price: 520,
+    shortDescription:
+      "Wake up above crystal-clear water with direct ocean access and uninterrupted island views.",
     description:
-      "The Ocean View Suite surrounds you with soft natural textures, calming tones, and uninterrupted views of the sea. Enjoy a king-size bed, a spacious lounge corner, a soaking tub, and floor-to-ceiling glass that invites in every sunrise.",
-    image: roomOceanSuite,
-    images: [roomOceanSuite],
+      "Suspended above turquoise waters, the Overwater Bungalows redefine serene luxury. Floor-to-ceiling glass frames endless ocean horizons, while a private deck invites you to step directly into the lagoon. Inside, warm wood textures, soft linens, and curated island décor create a tranquil retreat. The spa-inspired bathroom features a freestanding soaking tub overlooking the sea, turning every moment into a quiet escape.",
+    image: bungalowRoom,
+    images: [bungalowRoom, bungalowBathroom, bungalowOutside],
     amenities: [
-      "Private Balcony",
-      "Free WiFi",
+      "Private Ocean Deck",
+      "Direct Water Access",
+      "Freestanding Soaking Tub",
+      "Panoramic Windows",
+      "Premium Linen",
       "Smart TV",
       "Mini Bar",
-      "Ocean View Bath",
-      "Coffee Station",
-      "Premium Linen",
       "Room Service",
     ],
     maxGuests: 2,
-    size: "58 m²",
-    occupancy: "Maximum Occupancy: 2 Adults + 1 Child under 12 years old",
+    size: "75 m²",
+    occupancy: "Maximum Occupancy: 2 Adults",
     bed: "1 King Bed",
-    view: "Ocean View",
-    guests: "3 Guests",
+    view: "Oceanfront Lagoon View",
+    guests: "2 Guests",
   },
+
   {
-    id: "garden-deluxe",
-    title: "Garden Deluxe Room",
-    price: 240,
-    shortDescription: "A peaceful retreat wrapped in greenery and filtered sunlight.",
+    id: "overwater-bungalows-suite",
+    title: "Overwater Bungalows Suite",
+    price: 720,
+    shortDescription:
+      "An expansive overwater suite with elevated privacy, luxury finishes, and panoramic lagoon views.",
     description:
-      "Perfect for guests who prefer quiet luxury, the Garden Deluxe Room opens toward tropical greenery and offers a warm, intimate atmosphere. Elegant timber accents, a rain shower, and a cozy reading corner make it ideal for slow mornings and restful nights.",
-    image: roomGardenDeluxe,
-    images: [roomGardenDeluxe],
+      "The Overwater Bungalows Suite offers a more expansive and elevated island experience. Featuring a larger bedroom, extended outdoor terrace, and refined architectural details, this suite is designed for those who seek both privacy and indulgence. Relax in a beautifully crafted bathroom with double vanities and rainfall shower, or unwind on your private deck as the sun melts into the ocean horizon. Every detail is designed to feel exclusive, peaceful, and unforgettable.",
+    image: bungalowRoomSuite,
+    images: [
+      bungalowRoomSuite,
+      bungalowBathroomSuite,
+      bungalowOutsideSuite,
+    ],
     amenities: [
-      "Garden Terrace",
-      "Free WiFi",
-      "Rain Shower",
-      "Coffee Station",
-      "Work Desk",
+      "Extended Private Deck",
+      "Lagoon Views",
+      "Rainfall Shower",
+      "Double Vanity Bathroom",
+      "Premium Bar Setup",
       "Smart TV",
-      "Wardrobe Space",
-      "Air Conditioning",
+      "Coffee Station",
+      "Luxury Linen",
     ],
     maxGuests: 2,
-    size: "42 m²",
-    occupancy: "Maximum Occupancy: 2 Adults + 1 Child under 12 years old",
-    bed: "1 Queen Bed",
-    view: "Garden View",
-    guests: "3 Guests",
+    size: "92 m²",
+    occupancy: "Maximum Occupancy: 2 Adults",
+    bed: "1 King Bed",
+    view: "Panoramic Lagoon View",
+    guests: "2 Guests",
   },
+
   {
     id: "skyline-penthouse",
     title: "Skyline Penthouse",
     price: 560,
-    shortDescription: "Top-floor indulgence with panoramic views and generous space.",
+    shortDescription:
+      "Top-floor indulgence with panoramic views and generous space.",
     description:
       "Our Skyline Penthouse is designed for guests who want the most elevated stay possible. From the expansive lounge to the private dining area and oversized terrace, every corner is crafted to feel exclusive, spacious, and effortlessly refined.",
     image: roomPenthouse,
@@ -84,13 +101,15 @@ export const rooms = [
     view: "Skyline View",
     guests: "4 Guests",
   },
+
   {
     id: "family-suite",
     title: "Family Suite",
     price: 390,
-    shortDescription: "Spacious comfort designed for unforgettable group stays.",
+    shortDescription:
+      "Spacious comfort designed for unforgettable group stays.",
     description:
-      "Created for families and small groups, the Family Suite blends practicality with boutique comfort. Multiple sleeping areas, extra storage, and a welcoming shared lounge provide a calming environment for both rest and play. Connecting rooms are available upon request.",
+      "Created for families and small groups, the Family Suite blends practicality with boutique comfort. Multiple sleeping areas, extra storage, and a welcoming shared lounge provide a calming environment for both rest and play.",
     image: roomFamilySuite,
     images: [roomFamilySuite],
     amenities: [
@@ -110,13 +129,15 @@ export const rooms = [
     view: "Courtyard View",
     guests: "5 Guests",
   },
+
   {
     id: "honeymoon-retreat",
     title: "Sunset Honeymoon Retreat",
     price: 480,
-    shortDescription: "Romance and golden sunsets from your private balcony.",
+    shortDescription:
+      "Romance and golden sunsets from your private balcony.",
     description:
-      "Designed for celebrating love, the Honeymoon Retreat features a four-poster bed draped in sheer fabrics, a private balcony capturing breathtaking sunsets over the water, and romantic touches throughout — from rose arrangements to champagne on arrival.",
+      "Designed for celebrating love, the Honeymoon Retreat features a four-poster bed, private balcony, and intimate luxury details throughout.",
     image: roomHoneymoon,
     images: [roomHoneymoon],
     amenities: [
@@ -136,13 +157,15 @@ export const rooms = [
     view: "Sunset View",
     guests: "2 Guests",
   },
+
   {
     id: "standard-room",
     title: "Classic Standard Room",
     price: 170,
-    shortDescription: "Clean, calm comfort with warm wood finishes.",
+    shortDescription:
+      "Clean, calm comfort with warm wood finishes.",
     description:
-      "Our Classic Standard Room is designed for guests who want elegant simplicity. Expect plush bedding, clean lines, warm timber finishes, and a practical workspace that makes every short stay feel easy and comfortable.",
+      "Our Classic Standard Room is designed for guests who want elegant simplicity with comfort and functionality.",
     image: roomStandard,
     images: [roomStandard],
     amenities: [
@@ -164,4 +187,5 @@ export const rooms = [
   },
 ];
 
-export const getRoomById = (id) => rooms.find((room) => room.id === id);
+export const getRoomById = (id) =>
+  rooms.find((room) => room.id === id);

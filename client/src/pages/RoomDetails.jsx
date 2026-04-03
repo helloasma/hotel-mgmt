@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getRoomById } from "../data/rooms";
 import "./RoomDetails.css";
@@ -10,6 +10,12 @@ function RoomDetails() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // ✅ Reset image when changing rooms
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, [id]);
+
+  // ✅ FIXED CONDITION (this was your error)
   if (!room) {
     return (
       <main className="room-detail-page">
@@ -24,10 +30,10 @@ function RoomDetails() {
     );
   }
 
-  const images = room.images || [room.image];
+  const images = room.images?.length ? room.images : [room.image];
 
-  // ✅ SAFE FIX (no useEffect needed)
-  const safeIndex = Math.min(currentImageIndex, images.length - 1);
+  const safeIndex =
+  currentImageIndex >= images.length ? 0 : currentImageIndex;
   const currentImage = images[safeIndex];
 
   const hasMultipleImages = images.length > 1;
@@ -60,6 +66,7 @@ function RoomDetails() {
           <div className="room-detail-gallery">
             <div className="room-detail-image-wrap">
               <img
+                key={safeIndex}
                 src={currentImage}
                 alt={room.title}
                 className="room-detail-image"
@@ -71,6 +78,7 @@ function RoomDetails() {
                     type="button"
                     className="room-detail-arrow room-detail-arrow--prev"
                     onClick={goToPrevious}
+                    aria-label="Previous image"
                   >
                     ‹
                   </button>
@@ -79,6 +87,7 @@ function RoomDetails() {
                     type="button"
                     className="room-detail-arrow room-detail-arrow--next"
                     onClick={goToNext}
+                    aria-label="Next image"
                   >
                     ›
                   </button>
@@ -96,6 +105,7 @@ function RoomDetails() {
                       safeIndex === index ? "active" : ""
                     }`}
                     onClick={() => setCurrentImageIndex(index)}
+                    aria-label={`Go to image ${index + 1}`}
                   />
                 ))}
               </div>
@@ -104,41 +114,47 @@ function RoomDetails() {
 
           {/* RIGHT SIDE - DETAILS */}
           <div className="room-detail-content">
-            <h1 className="room-detail-title">{room.title}</h1>
+            <div>
+              <h1 className="room-detail-title">{room.title}</h1>
 
-            <p className="room-detail-occupancy">{room.occupancy}</p>
+              <p className="room-detail-occupancy">{room.occupancy}</p>
 
-            <p className="room-detail-description">{room.description}</p>
+              <p className="room-detail-description">
+                {room.description}
+              </p>
 
-            <div className="room-detail-facts">
-              <div className="room-detail-fact">
-                <strong>Guests</strong>
-                {room.guests}
+              <div className="room-detail-facts">
+                <div className="room-detail-fact">
+                  <strong>Guests</strong>
+                  {room.guests}
+                </div>
+
+                <div className="room-detail-fact">
+                  <strong>Bed</strong>
+                  {room.bed}
+                </div>
+
+                <div className="room-detail-fact">
+                  <strong>Room Size</strong>
+                  {room.size}
+                </div>
+
+                <div className="room-detail-fact">
+                  <strong>View</strong>
+                  {room.view}
+                </div>
               </div>
 
-              <div className="room-detail-fact">
-                <strong>Bed</strong>
-                {room.bed}
-              </div>
+              <h2 className="room-detail-section-title">
+                Room Amenities
+              </h2>
 
-              <div className="room-detail-fact">
-                <strong>Room Size</strong>
-                {room.size}
-              </div>
-
-              <div className="room-detail-fact">
-                <strong>View</strong>
-                {room.view}
-              </div>
+              <ul className="room-detail-amenities">
+                {room.amenities.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </div>
-
-            <h2 className="room-detail-section-title">Room Amenities</h2>
-
-            <ul className="room-detail-amenities">
-              {room.amenities.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
 
             <button
               type="button"

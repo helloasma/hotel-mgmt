@@ -165,12 +165,21 @@
 .room-card-luxury__title {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 2.5vw, 2.45rem);
+
+  /* 🔥 slightly smaller so it fits in one line */
+  font-size: clamp(1.8rem, 2.2vw, 2.1rem);
+
   font-weight: 500;
-  line-height: 1.05;
+  line-height: 1.1;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: #1f1a17;
+
+  /* 🔥 KEY FIX: SAME HEIGHT FOR ALL TITLES */
+  min-height: 52px;
+
+  display: flex;
+  align-items: flex-end;
 }
 
 .room-card-luxury__description {
