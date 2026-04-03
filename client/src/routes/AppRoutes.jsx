@@ -6,6 +6,7 @@ import Contact from "../pages/Contact";
 import About from "../pages/About";
 import Packages from "../pages/Packages";
 import RoomDetails from "../pages/RoomDetails";
+import Booking from "../pages/Booking";
 
 function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ function AppRoutes() {
       <Route path="/account" element={<Account />} />
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetails />} />
+      <Route path="/booking" element={<Booking />} />
       <Route path="/packages" element={<Packages />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
