@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
+
+import Home from "../pages/Home/Home";
 import Account from "../pages/Account";
 import Rooms from "../pages/Rooms";
 import Contact from "../pages/Contact";
-import About from "../pages/About";
+import About from "../pages/About/About";
 import Packages from "../pages/Packages";
 import Booking from "../pages/Booking";
 import RoomDetails from "../pages/RoomDetails";
-
 
 function AppRoutes() {
   return (
