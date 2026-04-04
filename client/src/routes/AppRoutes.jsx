@@ -5,7 +5,6 @@ import Account from "../pages/Account/Account";
 import Rooms from "../pages/Rooms/Rooms";
 import Contact from "../pages/Contact";
 import About from "../pages/About/About";
-import Packages from "../pages/Package/Packages";
 import RoomDetails from "../pages/Rooms/RoomDetails";
 import Login from "../pages/Account/Login";
 import Signup from "../pages/Account/Signup";
@@ -25,7 +24,6 @@ function AppRoutes() {
       <Route path="/Login" element={<Login />} />
       <Route path="/Signup" element={<Signup />} />
       <Route path="/Validation" element={<Validation />} />
-      <Route path="/packages" element={<Packages />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
     </Routes>

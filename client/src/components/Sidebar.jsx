@@ -19,7 +19,6 @@ function Sidebar({ isOpen, setIsOpen }) {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/Account">My Account</Link></li>
             <li><Link to="/Rooms">Rooms</Link></li>
-            <li><Link to="/Packages">Packages</Link></li>
             <li><Link to="/Contact">Contact</Link></li>
             <li><Link to="/About">About Us</Link></li>
           </ul>
