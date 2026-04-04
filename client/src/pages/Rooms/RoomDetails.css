@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
 
 .room-detail-page {
-  background: #f7f3ee;
+  background: #0e081f;
   min-height: 100vh;
-  color: #1f1a17;
+  color: #ffffff;
   padding: 48px 0 80px;
 }
 
@@ -16,7 +16,7 @@
   display: inline-block;
   margin-bottom: 28px;
   text-decoration: none;
-  color: #544c45;
+  color: rgba(255,255,255,0.7);
   font-family: "Inter", sans-serif;
   font-size: 0.95rem;
   transition: opacity 0.2s ease;
@@ -48,7 +48,7 @@
   min-height: 780px;
   max-height: 780px;
   overflow: hidden;
-  background: #ddd4ca;
+  background: #1a1030;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.14);
 }
 
@@ -94,12 +94,12 @@
 .room-detail-dot {
   width: 36px;
   height: 3px;
-  background: rgba(31, 26, 23, 0.2);
+  background: rgba(255,255,255,0.2);
   border: none;
 }
 
 .room-detail-dot.active {
-  background: #1f1a17;
+  background: #ffffff;
 }
 
 /* 🔥 RIGHT SIDE — SAME HEIGHT AS IMAGE */
@@ -120,14 +120,14 @@
 .room-detail-occupancy {
   margin: 18px 0 0;
   font-family: "Inter", sans-serif;
-  color: #6a6057;
+  color: rgba(255,255,255,0.55);
 }
 
 .room-detail-description {
   margin: 24px 0 0;
   font-family: "Inter", sans-serif;
   line-height: 2;
-  color: #544c45;
+  color: rgba(255,255,255,0.7);
 }
 
 /* FACTS */
@@ -137,21 +137,21 @@
   gap: 16px 22px;
   margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid rgba(31, 26, 23, 0.12);
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .room-detail-fact strong {
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #8a7d70;
+  color: rgba(255,255,255,0.45);
 }
 
 /* SECTION */
 .room-detail-section-title {
   margin: 34px 0 16px;
   padding-top: 26px;
-  border-top: 1px solid rgba(31, 26, 23, 0.12);
+  border-top: 1px solid rgba(255,255,255,0.1);
   font-family: "Inter", sans-serif;
 }
 
@@ -173,7 +173,7 @@
   content: "•";
   position: absolute;
   left: 0;
-  color: #8a7d70;
+  color: rgba(255,255,255,0.45);
 }
 
 /* 🔥 BUTTON STAYS FIXED */
@@ -181,8 +181,8 @@
   margin-top: 34px;
   padding: 16px 32px;
   border: none;
-  background: #20242b;
-  color: white;
+  background: #ffffff;
+  color: #0e081f;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;

@@ -5,6 +5,8 @@
 
 .rb-section {
   padding: 82px 0;
+  background: #0e081f;
+  min-height: 100vh;
 }
 
 .rb-page-banner {
@@ -18,7 +20,7 @@
   font-weight: 700;
   margin: 0 0 12px;
   opacity: 0.9;
-  color: #3a5070;
+  color: rgba(255,255,255,0.5);
 }
 
 .rb-page-banner h1,
@@ -28,7 +30,7 @@
   font-size: clamp(2.6rem, 5vw, 5rem);
   line-height: 1.02;
   margin: 0;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-room-hero-overlay h1 {
@@ -44,7 +46,7 @@
 .rb-choice-card p {
   line-height: 1.7;
   font-size: 1.04rem;
-  color: #3a5070;
+  color: rgba(255,255,255,0.65);
 }
 
 .rb-hero-copy {
@@ -72,9 +74,9 @@
   display: block;
   overflow: hidden;
   border-radius: 22px;
-  background: #ffffff;
-  box-shadow: 0 18px 40px rgba(8, 20, 61, 0.08);
-  border: 1px solid rgba(8, 20, 61, 0.14);
+  background: #160d35;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.1);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   text-decoration: none;
   color: inherit;
@@ -112,12 +114,12 @@
 .rb-choice-card h3 {
   font-family: Georgia, "Times New Roman", serif;
   margin: 0 0 10px;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-room-card-text {
   margin: 0;
-  color: #3a5070;
+  color: rgba(255,255,255,0.6);
   min-height: 50px;
   line-height: 1.6;
 }
@@ -132,19 +134,19 @@
 
 .rb-room-price {
   margin: 0;
-  color: #08143d;
+  color: #ffffff;
   font-weight: 800;
   font-size: 1.2rem;
 }
 
 .rb-room-price span {
-  color: #3a5070;
+  color: rgba(255,255,255,0.5);
   font-weight: 500;
   font-size: 0.85rem;
 }
 
 .rb-view-details {
-  color: #08143d;
+  color: rgba(255,255,255,0.85);
   font-weight: 700;
 }
 
@@ -174,10 +176,10 @@
 .rb-choice-card,
 .rb-summary-box,
 .rb-empty-state {
-  background: #ffffff;
-  border: 1px solid rgba(8, 20, 61, 0.14);
+  background: #160d35;
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 22px;
-  box-shadow: 0 18px 40px rgba(8, 20, 61, 0.08);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.3);
 }
 
 .rb-details-copy,
@@ -195,21 +197,21 @@
 }
 
 .rb-meta-box {
-  background: #edf0f7;
+  background: rgba(255,255,255,0.06);
   border-radius: 18px;
   padding: 16px;
 }
 
 .rb-meta-box span {
   display: block;
-  color: #3a5070;
+  color: rgba(255,255,255,0.5);
   font-size: 0.9rem;
   margin-bottom: 6px;
 }
 
 .rb-meta-box strong {
   font-size: 1rem;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-amenities-list {
@@ -222,10 +224,10 @@
 }
 
 .rb-amenities-list li {
-  background: #edf0f7;
+  background: rgba(255,255,255,0.06);
   padding: 12px 14px;
   border-radius: 14px;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-booking-form {
@@ -247,7 +249,7 @@
 .rb-selected-room-box,
 .rb-choice-card {
   padding: 14px;
-  background: #edf0f7;
+  background: rgba(255,255,255,0.08);
   border-radius: 18px;
 }
 
@@ -262,13 +264,13 @@
 .rb-selected-room-title {
   margin: 0 0 4px;
   font-weight: 700;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-selected-room-price,
 .rb-choice-card strong {
   margin: 0;
-  color: #08143d;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -289,7 +291,7 @@
 .rb-section-label {
   margin: 0;
   font-weight: 700;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-booking-form label {
@@ -300,28 +302,28 @@
 
 .rb-booking-form label span {
   font-weight: 600;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-booking-form input,
 .rb-booking-form textarea {
   width: 100%;
-  border: 1px solid rgba(8, 20, 61, 0.14);
-  background: white;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
   border-radius: 14px;
   padding: 14px 15px;
-  color: #08143d;
+  color: #ffffff;
   box-sizing: border-box;
 }
 
 .rb-booking-form input:focus,
 .rb-booking-form textarea:focus {
   outline: 2px solid rgba(140, 90, 166, 0.2);
-  border-color: #08143d;
+  border-color: rgba(255,255,255,0.5);
 }
 
 .rb-guest-row {
-  border: 1px solid rgba(8, 20, 61, 0.14);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 16px;
   padding: 13px 14px;
 }
@@ -336,9 +338,10 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  border: 1px solid rgba(8, 20, 61, 0.14);
-  background: white;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.08);
   cursor: pointer;
+  color: #ffffff;
 }
 
 .rb-guest-controls button:disabled {
@@ -352,11 +355,11 @@
 
 .rb-summary-box strong {
   font-size: 1.1rem;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-summary-box small {
-  color: #3a5070;
+  color: rgba(255,255,255,0.55);
 }
 
 .rb-primary-button {
@@ -367,16 +370,16 @@
   transition: 0.2s ease;
   cursor: pointer;
   padding: 14px 22px;
-  background: #08143d;
-  color: white;
+  background: #ffffff;
+  color: #0e081f;
   font-weight: 700;
   border: none;
-  box-shadow: 0 18px 40px rgba(8, 20, 61, 0.08);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.3);
   text-decoration: none;
 }
 
 .rb-primary-button:hover {
-  background: #08143d;
+  background: rgba(255,255,255,0.9);
   transform: translateY(-1px);
 }
 
@@ -411,8 +414,8 @@
 }
 
 .rb-card-selected {
-  border: 2px solid #08143d !important;
-  background: #dce3f0 !important;
+  border: 2px solid rgba(255,255,255,0.6) !important;
+  background: rgba(255,255,255,0.12) !important;
 }
 
 .rb-choice-card > div {
@@ -424,14 +427,14 @@
 .rb-reservation-title {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.8rem, 3vw, 2.4rem);
-  color: #08143d;
+  color: #ffffff;
   margin: 0 0 32px;
   text-align: center;
 }
 
 .rb-fee-breakdown {
-  background: #edf0f7;
-  border: 1px solid rgba(8, 20, 61, 0.18);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 18px;
   padding: 18px 20px;
   display: grid;
@@ -448,40 +451,40 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.95rem;
-  color: #3a5070;
+  color: rgba(255,255,255,0.65);
 }
 
 .rb-fee-row small {
-  color: #3a5070;
+  color: rgba(255,255,255,0.45);
   font-size: 0.8rem;
 }
 
 .rb-fee-subtotal {
-  color: #08143d;
+  color: #ffffff;
   font-weight: 600;
 }
 
 .rb-fee-divider {
   height: 1px;
-  background: rgba(8, 20, 61, 0.18);
+  background: rgba(255,255,255,0.12);
   margin: 2px 0;
 }
 
 .rb-fee-total {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #08143d;
+  color: #ffffff;
 }
 
 .rb-fee-total span:last-child {
-  color: #08143d;
+  color: #ffffff;
   font-size: 1.15rem;
 }
 
 .rb-fee-hint {
   margin: 0;
   font-size: 0.82rem;
-  color: #3a5070;
+  color: rgba(255,255,255,0.45);
   text-align: center;
 }
 
@@ -590,7 +593,7 @@
 .rb-browse-title {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-  color: #08143d;
+  color: #ffffff;
   margin: 0 0 24px;
 }
 
@@ -603,11 +606,11 @@
 .rb-browse-card {
   border-radius: 18px;
   overflow: hidden;
-  border: 1px solid rgba(8, 20, 61, 0.14);
-  box-shadow: 0 8px 24px rgba(8, 20, 61, 0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   cursor: pointer;
   transition: transform 0.22s ease, box-shadow 0.22s ease;
-  background: #fff;
+  background: #160d35;
 }
 
 .rb-browse-card:hover {
@@ -679,10 +682,7 @@
   padding-right: 1cm;
 }
 
-.rb-centered-form .rb-selected-room-box {
-  margin-left: 1cm;
-  margin-right: 1cm;
-}
+/* .rb-centered-form .rb-selected-room-box margin now handled by .rb-room-switcher */
 
 .rb-centered-form .rb-fee-breakdown {
   margin-left: 1cm;
@@ -695,4 +695,178 @@
   margin-right: 1cm;
   width: calc(100% - 2cm);
   box-sizing: border-box;
+}
+
+/* ── BOOKING PANEL: WHITE BOX OVERRIDE ── */
+.rb-centered-form .rb-booking-panel {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+}
+
+.rb-centered-form .rb-booking-panel h3,
+.rb-centered-form .rb-section-label,
+.rb-centered-form .rb-booking-form label span,
+.rb-centered-form .rb-selected-room-title,
+.rb-centered-form .rb-selected-room-price,
+.rb-centered-form .rb-guest-row,
+.rb-centered-form .rb-fee-total,
+.rb-centered-form .rb-fee-total span:last-child {
+  color: #0e081f !important;
+}
+
+.rb-centered-form .rb-booking-form input,
+.rb-centered-form .rb-booking-form textarea {
+  background: #f5f5f7;
+  border: 1px solid rgba(0,0,0,0.12);
+  color: #0e081f;
+}
+
+.rb-centered-form .rb-booking-form input::placeholder,
+.rb-centered-form .rb-booking-form textarea::placeholder {
+  color: rgba(0,0,0,0.35);
+}
+
+.rb-centered-form .rb-booking-form input:focus,
+.rb-centered-form .rb-booking-form textarea:focus {
+  border-color: #0e081f;
+  outline: 2px solid rgba(14,8,31,0.1);
+}
+
+.rb-centered-form .rb-selected-room-box {
+  background: #f0eef5;
+}
+
+.rb-centered-form .rb-guest-row {
+  border: 1px solid rgba(0,0,0,0.12);
+  color: #0e081f;
+}
+
+.rb-centered-form .rb-guest-controls button {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.15);
+  color: #0e081f;
+}
+
+.rb-centered-form .rb-fee-breakdown {
+  background: #f0eef5;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.rb-centered-form .rb-fee-row {
+  color: #3a3550;
+}
+
+.rb-centered-form .rb-fee-hint {
+  color: rgba(0,0,0,0.4);
+}
+
+.rb-centered-form .rb-fee-divider {
+  background: rgba(0,0,0,0.1);
+}
+
+.rb-centered-form .rb-primary-button {
+  background: #0e081f;
+  color: #ffffff;
+}
+
+.rb-centered-form .rb-primary-button:hover {
+  background: #1e1240;
+}
+
+/* ── ROOM SWITCHER ── */
+.rb-room-switcher {
+  position: relative;
+  margin-left: 1cm;
+  margin-right: 1cm;
+}
+
+.rb-selected-room-box--clickable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.18s ease;
+}
+
+.rb-selected-room-box--clickable:hover {
+  background: #e4e0f0;
+}
+
+.rb-selected-room-info {
+  flex: 1;
+}
+
+.rb-switcher-chevron {
+  font-size: 1.1rem;
+  color: #0e081f;
+  opacity: 0.5;
+  transition: transform 0.2s ease;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.rb-switcher-chevron--open {
+  transform: rotate(180deg);
+  opacity: 0.8;
+}
+
+.rb-switcher-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+  z-index: 100;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.rb-switcher-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,0.35);
+  margin: 6px 10px 8px;
+}
+
+.rb-switcher-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.rb-switcher-option:hover {
+  background: #f0eef5;
+}
+
+.rb-switcher-option img {
+  width: 72px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.rb-switcher-option-info {
+  flex: 1;
+}
+
+.rb-switcher-option-title {
+  margin: 0 0 3px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #0e081f;
+}
+
+.rb-switcher-option-price {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(0,0,0,0.45);
 }

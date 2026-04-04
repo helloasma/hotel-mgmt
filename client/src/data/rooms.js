@@ -1,31 +1,32 @@
-import roomHoneymoon from "../assets/room-honeymoon.jpg";
-import basicRoom from "../assets/basic.jpg";
-import basicBathroom from "../assets/basic-bathroom.jpg";
-import honeymoonBathroom from "../assets/honeymoon-bathroom.jpg";
+import roomHoneymoon from "../assets/Rooms/room-honeymoon.jpg";
 
-import bungalowRoom from "../assets/bungalow-room.jpg";
-import bungalowBathroom from "../assets/bungalow-bathroom.jpg";
-import bungalowOutside from "../assets/bungalow-outside.jpg";
+import basicRoom from "../assets/Rooms/basic.jpg";
+import basicBathroom from "../assets/Rooms/basic-bathroom.jpg";
+import honeymoonBathroom from "../assets/Rooms/honeymoon-bathroom.jpg";
 
-import bungalowRoomSuite from "../assets/bungalow-room-suite.jpg";
-import bungalowBathroomSuite from "../assets/bungalow-bathroom-suite.jpg";
-import bungalowOutsideSuite from "../assets/bungalow-outside-suite.jpg";
+import bungalowRoom from "../assets/Rooms/bungalow-room.jpg";
+import bungalowBathroom from "../assets/Rooms/bungalow-bathroom.jpg";
+import bungalowOutside from "../assets/Rooms/bungalow-outside.jpg";
 
-import forestCabinRoom from "../assets/forest-cabin.jpg";
-import forestCabinBathroom from "../assets/forest-caabin-bathroom.jpg";
-import forestCabinOutside from "../assets/forest-cabin-outside.jpg";
+import bungalowRoomSuite from "../assets/Rooms/bungalow-room-suite.jpg";
+import bungalowBathroomSuite from "../assets/Rooms/bungalow-bathroom-suite.jpg";
+import bungalowOutsideSuite from "../assets/Rooms/bungalow-outside-suite.jpg";
 
-import forestCabinSuiteRoom from "../assets/forest-cabin-suite.jpg";
-import forestCabinSuiteBathroom from "../assets/forest-cabin-bathroom-suite.jpg";
-import forestCabinSuiteInside from "../assets/forest-cabin-suite-inside.jpg";
-import forestCabinSuiteOutside from "../assets/forest-cabin-suite-outside.jpg";
+import forestCabinRoom from "../assets/Rooms/forest-cabin.jpg";
+import forestCabinBathroom from "../assets/Rooms/forest-caabin-bathroom.jpg";
+import forestCabinOutside from "../assets/Rooms/forest-cabin-outside.jpg";
 
-import mountainRoom from "../assets/mountain-room.jpg";
-import mountainBathroom from "../assets/mountain-bathroom.jpg";
-import mountainOutside from "../assets/mountain-outside.jpg";
+import forestCabinSuiteRoom from "../assets/Rooms/forest-cabin-suite.jpg";
+import forestCabinSuiteBathroom from "../assets/Rooms/forest-cabin-bathroom-suite.jpg";
+import forestCabinSuiteInside from "../assets/Rooms/forest-cabin-suite-inside.jpg";
+import forestCabinSuiteOutside from "../assets/Rooms/forest-cabin-suite-outside.jpg";
 
-import mountainRoomSuite from "../assets/mountain-room-suite.jpg";
-import mountainBathroomSuite from "../assets/mountain-bathroom-suite.jpg";
+import mountainRoom from "../assets/Rooms/mountain-room.jpg";
+import mountainBathroom from "../assets/Rooms/mountain-bathroom.jpg";
+import mountainOutside from "../assets/Rooms/mountain-outside.jpg";
+
+import mountainRoomSuite from "../assets/Rooms/mountain-room-suite.jpg";
+import mountainBathroomSuite from "../assets/Rooms/mountain-bathroom-suite.jpg";
 
 export const rooms = [
   {

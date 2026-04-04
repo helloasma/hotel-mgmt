@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import BookingForm from "../components/BookingForm";
-import { rooms, getRoomById } from "../data/rooms";
+import BookingForm from "../../components/BookingForm";
+import { rooms, getRoomById } from "../../data/rooms";
 import "./rooms-booking.css";
 
 function Booking() {
@@ -33,7 +33,14 @@ function Booking() {
         <div className="rb-centered-form">
           <div className="rb-booking-panel">
             <h3>Booking form</h3>
-            <BookingForm room={selectedRoom} />
+            <BookingForm
+              room={selectedRoom}
+              onRoomChange={(newRoom) => {
+                setSelectedRoom(newRoom);
+                setBrowseRooms(getBrowseRooms(newRoom.id));
+                navigate(`/booking/${newRoom.id}`);
+              }}
+            />
           </div>
         </div>
 
@@ -46,10 +53,7 @@ function Booking() {
                 key={room.id}
                 className="rb-browse-card"
                 onClick={() => {
-                  setSelectedRoom(room);
-                  setBrowseRooms(getBrowseRooms(room.id));
-                  navigate(`/booking/${room.id}`);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  navigate(`/rooms/${room.id}`);
                 }}
               >
                 <div className="rb-browse-image-wrap">

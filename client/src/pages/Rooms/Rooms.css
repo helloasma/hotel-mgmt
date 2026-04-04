@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
 
 .rooms-page {
-  background: #f6f2eb;
-  color: #1f1a17;
+  background: #0e081f;
+  color: #ffffff;
 }
 
 /* =========================
@@ -97,7 +97,7 @@
   font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #7b7065;
+  color: rgba(255,255,255,0.5);
 }
 
 .rooms-intro__heading {
@@ -108,7 +108,7 @@
   line-height: 1.03;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #201a17;
+  color: #ffffff;
 }
 
 .rooms-intro__text {
@@ -117,7 +117,7 @@
   font-family: "Inter", sans-serif;
   font-size: 1rem;
   line-height: 1.9;
-  color: #5f564e;
+  color: rgba(255,255,255,0.65);
 }
 
 /* =========================
@@ -142,7 +142,7 @@
 
 .room-card-luxury__image-wrap {
   overflow: hidden;
-  background: #ddd4ca;
+  background: #1a1030;
   aspect-ratio: 1 / 0.82;
 }
 
@@ -170,7 +170,7 @@
   line-height: 1.1;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #1f1a17;
+  color: #ffffff;
   min-height: 52px;
   display: flex;
   align-items: flex-end;
@@ -182,7 +182,7 @@
   font-family: "Inter", sans-serif;
   font-size: 0.98rem;
   line-height: 1.85;
-  color: #61584f;
+  color: rgba(255,255,255,0.65);
 }
 
 .room-card-luxury__meta {
@@ -191,13 +191,13 @@
   gap: 16px 26px;
   margin: 22px 0 0;
   padding: 18px 0 0;
-  border-top: 1px solid rgba(31, 26, 23, 0.18);
+  border-top: 1px solid rgba(255,255,255,0.12);
 }
 
 .room-card-luxury__meta-item {
   font-family: "Inter", sans-serif;
   font-size: 0.95rem;
-  color: #5b534c;
+  color: rgba(255,255,255,0.6);
 }
 
 /* ✅ UPDATED ACTIONS (BUTTON + PRICE ALIGNMENT) */
@@ -213,7 +213,7 @@
   display: inline-block;
   padding: 0 0 6px;
   border: none;
-  border-bottom: 1px solid #1f1a17;
+  border-bottom: 1px solid rgba(255,255,255,0.7);
   background: transparent;
   text-decoration: none;
   font-family: "Inter", sans-serif;
@@ -221,7 +221,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #1f1a17;
+  color: #ffffff;
   cursor: pointer;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
@@ -237,13 +237,13 @@
   font-family: "Inter", sans-serif;
   font-size: 0.98rem;
   font-weight: 500;
-  color: #1f1a17;
+  color: #ffffff;
   white-space: nowrap;
   text-align: right;
 }
 
 .room-card-luxury__price span {
-  color: #6b6259;
+  color: rgba(255,255,255,0.55);
   font-weight: 400;
 }
 
@@ -295,7 +295,7 @@
   font-family: "Inter", sans-serif;
   font-size: 0.98rem;
   line-height: 1.85;
-  color: #61584f;
+  color: rgba(255,255,255,0.65);
 
   min-height: 72px;   /* minimum */
   max-height: 72px;   /* lock height */
