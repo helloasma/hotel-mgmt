@@ -7,6 +7,9 @@ import Contact from "../pages/Contact";
 import About from "../pages/About/About";
 import Packages from "../pages/Packages";
 import RoomDetails from "../pages/RoomDetails";
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
+import Validation from "../pages/Validation";
 import Booking from "../pages/Booking";
 
 
@@ -18,6 +21,10 @@ function AppRoutes() {
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetails />} />
       <Route path="/booking" element={<Booking />} />
+
+      <Route path="/Login" element={<Login />} />
+      <Route path="/Signup" element={<Signup />} />
+      <Route path="/Validation" element={<Validation />} />
       <Route path="/packages" element={<Packages />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
