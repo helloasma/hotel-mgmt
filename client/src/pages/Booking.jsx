@@ -1,45 +1,70 @@
 import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import BookingForm from "../components/BookingForm";
-import { rooms } from "../data/rooms";
+import { rooms, getRoomById } from "../data/rooms";
 import "./rooms-booking.css";
 
 function Booking() {
-  const [selectedRoom, setSelectedRoom] = useState(rooms[0]);
+  const { roomId } = useParams();
+  const navigate = useNavigate();
+
+  const initialRoom = getRoomById(roomId) || rooms[0];
+  const [selectedRoom, setSelectedRoom] = useState(initialRoom);
+
+  // Random 6 rooms excluding current, computed once per room change
+  const getBrowseRooms = (excludeId) => {
+    const others = rooms.filter((r) => r.id !== excludeId);
+    const shuffled = [...others];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, 6);
+  };
+
+  const [browseRooms, setBrowseRooms] = useState(() => getBrowseRooms(initialRoom.id));
 
   return (
-    <>
-      <section className="rb-section">
-        <div className="rb-container">
-          <h1 className="rb-reservation-title">Hotel Reservation Form</h1>
-        </div>
-        <div className="rb-container rb-details-grid">
-          <div className="rb-details-copy">
-            <h2>Choose your room</h2>
+    <section className="rb-section">
+      <div className="rb-container">
+        <h1 className="rb-reservation-title">Room Reservation Form</h1>
 
-            <div className="rb-room-choices">
-              {rooms.map((room) => (
-                <div
-                  className={`rb-choice-card${selectedRoom?.id === room.id ? " rb-card-selected" : ""}`}
-                  key={room.id}
-                  onClick={() => setSelectedRoom(room)}
-                >
-                  <img src={room.image} alt={room.title} />
-                  <div>
-                    <h3>{room.title}</h3>
-                    <strong>${room.price} / night</strong>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
+        {/* CENTERED BOOKING FORM */}
+        <div className="rb-centered-form">
           <div className="rb-booking-panel">
             <h3>Booking form</h3>
             <BookingForm room={selectedRoom} />
           </div>
         </div>
-      </section>
-    </>
+
+        {/* ROOM BROWSING SECTION */}
+        <div className="rb-browse-section">
+          <h2 className="rb-browse-title">Explore Other Rooms</h2>
+          <div className="rb-browse-grid">
+            {browseRooms.map((room) => (
+              <div
+                key={room.id}
+                className="rb-browse-card"
+                onClick={() => {
+                  setSelectedRoom(room);
+                  setBrowseRooms(getBrowseRooms(room.id));
+                  navigate(`/booking/${room.id}`);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              >
+                <div className="rb-browse-image-wrap">
+                  <img src={room.image} alt={room.title} />
+                  <div className="rb-browse-overlay">
+                    <span className="rb-browse-name">{room.title}</span>
+                    <span className="rb-browse-price">${room.price} / night</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 

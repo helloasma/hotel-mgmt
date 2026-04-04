@@ -53,7 +53,7 @@ function RoomDetails() {
   };
 
   const handleBookNow = () => {
-    navigate("/booking");
+    navigate(`/booking/${room.id}`);
   };
 
   return (

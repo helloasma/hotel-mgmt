@@ -16,6 +16,7 @@ function AppRoutes() {
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetails />} />
       <Route path="/booking" element={<Booking />} />
+      <Route path="/booking/:roomId" element={<Booking />} />
       <Route path="/packages" element={<Packages />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
