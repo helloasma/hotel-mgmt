@@ -14,14 +14,14 @@ function Sidebar({ isOpen, setIsOpen }) {
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
       >
-        <h2>Menu</h2>
+        <h2>MENU</h2>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/account">My Account</Link></li>
-            <li><Link to="/rooms">Rooms</Link></li>
-            <li><Link to="/packages">Packages</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/Account">My Account</Link></li>
+            <li><Link to="/Rooms">Rooms</Link></li>
+            <li><Link to="/Packages">Packages</Link></li>
+            <li><Link to="/Contact">Contact</Link></li>
+            <li><Link to="/About">About Us</Link></li>
           </ul>
       </div>
     </>

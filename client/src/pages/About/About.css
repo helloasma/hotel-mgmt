@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
 
 /* ROOT */
 .about-root {
@@ -45,7 +47,7 @@
 .about-hero-title {
   font-size: 2rem;
   color: white;
-  font-family: 'Roboto Slab', serif;
+  font-family: "Cormorant Garamond", serif;
 }
 
 .about-hero-text {
@@ -53,7 +55,7 @@
   max-width: 600px;
   margin: auto;
   font-size: 20px;
-  font-family: 'Roboto Slab', serif;
+  font-family: "Cormorant Garamond", serif;
 }
 
 /* SECTION */
@@ -61,12 +63,21 @@
   max-width: 1000px;
   margin: auto;
   padding: 60px 20px;
+  font-family: "Cormorant Garamond", serif;
+}
+
+.about-section p {
+  margin-bottom: 1em;
+  margin-top: 1em; 
+  text-align: justify;
+  line-height: 1.4;
 }
 
 .about-grid {
   display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 30px;
-  align-items: center;
+  align-items: start;
 }
 
 /* IMAGE */
