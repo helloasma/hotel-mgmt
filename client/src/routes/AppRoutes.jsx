@@ -21,7 +21,7 @@ function AppRoutes() {
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetails />} />
       <Route path="/booking" element={<Booking />} />
-
+      <Route path="/booking/:roomId" element={<Booking />} />
       <Route path="/Login" element={<Login />} />
       <Route path="/Signup" element={<Signup />} />
       <Route path="/Validation" element={<Validation />} />

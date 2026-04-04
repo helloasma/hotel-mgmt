@@ -44,8 +44,6 @@ function BookingForm({ room }) {
     return diff > 0 ? diff : 0;
   }, [checkIn, checkOut]);
 
-  const total = room && nights ? room.price * nights : 0;
-
   function handleSubmit(event) {
     event.preventDefault();
     const roomName = room ? room.title : "selected room";
@@ -139,20 +137,30 @@ function BookingForm({ room }) {
         />
       </label>
 
-      {room && nights > 0 && (
-        <div className="rb-summary-box">
-          <div>
-            <span>
-              ${room.price} × {nights} night{nights > 1 ? "s" : ""}
-            </span>
-            <strong>${total}</strong>
+      <div className="rb-fee-breakdown">
+        <p className="rb-section-label">Total Fee</p>
+        <div className="rb-fee-rows">
+          <div className="rb-fee-row">
+            <span>Room rate</span>
+            <span>{room ? `$${room.price} / night` : "—"}</span>
           </div>
-          <small>Total shown for frontend preview only.</small>
+          <div className="rb-fee-row">
+            <span>Nights</span>
+            <span>{nights > 0 ? nights : "—"}</span>
+          </div>
+          <div className="rb-fee-divider" />
+          <div className="rb-fee-row rb-fee-total">
+            <span>Total</span>
+            <span>{nights > 0 && room ? `$${(room.price * nights).toLocaleString()}` : "—"}</span>
+          </div>
         </div>
-      )}
+        {nights === 0 && (
+          <p className="rb-fee-hint">Select check-in and check-out dates to see your total.</p>
+        )}
+      </div>
 
       <button type="submit" className="rb-primary-button rb-full-width">
-        Book Now
+        Checkout
       </button>
 
       {message.startsWith("Booking confirmed") && (
