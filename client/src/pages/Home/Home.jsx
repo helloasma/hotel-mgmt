@@ -40,12 +40,8 @@ function Home() {
         </video>
 
         <div className="overlay">
-          <img
-            src={logo}
-            alt="Lovender Logo"
-            style={{ height: "160px", marginRight: "20px" }}
-          />
-          <p>Escape to a lavender island paradise</p>
+          <img src={logo} alt="Lovender Logo" className="hero-logo" />
+          <p className="hero-tagline">Escape to a lavender island paradise</p>
         </div>
 
         <div className="review-bar hero-review">
