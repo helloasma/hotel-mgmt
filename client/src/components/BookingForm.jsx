@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
+import { rooms } from "../data/rooms";
 
 function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
   return (
@@ -25,7 +26,7 @@ function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
   );
 }
 
-function BookingForm({ room }) {
+function BookingForm({ room, onRoomChange }) {
   const today = new Date().toISOString().split("T")[0];
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -35,6 +36,21 @@ function BookingForm({ room }) {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+  const switcherRef = useRef(null);
+
+  const otherRooms = rooms.filter((r) => r.id !== room?.id);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (switcherRef.current && !switcherRef.current.contains(e.target)) {
+        setSwitcherOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const nights = useMemo(() => {
     if (!checkIn || !checkOut) return 0;
@@ -44,23 +60,59 @@ function BookingForm({ room }) {
     return diff > 0 ? diff : 0;
   }, [checkIn, checkOut]);
 
-  const total = room && nights ? room.price * nights : 0;
-
   function handleSubmit(event) {
     event.preventDefault();
     const roomName = room ? room.title : "selected room";
     setMessage(`Booking confirmed for ${name}. Your stay in ${roomName} has been saved on the frontend.`);
   }
 
+  function handleRoomSwitch(newRoom) {
+    setSwitcherOpen(false);
+    if (onRoomChange) onRoomChange(newRoom);
+  }
+
   return (
     <form className="rb-booking-form" onSubmit={handleSubmit}>
       {room && (
-        <div className="rb-selected-room-box">
-          <img src={room.image} alt={room.title} />
-          <div>
-            <p className="rb-selected-room-title">{room.title}</p>
-            <p className="rb-selected-room-price">${room.price} / night</p>
+        <div className="rb-room-switcher" ref={switcherRef}>
+          {/* Summary card — clickable */}
+          <div
+            className="rb-selected-room-box rb-selected-room-box--clickable"
+            onClick={() => setSwitcherOpen((o) => !o)}
+            role="button"
+            aria-expanded={switcherOpen}
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setSwitcherOpen((o) => !o)}
+          >
+            <img src={room.image} alt={room.title} />
+            <div className="rb-selected-room-info">
+              <p className="rb-selected-room-title">{room.title}</p>
+              <p className="rb-selected-room-price">${room.price} / night</p>
+            </div>
+            <span className={`rb-switcher-chevron${switcherOpen ? " rb-switcher-chevron--open" : ""}`}>
+              ▾
+            </span>
           </div>
+
+          {/* Dropdown */}
+          {switcherOpen && (
+            <div className="rb-switcher-dropdown">
+              <p className="rb-switcher-label">Switch room</p>
+              {otherRooms.map((r) => (
+                <div
+                  key={r.id}
+                  className="rb-switcher-option"
+                  onClick={() => handleRoomSwitch(r)}
+                >
+                  <img src={r.image} alt={r.title} />
+                  <div className="rb-switcher-option-info">
+                    <p className="rb-switcher-option-title">{r.title}</p>
+                    <p className="rb-switcher-option-price">${r.price} / night</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -139,20 +191,30 @@ function BookingForm({ room }) {
         />
       </label>
 
-      {room && nights > 0 && (
-        <div className="rb-summary-box">
-          <div>
-            <span>
-              ${room.price} × {nights} night{nights > 1 ? "s" : ""}
-            </span>
-            <strong>${total}</strong>
+      <div className="rb-fee-breakdown">
+        <p className="rb-section-label">Total Fee</p>
+        <div className="rb-fee-rows">
+          <div className="rb-fee-row">
+            <span>Room rate</span>
+            <span>{room ? `$${room.price} / night` : "—"}</span>
           </div>
-          <small>Total shown for frontend preview only.</small>
+          <div className="rb-fee-row">
+            <span>Nights</span>
+            <span>{nights > 0 ? nights : "—"}</span>
+          </div>
+          <div className="rb-fee-divider" />
+          <div className="rb-fee-row rb-fee-total">
+            <span>Total</span>
+            <span>{nights > 0 && room ? `$${(room.price * nights).toLocaleString()}` : "—"}</span>
+          </div>
         </div>
-      )}
+        {nights === 0 && (
+          <p className="rb-fee-hint">Select check-in and check-out dates to see your total.</p>
+        )}
+      </div>
 
       <button type="submit" className="rb-primary-button rb-full-width">
-        Book Now
+        Checkout
       </button>
 
       {message.startsWith("Booking confirmed") && (

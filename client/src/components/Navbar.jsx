@@ -35,9 +35,7 @@ function Navbar() {
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="right-controls">
-            <Link to="/booking" className="book-btn">Book Now</Link>
-
+          <div className="nav-right">
             <Link to="/Account" className="icon-btn">
               <img src={accountIcon} alt="account" className="icon-img" />
             </Link>
