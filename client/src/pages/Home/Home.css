@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+
 
 /* ✅ GLOBAL RESET (FIXES WHITE BORDER) */
 * {
@@ -26,6 +29,17 @@ html, body {
   z-index: 0;
 }
 
+.hero-tagline {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  text-align: center;
+}
+
+.hero-logo {
+  height: 120px;
+  margin-bottom: 20px;
+}
+
 /* VIDEO BACKGROUND */
 .hero-video {
   position: absolute;
@@ -50,31 +64,15 @@ html, body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-/* TEXT */
-.hero h1 {
-  font-size: 60px;
-  margin-bottom: 10px;
+  gap: 2px;
 }
 
 .hero p {
-  font-family: 'Roboto Slab', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 20px;
 }
 
-/* SEARCH */
-.search-box {
-  margin-top: 25px;
-}
 
-.search-box input,
-.search-box button {
-  padding: 12px;
-  margin: 5px;
-  border-radius: 6px;
-  border: none;
-}
 
 
 /* 🔥 UPDATED REVIEW BAR (NOW INSIDE HERO) */
@@ -97,8 +95,7 @@ html, body {
   flex-wrap: wrap;
 
   background: rgba(10, 24, 48, 0.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+
 
   border-radius: 12px; /* 👈 makes it look like a card */
 
@@ -308,4 +305,30 @@ html, body {
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* RESPONSIVE */
+
+/* Tablet */
+@media (min-width: 768px) {
+  .hero-logo {
+    height: 140px;
+  }
+
+  .hero-tagline {
+    font-size: 20px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .hero-logo {
+    height: 160px;
+  }
+
+  .hero-tagline {
+    font-size: 22px;
+  }
 }
