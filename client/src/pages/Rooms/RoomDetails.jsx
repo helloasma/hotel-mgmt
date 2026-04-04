@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getRoomById } from "../data/rooms";
+import { getRoomById } from "../../data/rooms";
 import "./RoomDetails.css";
 
 function RoomDetails() {

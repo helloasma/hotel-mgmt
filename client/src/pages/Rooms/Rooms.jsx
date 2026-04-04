@@ -1,8 +1,8 @@
 import "./Rooms.css";
 import { Link } from "react-router-dom";
 
-import heroVideo from "../assets/Room.mp4";
-import { rooms } from "../data/rooms";
+import heroVideo from "../../assets/Rooms/RoomVideo.mp4";
+import { rooms } from "../../data/rooms";
 
 function Rooms() {
   return (
@@ -20,7 +20,6 @@ function Rooms() {
 
         <div className="rooms-hero__content">
           <div className="rooms-hero__inner">
-            <p className="rooms-hero__eyebrow">Rooms & Suites</p>
             <h1 className="rooms-hero__title">Rooms & Suites</h1>
             <p className="rooms-hero__subtitle">
               Discover a more elevated stay through rooms designed with light,
@@ -31,13 +30,13 @@ function Rooms() {
       </section>
 
       <section className="rooms-intro">
-        <p className="rooms-intro__label">Accommodation</p>
-        <h2 className="rooms-intro__heading">A refined collection of stays</h2>
+        <h2 className="rooms-intro__heading">A Refined Collection of Stays</h2>
         <p className="rooms-intro__text">
-          Inspired by the visual language of luxury hotel websites, this layout
-          gives each room more space, stronger imagery, and calmer typography.
-          The goal is to make the page feel editorial, premium, and easy to
-          browse.
+          Where Every Room Tells a Story
+          <br />
+          Each space at Lovender is designed with intention — blending natural textures,
+          curated detail, and unhurried calm. From overwater retreats to mountain
+          sanctuaries, find the setting that speaks to you.
         </p>
       </section>
 
@@ -72,7 +71,6 @@ function Rooms() {
                   </span>
                 </div>
 
-                {/* ✅ UPDATED ACTIONS (BUTTON + PRICE) */}
                 <div className="room-card-luxury__actions">
                   <Link
                     to={`/rooms/${room.id}`}

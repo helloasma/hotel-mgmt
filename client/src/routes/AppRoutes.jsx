@@ -2,15 +2,15 @@ import { Routes, Route } from "react-router-dom";
 
 import Home from "../pages/Home/Home";
 import Account from "../pages/Account";
-import Rooms from "../pages/Rooms";
+import Rooms from "../pages/Rooms/Rooms";
 import Contact from "../pages/Contact";
 import About from "../pages/About/About";
-import Packages from "../pages/Packages";
-import RoomDetails from "../pages/RoomDetails";
+import Packages from "../pages/Package/Packages";
+import RoomDetails from "../pages/Rooms/RoomDetails";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Validation from "../pages/Validation";
-import Booking from "../pages/Booking";
+import Booking from "../pages/Rooms/Booking";
 
 
 function AppRoutes() {

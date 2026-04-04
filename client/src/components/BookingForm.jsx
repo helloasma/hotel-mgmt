@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
+import { rooms } from "../data/rooms";
 
 function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
   return (
@@ -25,7 +26,7 @@ function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
   );
 }
 
-function BookingForm({ room }) {
+function BookingForm({ room, onRoomChange }) {
   const today = new Date().toISOString().split("T")[0];
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -35,6 +36,21 @@ function BookingForm({ room }) {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+  const switcherRef = useRef(null);
+
+  const otherRooms = rooms.filter((r) => r.id !== room?.id);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (switcherRef.current && !switcherRef.current.contains(e.target)) {
+        setSwitcherOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const nights = useMemo(() => {
     if (!checkIn || !checkOut) return 0;
@@ -50,15 +66,53 @@ function BookingForm({ room }) {
     setMessage(`Booking confirmed for ${name}. Your stay in ${roomName} has been saved on the frontend.`);
   }
 
+  function handleRoomSwitch(newRoom) {
+    setSwitcherOpen(false);
+    if (onRoomChange) onRoomChange(newRoom);
+  }
+
   return (
     <form className="rb-booking-form" onSubmit={handleSubmit}>
       {room && (
-        <div className="rb-selected-room-box">
-          <img src={room.image} alt={room.title} />
-          <div>
-            <p className="rb-selected-room-title">{room.title}</p>
-            <p className="rb-selected-room-price">${room.price} / night</p>
+        <div className="rb-room-switcher" ref={switcherRef}>
+          {/* Summary card — clickable */}
+          <div
+            className="rb-selected-room-box rb-selected-room-box--clickable"
+            onClick={() => setSwitcherOpen((o) => !o)}
+            role="button"
+            aria-expanded={switcherOpen}
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && setSwitcherOpen((o) => !o)}
+          >
+            <img src={room.image} alt={room.title} />
+            <div className="rb-selected-room-info">
+              <p className="rb-selected-room-title">{room.title}</p>
+              <p className="rb-selected-room-price">${room.price} / night</p>
+            </div>
+            <span className={`rb-switcher-chevron${switcherOpen ? " rb-switcher-chevron--open" : ""}`}>
+              ▾
+            </span>
           </div>
+
+          {/* Dropdown */}
+          {switcherOpen && (
+            <div className="rb-switcher-dropdown">
+              <p className="rb-switcher-label">Switch room</p>
+              {otherRooms.map((r) => (
+                <div
+                  key={r.id}
+                  className="rb-switcher-option"
+                  onClick={() => handleRoomSwitch(r)}
+                >
+                  <img src={r.image} alt={r.title} />
+                  <div className="rb-switcher-option-info">
+                    <p className="rb-switcher-option-title">{r.title}</p>
+                    <p className="rb-switcher-option-price">${r.price} / night</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
