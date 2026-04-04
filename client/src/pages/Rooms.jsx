@@ -1,77 +1,10 @@
 import "./Rooms.css";
+import { Link } from "react-router-dom";
 
 import heroVideo from "../assets/Room.mp4";
-import roomOceanSuite from "../assets/room-ocean-suite.jpg";
-import roomGardenDeluxe from "../assets/room-garden-deluxe.jpg";
-import roomPenthouse from "../assets/room-penthouse.jpg";
-import roomFamilySuite from "../assets/room-family-suite.jpg";
-import roomHoneymoon from "../assets/room-honeymoon.jpg";
-import roomStandard from "../assets/room-standard.jpg";
+import { rooms } from "../data/rooms";
 
 function Rooms() {
-  const rooms = [
-    {
-      id: 1,
-      title: "Ocean View Suite",
-      image: roomOceanSuite,
-      description:
-        "Wake up to endless blue horizons and a private balcony, designed for guests who want light, calm, and uninterrupted views.",
-      size: "58 m²",
-      bed: "King Bed",
-      bath: "Ocean View Bath",
-    },
-    {
-      id: 2,
-      title: "Garden Deluxe Room",
-      image: roomGardenDeluxe,
-      description:
-        "A peaceful retreat wrapped in greenery and filtered sunlight, with warm finishes and a quiet luxury feel throughout.",
-      size: "42 m²",
-      bed: "Queen Bed",
-      bath: "Rain Shower",
-    },
-    {
-      id: 3,
-      title: "Skyline Penthouse",
-      image: roomPenthouse,
-      description:
-        "Top-floor indulgence with panoramic city views, expansive lounge space, and a statement atmosphere from day to night.",
-      size: "96 m²",
-      bed: "King Bed",
-      bath: "Luxury Bath",
-    },
-    {
-      id: 4,
-      title: "Family Suite",
-      image: roomFamilySuite,
-      description:
-        "Spacious comfort designed for unforgettable group stays, with room to relax together without losing the boutique feel.",
-      size: "72 m²",
-      bed: "King + Twin Beds",
-      bath: "Rain Shower",
-    },
-    {
-      id: 5,
-      title: "Sunset Honeymoon Retreat",
-      image: roomHoneymoon,
-      description:
-        "Romance and golden sunsets from your private terrace, styled to feel intimate, warm, and quietly cinematic.",
-      size: "60 m²",
-      bed: "Four-Poster Bed",
-      bath: "Couples Bath",
-    },
-    {
-      id: 6,
-      title: "Classic Standard Room",
-      image: roomStandard,
-      description:
-        "Clean, calm comfort with warm wood finishes and elegant simplicity for guests who want a refined and restful stay.",
-      size: "35 m²",
-      bed: "Queen Bed",
-      bath: "Rain Shower",
-    },
-  ];
-
   return (
     <main className="rooms-page">
       <section className="rooms-hero">
@@ -124,7 +57,7 @@ function Rooms() {
                 <h3 className="room-card-luxury__title">{room.title}</h3>
 
                 <p className="room-card-luxury__description">
-                  {room.description}
+                  {room.shortDescription}
                 </p>
 
                 <div className="room-card-luxury__meta">
@@ -135,14 +68,23 @@ function Rooms() {
                     {room.bed}
                   </span>
                   <span className="room-card-luxury__meta-item">
-                    {room.bath}
+                    {room.view}
                   </span>
                 </div>
 
+                {/* ✅ UPDATED ACTIONS (BUTTON + PRICE) */}
                 <div className="room-card-luxury__actions">
-                  <a href="#rooms-list" className="room-card-luxury__button">
+                  <Link
+                    to={`/rooms/${room.id}`}
+                    className="room-card-luxury__button"
+                  >
                     View Room
-                  </a>
+                  </Link>
+
+                  <p className="room-card-luxury__price">
+                    ${room.price}
+                    <span> / night</span>
+                  </p>
                 </div>
               </div>
             </article>

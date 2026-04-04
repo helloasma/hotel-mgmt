@@ -1,30 +1,33 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
+
+import Home from "../pages/Home/Home";
 import Account from "../pages/Account";
 import Rooms from "../pages/Rooms";
 import Contact from "../pages/Contact";
-import About from "../pages/About";
+import About from "../pages/About/About";
 import Packages from "../pages/Packages";
-import Booking from "../pages/Booking";
 import RoomDetails from "../pages/RoomDetails";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Validation from "../pages/Validation";
+import Booking from "../pages/Booking";
+
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/Account" element={<Account />} />
+      <Route path="/account" element={<Account />} />
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetails />} />
       <Route path="/booking" element={<Booking />} />
-      <Route path="/Packages" element={<Packages />} />
-      <Route path="/Contact" element={<Contact />} />
-      <Route path="/About" element={<About />} />
+
       <Route path="/Login" element={<Login />} />
       <Route path="/Signup" element={<Signup />} />
       <Route path="/Validation" element={<Validation />} />
+      <Route path="/packages" element={<Packages />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/about" element={<About />} />
     </Routes>
   );
 }

@@ -1,79 +1,175 @@
-import { Link, useParams } from "react-router-dom";
-import BookingForm from "../components/BookingForm";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getRoomById } from "../data/rooms";
-import "./rooms-booking.css";
+import "./RoomDetails.css";
 
 function RoomDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const room = getRoomById(id);
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // ✅ Scroll to top when room changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  // ✅ Handle invalid room safely
   if (!room) {
     return (
-      <section className="rb-section">
-        <div className="rb-container">
-          <div className="rb-empty-state">
-            <h1>Room not found</h1>
-            <p>The room you requested does not exist.</p>
-            <Link to="/rooms" className="rb-primary-button">
-              Back to Rooms
-            </Link>
-          </div>
+      <main className="room-detail-page">
+        <div className="room-detail-container room-detail-not-found">
+          <h2>Room not found</h2>
+          <p>The room you selected does not exist.</p>
+          <Link to="/rooms" className="room-detail-back">
+            ← Back to Rooms
+          </Link>
         </div>
-      </section>
+      </main>
     );
   }
 
+  // ✅ Always fallback to at least 1 image
+  const images = room.images?.length ? room.images : [room.image];
+
+  // ✅ Prevent out-of-bounds issues
+  const safeIndex =
+    currentImageIndex >= images.length ? 0 : currentImageIndex;
+
+  const currentImage = images[safeIndex];
+  const hasMultipleImages = images.length > 1;
+
+  const goToPrevious = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? images.length - 1 : prev - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prev) =>
+      prev === images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const handleBookNow = () => {
+    navigate("/booking");
+  };
+
   return (
-    <>
-      <section className="rb-room-hero">
-        <img src={room.image} alt={room.title} className="rb-room-hero-image" />
-        <div className="rb-room-hero-overlay">
-          <div className="rb-container">
-            <p className="rb-eyebrow">
-              {room.size} · Up to {room.maxGuests} guests
-            </p>
-            <h1>{room.title}</h1>
-            <p className="rb-hero-copy rb-max-copy">{room.shortDescription}</p>
-          </div>
-        </div>
-      </section>
+    <main className="room-detail-page">
+      {/* ✅ KEY forces full reset when room changes */}
+      <div className="room-detail-container" key={id}>
+        <Link to="/rooms" className="room-detail-back">
+          ← Back to Rooms
+        </Link>
 
-      <section className="rb-section">
-        <div className="rb-container rb-details-grid">
-          <div className="rb-details-copy">
-            <h2>About this room</h2>
-            <p>{room.description}</p>
+        <section className="room-detail-layout">
+          {/* LEFT SIDE - IMAGE */}
+          <div className="room-detail-gallery">
+            <div className="room-detail-image-wrap">
+              <img
+                key={safeIndex}
+                src={currentImage}
+                alt={room.title}
+                className="room-detail-image"
+              />
 
-            <div className="rb-meta-row">
-              <div className="rb-meta-box">
-                <span>Rate</span>
-                <strong>${room.price} / night</strong>
-              </div>
-              <div className="rb-meta-box">
-                <span>Guests</span>
-                <strong>{room.maxGuests} max</strong>
-              </div>
-              <div className="rb-meta-box">
-                <span>Size</span>
-                <strong>{room.size}</strong>
-              </div>
+              {hasMultipleImages && (
+                <>
+                  <button
+                    type="button"
+                    className="room-detail-arrow room-detail-arrow--prev"
+                    onClick={goToPrevious}
+                    aria-label="Previous image"
+                  >
+                    ‹
+                  </button>
+
+                  <button
+                    type="button"
+                    className="room-detail-arrow room-detail-arrow--next"
+                    onClick={goToNext}
+                    aria-label="Next image"
+                  >
+                    ›
+                  </button>
+                </>
+              )}
             </div>
 
-            <h3>Amenities</h3>
-            <ul className="rb-amenities-list">
-              {room.amenities.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            {hasMultipleImages && (
+              <div className="room-detail-dots">
+                {images.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={`room-detail-dot ${
+                      safeIndex === index ? "active" : ""
+                    }`}
+                    onClick={() => setCurrentImageIndex(index)}
+                    aria-label={`Go to image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
-          <div className="rb-booking-panel">
-            <h3>Reserve this room</h3>
-            <BookingForm room={room} />
+          {/* RIGHT SIDE - DETAILS */}
+          <div className="room-detail-content">
+            <div>
+              <h1 className="room-detail-title">{room.title}</h1>
+
+              <p className="room-detail-occupancy">{room.occupancy}</p>
+
+              <p className="room-detail-description">
+                {room.description}
+              </p>
+
+              <div className="room-detail-facts">
+                <div className="room-detail-fact">
+                  <strong>Guests</strong>
+                  {room.guests}
+                </div>
+
+                <div className="room-detail-fact">
+                  <strong>Bed</strong>
+                  {room.bed}
+                </div>
+
+                <div className="room-detail-fact">
+                  <strong>Room Size</strong>
+                  {room.size}
+                </div>
+
+                <div className="room-detail-fact">
+                  <strong>View</strong>
+                  {room.view}
+                </div>
+              </div>
+
+              <h2 className="room-detail-section-title">
+                Room Amenities
+              </h2>
+
+              <ul className="room-detail-amenities">
+                {room.amenities.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <button
+              type="button"
+              className="room-detail-book-btn"
+              onClick={handleBookNow}
+            >
+              Book Now
+            </button>
           </div>
-        </div>
-      </section>
-    </>
+        </section>
+      </div>
+    </main>
   );
 }
 
