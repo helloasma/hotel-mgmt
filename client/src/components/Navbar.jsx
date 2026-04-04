@@ -1,28 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../assets/LovenderWhite.png";
+import { Link, useLocation } from "react-router-dom";
 import accountIcon from "../assets/accountIcon.png";
+import logo from "../assets/LovenderWhite.png";
 import Sidebar from "./Sidebar";
 import "./Navbar.css";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const isHome = location.pathname === "/";
 
   return (
     <>
-      <header className="site-header">
-        <div className="nav-inner">
+      {/* ✅ ALWAYS FIXED MENU BUTTON */}
+      <div className="menu-only">
+        <button
+          className="icon-btn"
+          onMouseEnter={() => setIsOpen(true)}
+        >
+          ☰
+        </button>
+      </div>
 
-          {/* LEFT SIDE */}
-          <div className="nav-left">
-            <button
-              className="icon-btn"
-              onMouseEnter={() => setIsOpen(true)}
-            >
-              ☰
-            </button>
-          </div>
-
+      {/* ✅ ONLY ON HOME PAGE (NOT FIXED) */}
+      {isHome && (
+        <div className="hero-header">
+          
           {/* CENTER LOGO */}
           <div className="nav-center">
             <Link to="/">
@@ -38,12 +42,9 @@ function Navbar() {
           </div>
 
         </div>
-      </header>
+      )}
 
-      <Sidebar
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }
