@@ -3,12 +3,15 @@ import logo from "../../assets/HomeGallery/logoWhite.png";
 import sec1_img1 from "../../assets/HomeGallery/sec1_img1.png";
 import sec1_img2 from "../../assets/HomeGallery/sec1_img2.png";
 import sec1_img3 from "../../assets/HomeGallery/sec1_img3.png";
-import sec1_img4 from "../../assets/HomeGallery/sec1_img4.png";
+import sec1_img4 from "../../assets/HomeGallery/sec1_img4.jpg";
+import sec1_img5 from "../../assets/HomeGallery/sec1_img5.jpg";
+import sec1_img6 from "../../assets/HomeGallery/sec1_img6.png";
 import islandVideo from "../../assets/HomeGallery/islandVideo.mp4";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
+
 
   useEffect(() => {
   const reveals = document.querySelectorAll(".reveal");
@@ -83,7 +86,7 @@ function Home() {
 
           {/* LEFT SIDE (TEXT) */}
           <div className="sectione-one-text">
-            <h2>Where Nature Shapes Every Experience</h2>
+            <h2>WHERE NATURE SHAPES EVERY EXPERIENCE</h2>
 
             <p>
               Step into a world where time slows and every moment is designed to be
@@ -100,6 +103,16 @@ function Home() {
               a stay that feels both effortless and unforgettable.
             </p>
 
+            <p>
+              Designed to offer both exploration and retreat, the island reveals 
+              itself through a collection of distinct spaces, each shaped by its 
+              surroundings. From forest paths and elevated viewpoints to quiet shores 
+              and open waters, every setting offers a different perspective of Lovender. 
+              Guided by simplicity and attention to detail, each moment is an invitation 
+              to slow down, take in the landscape, and experience the island in a way that 
+              feels natural, personal, and complete.
+            </p>
+            
             <a href="/about" className="sectione-one-link">ABOUT US</a>
           </div>
 
@@ -111,21 +124,40 @@ function Home() {
         </div>
 
 
-        {/* SECOND IMAGE */}
-        <div className="image-two reveal">
-          <img src={sec1_img2} alt="Interior detail" />
+        <div className="image-layout">
 
-          {/* THIRD IMAGE */}
-          <div className="image-three reveal">
-            <img src={sec1_img3} alt="Resort view" />
-
-            {/* Fourth IMAGE */}
-            <div className="image-four reveal">
-              <img src={sec1_img4} alt="Resort detail" />
+          <div className="row1-column1">
+            <div className="image-two reveal">
+              <img src={sec1_img2} alt="" />
             </div>
+
+            <div className="stay-text">
+              <h2>STAY AT LOVENDER</h2>
+              <p>
+                Featuring a collection of forest cabins, mountain-view rooms, and overwater
+                bungalows, each space is thoughtfully placed to offer privacy, comfort, and
+                a unique connection to the island’s natural surroundings. From quiet moments
+                among lavender fields to expansive views across the sea, every stay invites
+                you to experience Lovender in your own way.
+              </p>
+
+              <a href="/rooms" className="sectione-one-link">VIEW ROOMS</a>
+            </div>
+
+          </div>
+
+
+          {/* 👇 NEW WRAPPER */}
+          <div className="row1-column2">
+            <div className="small-img reveal"><img src={sec1_img3} /></div>
+            <div className="small-img reveal"><img src={sec1_img4} /></div>
+            <div className="small-img reveal"><img src={sec1_img5} /></div>
+          </div>
+
+          <div className="image-six reveal">
+            <img src={sec1_img6} alt="" />
           </div>
         </div>
-
 
       </section>
 
