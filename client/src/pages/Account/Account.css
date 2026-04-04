@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Page ── */
+.account-page {
+  min-height: 100vh;
+  background: #EDE8F4;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Background sprigs ── */
+.account-sprig {
+  position: absolute;
+  pointer-events: none;
+}
+
+.account-sprig--tl {
+  top: -10px;
+  left: -10px;
+  width: 180px;
+  opacity: 0.15;
+  transform: rotate(-10deg);
+}
+
+.account-sprig--br {
+  bottom: -10px;
+  right: -10px;
+  width: 150px;
+  opacity: 0.13;
+  transform: rotate(170deg) scaleX(-1);
+}
+
+/* ── Card ── */
+.account-card {
+  background: #FAF7F2;
+  border: 1px solid rgba(191, 182, 206, 0.45);
+  border-radius: 16px;
+  padding: 52px 48px 44px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(18, 40, 75, 0.09), 0 4px 12px rgba(18, 40, 75, 0.05);
+  animation: fadeUp 0.8s ease both;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Logo ── */
+.account-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-bottom: 28px;
+}
+
+.account-logo__name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: #12284B;
+}
+
+/* ── Lock icon ── */
+.account-lock {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #F3F0F8;
+  border: 1.5px solid #D4CEDF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 22px;
+}
+
+/* ── Heading ── */
+.account-heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #12284B;
+  margin-bottom: 10px;
+}
+
+.account-heading em {
+  font-style: italic;
+  color: #7a7090;
+}
+
+/* ── Subtext ── */
+.account-subtext {
+  font-size: 13px;
+  font-weight: 300;
+  color: #7a7090;
+  line-height: 1.7;
+  max-width: 300px;
+  margin: 0 auto 30px;
+}
+
+/* ── Primary button (Sign In) ── */
+.account-btn-primary {
+  width: 100%;
+  padding: 13px 0;
+  border-radius: 9px;
+  background: #406D61;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  box-shadow: 0 4px 14px rgba(64, 109, 97, 0.28);
+  transition: background 0.25s, transform 0.2s;
+}
+
+.account-btn-primary:hover {
+  background: #34574d;
+  transform: translateY(-1px);
+}
+
+/* ── Divider ── */
+.account-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.account-divider__line {
+  flex: 1;
+  height: 1px;
+  background: rgba(191, 182, 206, 0.5);
+}
+
+/* ── Signup prompt ── */
+.account-signup-prompt {
+  font-size: 13px;
+  font-weight: 300;
+  color: #7a7090;
+  margin-bottom: 14px;
+}
+
+/* ── Secondary button (Create Account) ── */
+.account-btn-secondary {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #12284B;
+  border: 1.5px solid #D4CEDF;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  transition: border-color 0.25s, color 0.25s, transform 0.2s;
+}
+
+.account-btn-secondary:hover {
+  color: #406D61;
+  border-color: #406D61;
+  transform: translateY(-1px);
+}
