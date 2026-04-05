@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const colors = {
   lova: "#0e081f",
@@ -61,17 +62,13 @@ function Field({ label, id, type = "text", placeholder, value, onChange, onBlur,
   const bg = status === "error" ? colors.errorBg : colors.lavSofter;
 
   return (
-    <div style={{ marginBottom: 20 }}>
+    <div className="login-field-wrap">
       {label && (
-        <label style={{
-          display: "block", fontSize: 9.5, fontWeight: 500,
-          letterSpacing: "0.2em", textTransform: "uppercase",
-          color: colors.text, opacity: 0.55, marginBottom: 7,
-        }}>
+        <label className="login-field-label">
           {label}
         </label>
       )}
-      <div style={{ position: "relative" }}>
+      <div className="login-field-inner">
         <input
           id={id}
           type={type}
@@ -97,7 +94,7 @@ function Field({ label, id, type = "text", placeholder, value, onChange, onBlur,
         {children}
       </div>
       {status === "error" && (
-        <p style={{ fontSize: 11, color: colors.green, marginTop: 5, fontWeight: 300 }}>
+        <p className="login-field-error-msg">
           {errorMsg}
         </p>
       )}
@@ -140,253 +137,153 @@ export default function Login() {
     }
   };
 
-  /* styles */
-  const S = {
-    page: {
-      display: "grid", gridTemplateColumns: "55% 45%", height: "100vh",
-      fontFamily: "'DM Sans', sans-serif",
-    },
-    left: {
-      position: "relative", overflow: "hidden",
-      background: "#0e081f",
-    },
-    sceneSvg: { position: "absolute", inset: 0, width: "100%", height: "100%" },
-    caption: { position: "absolute", top: 90, left: 44, right: 44, zIndex: 20 },
-    eyebrow: {
-      fontSize: 9, fontWeight: 500, letterSpacing: "0.32em", textTransform: "uppercase",
-      color: colors.white, marginBottom: 10,
-    },
-    captionH2: {
-      fontFamily: "'Playfair Display', serif", fontWeight: 400,
-      fontSize: "clamp(28px, 3.2vw, 42px)", lineHeight: 1.18, color: colors.white, marginBottom: 11,
-    },
-    captionP: { fontSize: 12.5, fontWeight: 300, color: colors.white, lineHeight: 1.75, maxWidth: 300 },
-    right: {
-      background: colors.whiet, display: "flex", alignItems: "center", justifyContent: "center",
-      padding: "40px 52px", position: "relative",
-      borderLeft: `1px solid rgba(191,182,206,0.4)`, overflow: "hidden",
-    },
-    sprigTR: {
-      position: "absolute", top: -8, right: 10, width: 110,
-      opacity: 0.28, transform: "rotate(-15deg)", pointerEvents: "none",
-    },
-    sprigBL: {
-      position: "absolute", bottom: -8, left: 5, width: 90,
-      opacity: 0.22, transform: "rotate(165deg) scaleX(-1)", pointerEvents: "none",
-    },
-    formWrap: {
-      width: "100%", maxWidth: 340, zIndex: 1,
-      animation: "fadeUp .8s ease both",
-    },
-    badge: {
-      display: "inline-flex", alignItems: "center", gap: 8,
-      background: colors.lova, border: `1px solid ${colors.lavLight}`,
-      borderRadius: 20, padding: "5px 14px 5px 8px", marginBottom: 16,
-    },
-    badgeText: {
-      fontSize: 9, fontWeight: 500, letterSpacing: "0.2em",
-      textTransform: "uppercase", color: colors.lova,
-    },
-    h1: {
-      fontFamily: "'Playfair Display', serif", fontWeight: 400,
-      fontSize: 34, lineHeight: 1.15, color: colors.lova, marginBottom: 7,
-    },
-    subP: { fontSize: 13, fontWeight: 300, color: colors.lova, lineHeight: 1.65, marginBottom: 28 },
-    passHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 7 ,color: colors.lova },
-    passLabel: {
-      fontSize: 9.5, fontWeight: 500, letterSpacing: "0.2em",
-      textTransform: "uppercase", color: colors.lova, opacity: 0.55,
-    },
-    forgotLink: { fontSize: 11, fontWeight: 300, color: colors.lova, textDecoration: "none" },
-    rememberRow: { display: "flex", alignItems: "center", gap: 10, margin: "16px 0 22px" },
-    rememberText: { fontSize: 12, fontWeight: 300, color: colors.lova, cursor: "pointer", userSelect: "none" },
-    btnCta: {
-      width: "100%", padding: 13, borderRadius: 9,
-      background: colors.sage, color: "#fff", border: "none", cursor: "pointer",
-      fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500, letterSpacing: "0.06em",
-      display: "flex", alignItems: "center", justifyContent: "center", gap: 9,
-      boxShadow: "0 4px 14px rgba(64,109,97,0.28)", transition: "background .3s,transform .2s",
-    },
-    divider: { display: "flex", alignItems: "center", gap: 12, margin: "18px 0" },
-    dividerText: { fontSize: 9, letterSpacing: "0.2em", color: colors.lova, textTransform: "uppercase" },
-    signupPrompt: { textAlign: "center", fontSize: 12, fontWeight: 300, color: colors.muted },
-  };
-
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: 100%; overflow: hidden; }
-        @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
-        input::placeholder { color: rgba(44,40,64,0.28); font-style: italic; }
-      `}</style>
-      <div style={S.page}>
+    <div className="login-page">
 
-        {/* ── LEFT PANEL ── */}
-        <div style={S.left}>
+      {/* ── LEFT PANEL ── */}
+      <div className="login-left">
 
-          {/* Caption */}
-          <div style={S.caption}>
-            <p style={S.eyebrow}>Heart Island · Lavender Retreat</p>
-            <h2 style={S.captionH2}>
-              Where lavender<br />meets the <em style={{ fontStyle: "italic", color: colors.white }}>sea</em>
-            </h2>
-            <p style={S.captionP}>A heart-shaped island wrapped in lavender fields and ocean air. Your escape is always waiting.</p>
-          </div>
-
-          <svg style={S.sceneSvg} viewBox="0 0 760 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-            <defs>
-
-            </defs>
-            <path d="M0 430 Q150 360 300 400 Q450 435 610 370 Q690 340 760 380 L760 510 L0 510Z" fill="#c8c0da" opacity="0.38" />
-            <path d="M0 460 Q130 400 280 435 Q430 468 580 405 Q680 370 760 415 L760 530 L0 530Z" fill="#b0a8c8" opacity="0.32" />
-            <rect x="0" y="508" width="760" height="50" fill="url(#water)" opacity="0.55" />
-            <path d="M0 518 Q95 512 190 518 Q285 524 380 518 Q475 512 570 518 Q665 524 760 518" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" />
-            
-            {/* Lavender rows — far */}
-            {[30,65,100,135,170,205,240,275,310,345,380,415,450,485,520,555,590,625,660,700,735].map((x) => (
-              <g key={x} opacity="0.65">
-                <line x1={x} y1="640" x2={x} y2="614" stroke="#9090b0" strokeWidth="1.1" />
-                <ellipse cx={x} cy="607" rx="5" ry="9" fill={x % 60 === 0 ? "#bbb3cc" : "#b2aac8"} />
-              </g>
-            ))}
-            {/* Lavender rows — mid */}
-            {[15,55,95,135,175,215,255,295,335,375,415,455,495,535,575,615,655,695,735].map((x) => (
-              <g key={x} opacity="0.82">
-                <line x1={x} y1="710" x2={x} y2="673" stroke="#888" strokeWidth="1.4" />
-                <ellipse cx={x} cy="666" rx="7" ry="14" fill={x % 80 === 0 ? "#b2aac8" : "#a8a0c4"} />
-              </g>
-            ))}
-            {/* Lavender rows — foreground */}
-            {[0,40,80,120,160,200,240,280,320,360,400,440,480,520,560,600,640,680,720,760].map((x) => (
-              <g key={x}>
-                <line x1={x} y1="900" x2={x} y2="820" stroke="#76708c" strokeWidth="2" />
-                <ellipse cx={x} cy="802" rx="10" ry="20" fill={x % 80 === 0 ? "#b4aed0" : x % 40 === 0 ? "#aaa4c8" : "#a09ac0"} />
-              </g>
-            ))}
-
-          </svg>
+        {/* Caption */}
+        <div className="login-caption">
+          <p className="login-eyebrow">Heart Island · Lavender Retreat</p>
+          <h2 className="login-caption-h2">
+            Where lavender<br />meets the <em style={{ fontStyle: "italic", color: colors.white }}>sea</em>
+          </h2>
+          <p className="login-caption-p">A heart-shaped island wrapped in lavender fields and ocean air. Your escape is always waiting.</p>
         </div>
 
-        {/* ── RIGHT PANEL ── */}
-        <div style={S.right}>
-          <div style={S.sprigTR}><Sprig /></div>
-          <div style={S.sprigBL}><Sprig /></div>
-          <div style={S.formWrap}>
+        <svg className="login-scene-svg" viewBox="0 0 760 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <defs></defs>
+          <path d="M0 430 Q150 360 300 400 Q450 435 610 370 Q690 340 760 380 L760 510 L0 510Z" fill="#c8c0da" opacity="0.38" />
+          <path d="M0 460 Q130 400 280 435 Q430 468 580 405 Q680 370 760 415 L760 530 L0 530Z" fill="#b0a8c8" opacity="0.32" />
+          <rect x="0" y="508" width="760" height="50" fill="url(#water)" opacity="0.55" />
+          <path d="M0 518 Q95 512 190 518 Q285 524 380 518 Q475 512 570 518 Q665 524 760 518" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" />
 
-            <h1 style={S.h1}>
-              Sign <em style={{ fontStyle: "italic", color: colors.lova }}>in</em> to<br />your island
-            </h1>
-            <p style={S.subP}>Welcome back. The lavender is in bloom.</p>
+          {/* Lavender rows — far */}
+          {[30,65,100,135,170,205,240,275,310,345,380,415,450,485,520,555,590,625,660,700,735].map((x) => (
+            <g key={x} opacity="0.65">
+              <line x1={x} y1="640" x2={x} y2="614" stroke="#9090b0" strokeWidth="1.1" />
+              <ellipse cx={x} cy="607" rx="5" ry="9" fill={x % 60 === 0 ? "#bbb3cc" : "#b2aac8"} />
+            </g>
+          ))}
+          {/* Lavender rows — mid */}
+          {[15,55,95,135,175,215,255,295,335,375,415,455,495,535,575,615,655,695,735].map((x) => (
+            <g key={x} opacity="0.82">
+              <line x1={x} y1="710" x2={x} y2="673" stroke="#888" strokeWidth="1.4" />
+              <ellipse cx={x} cy="666" rx="7" ry="14" fill={x % 80 === 0 ? "#b2aac8" : "#a8a0c4"} />
+            </g>
+          ))}
+          {/* Lavender rows — foreground */}
+          {[0,40,80,120,160,200,240,280,320,360,400,440,480,520,560,600,640,680,720,760].map((x) => (
+            <g key={x}>
+              <line x1={x} y1="900" x2={x} y2="820" stroke="#76708c" strokeWidth="2" />
+              <ellipse cx={x} cy="802" rx="10" ry="20" fill={x % 80 === 0 ? "#b4aed0" : x % 40 === 0 ? "#aaa4c8" : "#a09ac0"} />
+            </g>
+          ))}
+        </svg>
+      </div>
 
-            <form onSubmit={handleSubmit} noValidate>
-              {/* Email */}
-              <Field
-                label="Email Address"
-                id="email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onBlur={() => handleBlur("email", email)}
-                status={touched.email ? errors.email : undefined}
-                errorMsg="Please enter a valid email address."
-              >
-                <svg style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", width:18, opacity:0.4, pointerEvents:"none" }}
-                  viewBox="0 0 20 40" xmlns="http://www.w3.org/2000/svg">
-                  <line x1="10" y1="40" x2="10" y2="14" stroke="#0e081f" strokeWidth="1.5" />
-                  <ellipse cx="10" cy="9" rx="6" ry="11" fill={colors.lav} />
-                </svg>
-              </Field>
+      {/* ── RIGHT PANEL ── */}
+      <div className="login-right">
+        <div className="login-sprig-tr"><Sprig /></div>
+        <div className="login-sprig-bl"><Sprig /></div>
+        <div className="login-form-wrap">
 
-              {/* Password */}
-              <div style={{ marginBottom: 20 }}>
-                <div style={S.passHeader}>
-                  <span style={S.passLabel}>Password</span>
-                  <a href="#" style={S.forgotLink}>Forgot password?</a>
-                </div>
-                <div style={{ position: "relative" }}>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onBlur={() => handleBlur("password", password)}
-                    style={{
-                      width: "100%", background: touched.password && errors.password === "error" ? colors.white : colors.white,
-                      border: `1.5px solid ${touched.password && errors.password === "error" ? colors.lova : touched.password && errors.password === "ok" ? colors.lova : "rgba(191,182,206,0.55)"}`,
-                      borderRadius: 9, padding: "12px 14px",
-                      fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 300, color: colors.lova, outline: "none",
-                    }}
-                  />
-                </div>
-                {touched.password && errors.password === "error" && (
-                  <p style={{ fontSize: 11, color: colors.green, marginTop: 5, fontWeight: 300 }}>
-                    Password must be at least 8 characters.
-                  </p>
-                )}
+          <h1 className="login-h1">
+            Sign <em style={{ fontStyle: "italic", color: colors.lova }}>in</em> to<br />your island
+          </h1>
+          <p className="login-sub-p">Welcome back. The lavender is in bloom.</p>
+
+          <form onSubmit={handleSubmit} noValidate>
+            {/* Email */}
+            <Field
+              label="Email Address"
+              id="email"
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => handleBlur("email", email)}
+              status={touched.email ? errors.email : undefined}
+              errorMsg="Please enter a valid email address."
+            >
+              <svg style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", width:18, opacity:0.4, pointerEvents:"none" }}
+                viewBox="0 0 20 40" xmlns="http://www.w3.org/2000/svg">
+                <line x1="10" y1="40" x2="10" y2="14" stroke="#0e081f" strokeWidth="1.5" />
+                <ellipse cx="10" cy="9" rx="6" ry="11" fill={colors.lav} />
+              </svg>
+            </Field>
+
+            {/* Password */}
+            <div style={{ marginBottom: 20 }}>
+              <div className="login-pass-header">
+                <span className="login-pass-label">Password</span>
+                <a href="#" className="login-forgot-link">Forgot password?</a>
               </div>
-
-
-              {/* Remember me */}
-              <div style={S.rememberRow}>
-                <div
-                  onClick={() => setRemember(!remember)}
+              <div style={{ position: "relative" }}>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onBlur={() => handleBlur("password", password)}
                   style={{
-                    width: 16, height: 16, borderRadius: 4,
-                    border: `1.5px solid ${colors.lova}`,
-                    background: remember ? colors.lova : colors.white,
-                    cursor: "pointer", position: "relative", flexShrink: 0,
-                    transition: "background .2s",
+                    width: "100%", background: touched.password && errors.password === "error" ? colors.white : colors.white,
+                    border: `1.5px solid ${touched.password && errors.password === "error" ? colors.lova : touched.password && errors.password === "ok" ? colors.lova : "rgba(191,182,206,0.55)"}`,
+                    borderRadius: 9, padding: "12px 14px",
+                    fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 300, color: colors.lova, outline: "none",
                   }}
-                >
-                  {remember && (
-                    <span style={{
-                      position: "absolute", top: 3, left: 5,
-                      width: 4, height: 7,
-                      borderRight: "1.5px solid white", borderBottom: "1.5px solid white",
-                      transform: "rotate(45deg)", display: "block",
-                    }} />
-                  )}
-                </div>
-                <span style={S.rememberText} onClick={() => setRemember(!remember)}>Keep me signed in</span>
+                />
               </div>
-
-              {/* Submit */}
-              <button
-                type="submit"
-                style={S.btnCta}
-                onMouseEnter={(e) => { e.currentTarget.style.background = colors.green; e.currentTarget.style.transform = "translateY(-1px)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = colors.green; e.currentTarget.style.transform = "none"; }}
-              >
-                <svg viewBox="0 0 20 20" style={{ width: 0, opacity: 0.85 }} fill="none" xmlns="http://www.w3.org/2000/svg">
-                </svg>
-                Enter the Island
-              </button>
-            </form>
-
-            {/* Divider */}
-            <div style={S.divider}>
-              <div style={{ flex: 1, height: 1, background: "rgba(191,182,206,0.5)" }} />
-              <span style={S.dividerText}>or</span>
-              <div style={{ flex: 1, height: 1, background: "rgba(191,182,206,0.5)" }} />
+              {touched.password && errors.password === "error" && (
+                <p className="login-field-error-msg">
+                  Password must be at least 8 characters.
+                </p>
+              )}
             </div>
 
-            <p style={S.signupPrompt}>
-              New to Lovender?{" "}
-              <span
-                onClick={() => navigate("/signup")}
-                style={{ color: colors.navy, fontWeight: 500, cursor: "pointer", borderBottom: `1px solid ${colors.lav}`, paddingBottom: 1 }}
+            {/* Remember me */}
+            <div className="login-remember-row">
+              <div
+                className="login-checkbox"
+                onClick={() => setRemember(!remember)}
+                style={{ background: remember ? colors.lova : colors.white }}
               >
-                Create an account
-              </span>
-            </p>
+                {remember && <span className="login-checkbox-tick" />}
+              </div>
+              <span className="login-remember-text" onClick={() => setRemember(!remember)}>Keep me signed in</span>
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              className="login-btn-cta"
+              onMouseEnter={(e) => { e.currentTarget.style.background = colors.green; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = colors.green; e.currentTarget.style.transform = "none"; }}
+            >
+              <svg viewBox="0 0 20 20" style={{ width: 0, opacity: 0.85 }} fill="none" xmlns="http://www.w3.org/2000/svg" />
+              Enter the Island
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="login-divider">
+            <div className="login-divider-line" />
+            <span className="login-divider-text">or</span>
+            <div className="login-divider-line" />
           </div>
+
+          <p className="login-signup-prompt">
+            New to Lovender?{" "}
+            <span
+              onClick={() => navigate("/signup")}
+              style={{ color: colors.navy, fontWeight: 500, cursor: "pointer", borderBottom: `1px solid ${colors.lav}`, paddingBottom: 1 }}
+            >
+              Create an account
+            </span>
+          </p>
         </div>
       </div>
-    </>
+    </div>
   );
 }
-
-
