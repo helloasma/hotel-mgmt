@@ -294,51 +294,87 @@ html, body {
 
 
 
-/* SECTIONS */
-.featured,
-.categories {
-  padding: 60px;
+/* SLIDER SECTION */
+.home-slider-section {
+  background: #0e081f; /* same as section 1 */
+  padding: 70px clamp(20px, 8vw, 200px); /* same left/right feeling as section 1 */
+  color: white,
+}
+
+.home-slider-container {
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.home-slider-section .home-slider-container h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(32px, 3vw, 45px);
+  margin-bottom: 30px;
   text-align: center;
+  color: white;
 }
 
-/* CARDS */
-.cards {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  margin-top: 25px;
-  flex-wrap: wrap;
-}
-
-.card {
-  background: white;
-  width: 220px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid #ddd;
-  transition: 0.3s;
-}
-
-.card img {
+.home-slider {
+  position: relative;
   width: 100%;
-  height: 140px;
-  object-fit: cover;
+  overflow: hidden;
 }
 
-.card h3 {
-  margin: 10px;
+.slider-image {
+  width: 100%;
+  height: 500px; /* fixed height so all images look same size */
+  object-fit: cover; /* crops image nicely */
+  display: block;
 }
 
-.card p {
-  margin-bottom: 10px;
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: #0e081f;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.3s ease;
 }
 
-/* HOVER */
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+.slider-arrow:hover {
+  background: none;
 }
 
+.left-arrow {
+  left: 20px;
+}
+
+.right-arrow {
+  right: 20px;
+}
+
+
+@media (max-width: 768px) {
+  .home-slider-section {
+    padding: 0 clamp(20px, 8vw, 200px) 50px;
+  }
+
+  .slider-arrow {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .left-arrow {
+    left: 10px;
+  }
+
+  .right-arrow {
+    right: 10px;
+  }
+}
 
 
 /* RESPONSIVE */

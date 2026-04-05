@@ -143,7 +143,7 @@ export default function Login() {
   /* styles */
   const S = {
     page: {
-      display: "grid", gridTemplateColumns: "55% 45%", height: "100vh",
+      display: "grid", gridTemplateColumns: "55% 45%", minHeight: "100vh",
       fontFamily: "'DM Sans', sans-serif",
     },
     left: {
@@ -217,7 +217,6 @@ export default function Login() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { height: 100%; overflow: hidden; }
         @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
         input::placeholder { color: rgba(44,40,64,0.28); font-style: italic; }
       `}</style>

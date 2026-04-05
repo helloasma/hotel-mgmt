@@ -10,6 +10,8 @@ import Login from "../pages/Account/Login";
 import Signup from "../pages/Account/Signup";
 import Validation from "../pages/Account/Validation";
 import Booking from "../pages/Rooms/Booking";
+import Journey from "../pages/Journey/Journey";
+
 
 
 function AppRoutes() {
@@ -26,6 +28,7 @@ function AppRoutes() {
       <Route path="/Validation" element={<Validation />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
+      <Route path="/journey" element={<Journey />} />
     </Routes>
   );
 }

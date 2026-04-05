@@ -1,0 +1,187 @@
+/* ===== JOURNEY PAGE WRAPPER (IMPORTANT) ===== */
+.journey-page {
+  background: #0e081f;
+  color: white;
+  padding: 80px clamp(20px, 8vw, 200px) clamp(20px, 8vw, 200px);
+}
+
+/* ===== TITLE ===== */
+.journey-page .main-title {
+  text-align: center;
+  font-size: clamp(28px, 3vw, 40px);
+  letter-spacing: 6px;
+
+  margin: 0;
+  padding: 60px 0 20px;
+  color: white;
+}
+
+.journey-page .main-title::after {
+  content: "";
+  display: block;
+  width: 900px;          /* length of line */
+  height: 2px;          /* thickness */
+  background: #b7c6cc;  /* matches your theme */
+
+  margin: 15px auto 0;  /* center it under text */
+  border-radius: 2px;
+}
+
+/* ===== HERO SECTION ===== */
+.journey-page .hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 60px;
+  position: relative;
+}
+
+/* TEXT */
+.journey-page .hero-text {
+  max-width: 650px;
+}
+
+.journey-page .hero-text h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(32px, 3vw, 42px);
+  margin-bottom: 20px;
+}
+
+.journey-page .hero-text p {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  line-height: 1.7;
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+/* IMAGE */
+.journey-page .hero-image img {
+  width: clamp(260px, 30vw, 400px);
+  height: clamp(260px, 30vw, 400px);
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+
+
+/* ===== BOTTOM HERO VARIATION ===== */
+.journey-page .hero-bottom {
+  margin-top: 100px; /* space from previous section */
+
+  background: 0e081f
+}
+
+/* OPTIONAL: flip layout for variation */
+.journey-page .hero-bottom {
+  flex-direction: row-reverse;
+}
+
+/* Optional spacing tweak for long text */
+.journey-page .hero-bottom .hero-text p {
+  margin-bottom: 14px;
+}
+
+
+
+/* BUTTON */
+.journey-page .btn {
+  padding: 12px 28px;
+  background: #b7c6cc;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+
+
+/* ===== SECOND SECTION ===== */
+.journey-page .info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:#0e081f;
+
+  gap: 80px;
+}
+
+/* IMAGE */
+.journey-page .info-image {
+  position: relative;
+}
+
+.journey-page .info-image img {
+  width: clamp(260px, 28vw, 340px);
+  height: clamp(260px, 28vw, 340px);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* CARD */
+.journey-page .info-text {
+  background: #0e081f;
+  color: white;
+
+  padding: 0px;
+  max-width: 650px;
+
+}
+
+.journey-page .info-text h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.journey-page .info-text p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* OUTLINE BUTTON */
+.journey-page .btn.outline {
+  background: transparent;
+  border: 1px solid #333;
+}
+
+/* ===== DECORATIVE CIRCLES ===== */
+.journey-page .circle {
+  position: absolute;
+  border-radius: 50%;
+  background: #b7c6cc;
+  opacity: 0.5;
+}
+
+.journey-page .small {
+  width: 90px;
+  height: 90px;
+}
+
+.journey-page .top-left {
+  top: 40px;
+  left: clamp(20px, 8vw, 200px);
+}
+
+.journey-page .bottom-right {
+  bottom: 40px;
+  right: clamp(20px, 8vw, 200px);
+}
+
+.journey-page .inner-circle {
+  position: absolute;
+  bottom: -25px;
+  right: -25px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .journey-page .hero,
+  .journey-page .info {
+    flex-direction: column;
+    text-align: center;
+  }
+}

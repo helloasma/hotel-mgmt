@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const colors = {
+  lova: "#0e081f",
+  white: "white",
+  black: "black",
+  green: "#406D61",
+
   navy:      "#12284B",
   lav:       "#BFB6CE",
   lavLight:  "#D4CEDF",
@@ -106,8 +111,8 @@ export default function Validation() {
 
   const S = {
     scene: {
-      width: "100vw", height: "100vh", position: "relative", overflow: "hidden",
-      background: "linear-gradient(170deg,#ddd7ec 0%,#c5bdda 25%,#aec4bb 55%,#7ea99a 100%)",
+      width: "100vw", minHeight: "100vh", position: "relative", overflow: "hidden",
+      background: "#0e081f",
       fontFamily: "'DM Sans', sans-serif",
     },
     logoTop: {
@@ -189,7 +194,6 @@ export default function Validation() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
         * { box-sizing:border-box; margin:0; padding:0; }
-        html,body { height:100%; overflow:hidden; }
         @keyframes floatPollen {
           0%,100% { transform:translateY(0) rotate(0deg); opacity:.6; }
           50%      { transform:translateY(-28px) rotate(180deg); opacity:.95; }
@@ -206,60 +210,33 @@ export default function Validation() {
           from { opacity:0; transform:translateX(-50%) translateY(-14px); }
           to   { opacity:1; transform:translateX(-50%) translateY(0); }
         }
-      `}</style>
+      `}
+      
+      
+      </style>
 
       <div style={S.scene}>
-
-        {/* Logo */}
-        <div style={S.logoTop}>
-          <HeartIcon size={24} />
-          <span style={S.logoText}>LOVENDER</span>
-        </div>
 
         {/* Floating pollen */}
         {pollens.map((p, i) => <Pollen key={i} {...p} />)}
 
-        {/* Heart Island */}
-        <div style={S.islandWrap}>
-          <svg width="340" height="220" viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="170" cy="195" rx="130" ry="22" fill="rgba(18,40,75,0.14)" />
-            <path d="M170 185C170 185 55 140 55 88c0-30 22-52 52-52 15 0 27 7 34 17 7-10 19-17 34-17 30 0 52 22 52 52 0 52-57 97-57 97z" fill="#7ea99a" />
-            <path d="M170 168C170 168 82 130 82 90c0-20 14-34 33-34 11 0 20 5 26 14 6-9 15-14 26-14 19 0 33 14 33 34 0 40-26 78-26 78z" fill="#a8a0c4" opacity="0.55" />
-            <path d="M170 168C170 168 90 135 90 95c0-18 12-30 29-30 10 0 18 4 22 11 4-7 12-11 22-11 17 0 29 12 29 30 0 40-24 73-24 73z" fill="#6b9a8b" opacity="0.6" />
-            {/* Lavender sprigs on island */}
-            {[138,155,170,185,202].map((x,i) => (
-              <g key={i}>
-                <line x1={x} y1={118-i*2} x2={x} y2={100-i*2} stroke="#7070a0" strokeWidth="1.5" />
-                <ellipse cx={x} cy={94-i*2} rx="7" ry="12" fill={i%2===0 ? "#b8b0d0" : "#c2bada"} />
-              </g>
-            ))}
-            <ellipse cx="112" cy="124" rx="12" ry="9" fill="#406D61" opacity="0.75" />
-            <ellipse cx="228" cy="122" rx="12" ry="9" fill="#406D61" opacity="0.75" />
-            <ellipse cx="170" cy="140" rx="10" ry="8" fill="#406D61" opacity="0.65" />
-            <rect x="158" y="108" width="24" height="16" fill={colors.cream} rx="2" opacity="0.9" />
-            <rect x="162" y="112" width="6" height="12" fill={colors.lavLight} rx="1" />
-            <rect x="172" y="112" width="6" height="12" fill={colors.lavLight} rx="1" />
-            <path d="M155 108L170 100L185 108Z" fill={colors.navy} opacity="0.7" />
-            <rect x="163" y="175" width="14" height="16" fill="rgba(18,40,75,0.25)" rx="2" />
-          </svg>
-        </div>
 
         {/* Lavender field */}
         <svg style={S.fieldSvg} viewBox="0 0 1440 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <path d="M0 200 Q360 160 720 185 Q1080 210 1440 175 L1440 500 L0 500Z" fill="#6b9a8b" opacity="0.85" />
-          <path d="M0 220 Q360 185 720 205 Q1080 225 1440 198 L1440 500 L0 500Z" fill="#5d8c7c" />
+          <path d="M0 200 Q360 160 720 185 Q1080 210 1440 175 L1440 500 L0 500Z" fill={colors.muted} opacity="0.85" />
+          <path d="M0 220 Q360 185 720 205 Q1080 225 1440 198 L1440 500 L0 500Z" fill={colors.muted} />
           {/* Far row */}
           {Array.from({ length: 29 }, (_, i) => i * 50 + 30).map((x) => (
             <g key={x} opacity="0.6">
-              <line x1={x} y1="310" x2={x} y2="285" stroke="#8080a8" strokeWidth="1.1" />
-              <ellipse cx={x} cy="278" rx="5" ry="10" fill={x % 100 === 30 ? "#b8b0d0" : "#b0a8c8"} />
+              <line x1={x} y1="310" x2={x} y2="285" stroke={colors.lova} strokeWidth="1.1" />
+              <ellipse cx={x} cy="278" rx="5" ry="10" fill={x % 100 === 30 ? "#0e081f" : "#0e081f"} />
             </g>
           ))}
           {/* Foreground row */}
           {Array.from({ length: 27 }, (_, i) => i * 55).map((x) => (
             <g key={x}>
-              <line x1={x} y1="500" x2={x} y2="410" stroke="#68648c" strokeWidth="2" />
-              <ellipse cx={x} cy="398" rx="10" ry="20" fill={x % 110 === 0 ? "#b4aed0" : x % 55 === 0 ? "#aaa4c8" : "#a09ac0"} />
+              <line x1={x} y1="500" x2={x} y2="410" stroke={colors.lova} strokeWidth="2" />
+              <ellipse cx={x} cy="398" rx="10" ry="20" fill={x % 110 === 0 ? "#0e081f" : x % 55 === 0 ? "#0e081f" : "#0e081f"} />
             </g>
           ))}
         </svg>
@@ -317,11 +294,19 @@ export default function Validation() {
           <div style={S.btnRow}>
             <button
               style={S.btnP}
-              onMouseEnter={(e) => { e.currentTarget.style.background = colors.sageDark; e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.background = colors.sage; e.currentTarget.style.transform = "none"; }}
+              onClick={() => navigate("/rooms")}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = colors.sageDark;
+                e.currentTarget.style.transform = "translateY(-1px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = colors.sage;
+                e.currentTarget.style.transform = "none";
+              }}
             >
               Explore the Island
             </button>
+
             <button
               style={S.btnO}
               onClick={() => navigate("/login")}
@@ -331,6 +316,7 @@ export default function Validation() {
               Sign Out
             </button>
           </div>
+
         </div>
       </div>
     </>
