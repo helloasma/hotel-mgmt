@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const colors = {
+  lova: "#0e081f",
+  white: "white",
+  black: "black",
+  green: "#406D61",
+
   navy:       "#12284B",
   lav:        "#BFB6CE",
   lavLight:   "#D4CEDF",
@@ -128,7 +133,7 @@ export default function Signup() {
   const S = {
     page:  { display:"grid", gridTemplateColumns:"45% 55%", minHeight:"100vh", fontFamily:"'DM Sans',sans-serif" },
     left:  {
-      background: colors.lavPale, position:"relative", overflow:"hidden",
+      background: colors.lova, position:"relative", overflow:"hidden",
       display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"44px 44px 48px",
     },
     leftOverlay: {
@@ -136,37 +141,23 @@ export default function Signup() {
       background:"radial-gradient(ellipse 80% 70% at 30% 40%, rgba(191,182,206,0.4) 0%, transparent 65%)",
       pointerEvents:"none",
     },
-    logo:  { display:"flex", alignItems:"center", gap:10, marginBottom:40, position:"relative", zIndex:2 },
-    logoText: { fontFamily:"'Playfair Display',serif", fontSize:19, fontWeight:400, letterSpacing:"0.15em", color:colors.navy },
-    heading: { fontFamily:"'Playfair Display',serif", fontWeight:400, fontSize:"clamp(26px,3vw,38px)", lineHeight:1.2, color:colors.navy, marginBottom:14 },
-    sub:   { fontSize:13, fontWeight:300, color:colors.muted, lineHeight:1.75, maxWidth:280, marginBottom:36 },
-    perk:  { display:"flex", alignItems:"flex-start", gap:12, marginBottom:18 },
-    perkDot: {
-      width:34, height:34, borderRadius:"50%", background:"white",
-      border:`1.5px solid ${colors.lavLight}`, display:"flex", alignItems:"center",
-      justifyContent:"center", fontSize:14, flexShrink:0, color:colors.muted,
-    },
-    perkStrong: { display:"block", fontSize:13, fontWeight:500, color:colors.navy, marginBottom:2 },
-    perkP: { fontSize:11.5, fontWeight:300, color:colors.muted, lineHeight:1.55 },
+    heading: { marginTop: 60, fontFamily:"'Playfair Display',serif", fontWeight:400, fontSize:"clamp(26px,3vw,38px)", lineHeight:1.2, color:colors.white, marginBottom:14 },
+    sub:   { fontSize:13, fontWeight:300, color:colors.white, lineHeight:1.75, maxWidth:280, marginBottom:36 },
+    
     right: {
-      background:colors.cream, padding:"50px 60px 50px 54px",
+      background:colors.white, padding:"50px 60px 50px 54px",
       position:"relative", overflow:"hidden", borderLeft:`1px solid rgba(191,182,206,0.4)`,
     },
     back:  {
       display:"inline-flex", alignItems:"center", gap:7, textDecoration:"none",
       fontSize:10, fontWeight:500, letterSpacing:"0.18em", textTransform:"uppercase",
-      color:colors.muted, marginBottom:28, cursor:"pointer", background:"none", border:"none",
+      color:colors.lova, marginBottom:28, cursor:"pointer", background:"none", border:"none",
     },
-    badge: {
-      display:"inline-flex", alignItems:"center", gap:8, background:colors.lavSofter,
-      border:`1px solid ${colors.lavLight}`, borderRadius:20, padding:"5px 14px 5px 8px", marginBottom:14,
-    },
-    badgeText: { fontSize:9, fontWeight:500, letterSpacing:"0.2em", textTransform:"uppercase", color:colors.muted },
-    title: { fontFamily:"'Playfair Display',serif", fontWeight:400, fontSize:32, lineHeight:1.15, color:colors.navy, marginBottom:6 },
-    formSub: { fontSize:12.5, fontWeight:300, color:colors.muted, lineHeight:1.6, marginBottom:26 },
+    title: { fontFamily:"'Playfair Display',serif", fontWeight:400, fontSize:32, lineHeight:1.15, color:colors.lova, marginBottom:6 },
+    formSub: { fontSize:12.5, fontWeight:300, color:colors.lova, lineHeight:1.6, marginBottom:26 },
     secLabel: {
       display:"flex", alignItems:"center", gap:10, fontSize:9, fontWeight:500,
-      letterSpacing:"0.28em", textTransform:"uppercase", color:colors.navy, opacity:0.4, margin:"20px 0 16px",
+      letterSpacing:"0.28em", textTransform:"uppercase", color:colors.lova, opacity:0.4, margin:"20px 0 16px",
     },
     row2:  { display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:18 },
     fieldWrap: { marginBottom:18 },
@@ -177,26 +168,20 @@ export default function Signup() {
     }),
     terms: { display:"flex", alignItems:"flex-start", gap:10, margin:"16px 0 22px" },
     chk: (on) => ({
-      width:16, height:16, borderRadius:4, border:`1.5px solid ${colors.lav}`,
-      background: on ? colors.lav : colors.lavSofter, cursor:"pointer",
+      width:16, height:16, borderRadius:4, border:`1.5px solid ${colors.lova}`,
+      background: on ? colors.white : colors.lova, cursor:"pointer",
       position:"relative", flexShrink:0, marginTop:2, transition:"background .2s",
     }),
-    termsP: { fontSize:12, fontWeight:300, color:colors.muted, lineHeight:1.65, cursor:"pointer", userSelect:"none" },
-    termsA: { color:colors.sage, textDecoration:"none" },
+    termsP: { fontSize:12, fontWeight:300, color:colors.lova, lineHeight:1.65, cursor:"pointer", userSelect:"none" },
+    termsA: { color:colors.lova, textDecoration:"none" },
     btnCta: {
-      width:"100%", padding:13, borderRadius:9, background:colors.sage, color:"#fff", border:"none", cursor:"pointer",
+      width:"100%", padding:13, borderRadius:9, background:colors.green, color:"#fff", border:"none", cursor:"pointer",
       fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:500, letterSpacing:"0.06em",
       display:"flex", alignItems:"center", justifyContent:"center", gap:9,
       boxShadow:"0 4px 14px rgba(64,109,97,0.28)", transition:"background .3s,transform .2s",
     },
     loginPrompt: { textAlign:"center", fontSize:12, fontWeight:300, color:colors.muted, marginTop:16 },
   };
-
-  const perks = [
-    { icon: "✦", title: "Priority Bookings", desc: "Reserve suites before they open to the public." },
-    { icon: "❋", title: "Lavender Welcome Kit", desc: "Fresh sprigs, island salt, and a hand-poured candle in every room." },
-    { icon: "◈", title: "Sunrise Field Walks", desc: "Exclusive guided walks through the lavender fields at dawn." },
-  ];
 
   return (
     <>
@@ -211,7 +196,6 @@ export default function Signup() {
 
         {/* ── LEFT ── */}
         <div style={S.left}>
-          <div style={S.leftOverlay} />
 
           {/* Big botanical sprig art */}
           <svg style={{ position:"absolute", bottom:0, right:-20, zIndex:1, width:220, opacity:0.35, pointerEvents:"none" }}
@@ -237,24 +221,11 @@ export default function Signup() {
           </svg>
 
           <div style={{ position:"relative", zIndex:2 }}>
-            <div style={S.logo}>
-              <HeartIcon size={26} />
-              <span style={S.logoText}>LOVENDER</span>
-            </div>
             <h2 style={S.heading}>
-              Your <em style={{ fontStyle:"italic", color:colors.sage }}>island</em><br />
+              Your <em style={{ fontStyle:"italic", color:colors.white }}>island</em><br />
               adventure<br />starts here
             </h2>
             <p style={S.sub}>Join the Lovender family and unlock early access to lavender-season stays, curated arrivals, and member-only experiences.</p>
-            {perks.map((p) => (
-              <div key={p.title} style={S.perk}>
-                <div style={S.perkDot}>{p.icon}</div>
-                <div>
-                  <strong style={S.perkStrong}>{p.title}</strong>
-                  <p style={S.perkP}>{p.desc}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
 
@@ -276,13 +247,8 @@ export default function Signup() {
               ← Back to Login
             </button>
 
-            <div style={S.badge}>
-              <HeartIcon size={14} fill={colors.lav} opacity={1} />
-              <span style={S.badgeText}>New Member</span>
-            </div>
-
             <h2 style={S.title}>
-              Join <em style={{ fontStyle:"italic", color:colors.muted }}>Lovender</em>
+              Join <em style={{ fontStyle:"italic", color:colors.lova }}>Lovender</em>
             </h2>
             <p style={S.formSub}>Create your account and step onto the island.</p>
 
@@ -319,21 +285,21 @@ export default function Signup() {
 
               <div style={S.secLabel}>
                 Account Security
-                <div style={{ flex:1, height:1, background:"rgba(191,182,206,0.5)" }} />
+                <div style={{ flex:1, height:1, background:"#0e081f" , opacity:1 }} />
               </div>
 
               <div style={S.fieldWrap}>
-                <label style={{ display:"block", fontSize:9.5, fontWeight:500, letterSpacing:"0.2em", textTransform:"uppercase", color:colors.text, opacity:0.55, marginBottom:6 }}>
+                <label style={{ display:"block", fontSize:9.5, fontWeight:500, letterSpacing:"0.2em", textTransform:"uppercase", color:colors.lova, opacity:1, marginBottom:6 }}>
                   Password
                 </label>
                 <input
                   type="password" placeholder="Min. 8 characters" value={form.password}
                   onChange={update("password")} onBlur={touch("password")}
                   style={{
-                    width:"100%", background: st("password") === "error" ? colors.errorBg : colors.lavSofter,
-                    border:`1.5px solid ${st("password")==="error" ? colors.errorBorder : st("password")==="ok" ? colors.sageLight : "rgba(191,182,206,0.55)"}`,
+                    width:"100%", background: st("password") === "error" ? colors.green : colors.lavSofter,
+                    border:`1.5px solid ${st("password")==="error" ? colors.green : st("password")==="ok" ? colors.sageLight : "rgba(191,182,206,0.55)"}`,
                     borderRadius:9, padding:"11px 14px", fontFamily:"'DM Sans',sans-serif",
-                    fontSize:14, fontWeight:300, color:colors.navy, outline:"none",
+                    fontSize:14, fontWeight:300, color:colors.lova, outline:"none", 
                   }}
                 />
                 {/* Strength bar */}
@@ -344,13 +310,13 @@ export default function Signup() {
                         <div key={n} style={S.seg(n <= strength.score, strength.color)} />
                       ))}
                     </div>
-                    <p style={{ fontSize:10, color:colors.muted, marginTop:4, letterSpacing:"0.08em" }}>
+                    <p style={{ fontSize:10, color:colors.lova, marginTop:4, letterSpacing:"0.08em" }}>
                       {strength.label}
                     </p>
                   </>
                 )}
                 {st("password") === "error" && (
-                  <p style={{ fontSize:10.5, color:colors.error, marginTop:4, fontWeight:300 }}>Must be at least 8 characters.</p>
+                  <p style={{ fontSize:10.5, color:colors.green, marginTop:4, fontWeight:300 }}>Must be at least 8 characters.</p>
                 )}
               </div>
 
@@ -379,10 +345,9 @@ export default function Signup() {
 
               <button
                 type="submit" style={S.btnCta}
-                onMouseEnter={(e) => { e.currentTarget.style.background = colors.sageDark; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = colors.sage; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = colors.white; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = colors.white; }}
               >
-                <HeartIcon size={15} fill="white" opacity={0.85} />
                 Create My Account
               </button>
             </form>
@@ -391,7 +356,7 @@ export default function Signup() {
               Already a member?{" "}
               <span
                 onClick={() => navigate("/login")}
-                style={{ color:colors.navy, fontWeight:500, cursor:"pointer", borderBottom:`1px solid ${colors.lav}`, paddingBottom:1 }}
+                style={{ color:colors.navy, fontWeight:500, cursor:"pointer", borderBottom:`1px solid ${colors.lova}`, paddingBottom:1 }}
               >
                 Sign in here
               </span>
