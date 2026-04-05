@@ -1,0 +1,139 @@
+.footer {
+  background: #0e081f; /* deep teal */
+  color: white;
+  padding: 60px 8vw 20px;
+  font-family: "Cormorant Garamond", serif;
+}
+
+/* TOP SECTION */
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+}
+
+/* LEFT */
+.footer-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+/* CIRCLE IMAGES */
+.footer-gallery img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+
+  border-radius: 50%; /* 🔥 makes it circular */
+
+  border: 1.5px solid white;
+
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+
+/* CENTER STACK */
+.footer-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+/* MAIN LOGO */
+.footer-logo {
+  height: 80px;
+  opacity: 0.9;
+}
+
+/* SMALL IMAGE UNDER */
+.footer-center-img {
+  width: 60px;
+  height: 60px;
+
+  object-fit: cover;
+
+  opacity: 0.9;
+  transition: transform 0.3s ease;
+}
+
+.footer-center-img:hover {
+  transform: scale(1.08);
+}
+
+
+
+/* OPTIONAL HOVER EFFECT */
+.footer-gallery img:hover {
+  transform: scale(1.08);
+  opacity: 0.9;
+}
+
+/* CENTER LOGO */
+.footer-center {
+  text-align: center;
+}
+
+.footer-center img {
+  height: 80px;
+  opacity: 0.9;
+}
+
+/* RIGHT */
+.footer-right {
+  text-align: right;
+}
+
+.footer-right h2 {
+  font-size: 28px;
+  letter-spacing: 2px;
+  line-height: 1.4;
+}
+
+/* DIVIDER LINE */
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+
+  position: relative;
+
+  /* 🔥 ADD THIS */
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding-top: 40px;
+}
+
+/* BOTTOM */
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* LINKS */
+.footer-links {
+  display: flex;
+  gap: 25px;
+}
+
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+/* CREDIT */
+.footer-credit {
+  font-size: 12px;
+  opacity: 0.7;
+}

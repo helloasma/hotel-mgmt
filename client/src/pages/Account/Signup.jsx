@@ -296,8 +296,8 @@ export default function Signup() {
                   type="password" placeholder="Min. 8 characters" value={form.password}
                   onChange={update("password")} onBlur={touch("password")}
                   style={{
-                    width:"100%", background: st("password") === "error" ? colors.green : colors.lavSofter,
-                    border:`1.5px solid ${st("password")==="error" ? colors.green : st("password")==="ok" ? colors.sageLight : "rgba(191,182,206,0.55)"}`,
+                    width:"100%", background: st("password") === "error" ? colors.lavSofter : colors.lavSofter,
+                    border:`1.5px solid ${st("password")==="error" ? colors.errorBorder : st("password")==="ok" ? colors.sageLight : "rgba(191,182,206,0.55)"}`,
                     borderRadius:9, padding:"11px 14px", fontFamily:"'DM Sans',sans-serif",
                     fontSize:14, fontWeight:300, color:colors.lova, outline:"none", 
                   }}
@@ -316,7 +316,7 @@ export default function Signup() {
                   </>
                 )}
                 {st("password") === "error" && (
-                  <p style={{ fontSize:10.5, color:colors.green, marginTop:4, fontWeight:300 }}>Must be at least 8 characters.</p>
+                  <p style={{ fontSize:10.5, color:colors.lavSofter, marginTop:4, fontWeight:300 }}>Must be at least 8 characters.</p>
                 )}
               </div>
 
@@ -345,8 +345,8 @@ export default function Signup() {
 
               <button
                 type="submit" style={S.btnCta}
-                onMouseEnter={(e) => { e.currentTarget.style.background = colors.white; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = colors.white; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = colors.green; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = colors.green; }}
               >
                 Create My Account
               </button>
