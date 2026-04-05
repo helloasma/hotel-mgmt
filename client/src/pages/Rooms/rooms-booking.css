@@ -9,289 +9,35 @@
   min-height: 100vh;
 }
 
-.rb-page-banner {
-  padding: 74px 0 26px;
-}
-
-.rb-eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.8rem;
-  font-weight: 700;
-  margin: 0 0 12px;
-  opacity: 0.9;
-  color: rgba(255,255,255,0.5);
-}
-
-.rb-page-banner h1,
-.rb-room-hero-overlay h1,
-.rb-empty-state h1 {
+.rb-reservation-title {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.6rem, 5vw, 5rem);
-  line-height: 1.02;
-  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
   color: #ffffff;
+  margin: 0 0 32px;
+  text-align: center;
 }
 
-.rb-room-hero-overlay h1 {
-  color: white;
-}
-
-.rb-max-copy {
-  max-width: 720px;
-}
-
-.rb-muted-copy,
-.rb-details-copy p,
-.rb-choice-card p {
-  line-height: 1.7;
-  font-size: 1.04rem;
-  color: rgba(255,255,255,0.65);
-}
-
-.rb-hero-copy {
-  max-width: 720px;
-  margin-top: 18px;
-  color: white;
-  line-height: 1.7;
-  font-size: 1.04rem;
-}
-
-.rb-room-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-}
-
-.rb-details-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 38px;
-  align-items: stretch;
-}
-
-.rb-room-card {
-  display: block;
-  overflow: hidden;
-  border-radius: 22px;
+/* ── Booking Panel ── */
+.rb-booking-panel {
   background: #160d35;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
   border: 1px solid rgba(255,255,255,0.1);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  text-decoration: none;
-  color: inherit;
-}
-
-.rb-room-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 24px 50px rgba(8, 20, 61, 0.12);
-}
-
-.rb-room-card-image-wrap {
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-}
-
-.rb-room-card-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.rb-room-card:hover .rb-room-card-image {
-  transform: scale(1.03);
-}
-
-.rb-room-card-body {
-  padding: 20px;
+  border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.3);
+  padding: 28px;
   text-align: left;
 }
 
-.rb-room-card-body h3,
-.rb-details-copy h2,
-.rb-booking-panel h3,
-.rb-choice-card h3 {
+.rb-booking-panel h3 {
   font-family: Georgia, "Times New Roman", serif;
   margin: 0 0 10px;
   color: #ffffff;
 }
 
-.rb-room-card-text {
-  margin: 0;
-  color: rgba(255,255,255,0.6);
-  min-height: 50px;
-  line-height: 1.6;
-}
-
-.rb-room-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 16px;
-  margin-top: 18px;
-}
-
-.rb-room-price {
-  margin: 0;
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 1.2rem;
-}
-
-.rb-room-price span {
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
-  font-size: 0.85rem;
-}
-
-.rb-view-details {
-  color: rgba(255,255,255,0.85);
-  font-weight: 700;
-}
-
-.rb-room-hero {
-  position: relative;
-  min-height: 60vh;
-}
-
-.rb-room-hero-image {
-  width: 100%;
-  min-height: 60vh;
-  object-fit: cover;
-}
-
-.rb-room-hero-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: end;
-  background: linear-gradient(180deg, rgba(20, 15, 24, 0.1), rgba(20, 15, 24, 0.7));
-  color: white;
-  padding-bottom: 40px;
-}
-
-.rb-details-copy,
-.rb-booking-panel,
-.rb-choice-card,
-.rb-summary-box,
-.rb-empty-state {
-  background: #160d35;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 22px;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.3);
-}
-
-.rb-details-copy,
-.rb-booking-panel,
-.rb-empty-state {
-  padding: 28px;
-  text-align: left;
-}
-
-.rb-meta-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin: 24px 0 28px;
-}
-
-.rb-meta-box {
-  background: rgba(255,255,255,0.06);
-  border-radius: 18px;
-  padding: 16px;
-}
-
-.rb-meta-box span {
-  display: block;
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9rem;
-  margin-bottom: 6px;
-}
-
-.rb-meta-box strong {
-  font-size: 1rem;
-  color: #ffffff;
-}
-
-.rb-amenities-list {
-  list-style: none;
-  padding: 0;
-  margin: 16px 0 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.rb-amenities-list li {
-  background: rgba(255,255,255,0.06);
-  padding: 12px 14px;
-  border-radius: 14px;
-  color: #ffffff;
-}
-
+/* ── Booking Form ── */
 .rb-booking-form {
   display: flex;
   flex-direction: column;
   gap: 18px;
-}
-
-.rb-selected-room-box,
-.rb-choice-card,
-.rb-guest-row,
-.rb-summary-box > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.rb-selected-room-box,
-.rb-choice-card {
-  padding: 14px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 18px;
-}
-
-.rb-selected-room-box img,
-.rb-choice-card img {
-  width: 92px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: 14px;
-}
-
-.rb-selected-room-title {
-  margin: 0 0 4px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.rb-selected-room-price,
-.rb-choice-card strong {
-  margin: 0;
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.rb-form-grid {
-  display: grid;
-  gap: 14px;
-}
-
-.rb-two-col {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.rb-form-section {
-  display: grid;
-  gap: 12px;
-}
-
-.rb-section-label {
-  margin: 0;
-  font-weight: 700;
-  color: #ffffff;
 }
 
 .rb-booking-form label {
@@ -318,11 +64,26 @@
 
 .rb-booking-form input:focus,
 .rb-booking-form textarea:focus {
-  outline: 2px solid rgba(140, 90, 166, 0.2);
+  outline: 2px solid rgba(140,90,166,0.2);
   border-color: rgba(255,255,255,0.5);
 }
 
+.rb-form-grid { display: grid; gap: 14px; }
+.rb-two-col   { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rb-form-section { display: grid; gap: 12px; }
+
+.rb-section-label {
+  margin: 0;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* ── Guest Counter ── */
 .rb-guest-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: 16px;
   padding: 13px 14px;
@@ -344,24 +105,41 @@
   color: #ffffff;
 }
 
-.rb-guest-controls button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.rb-guest-controls button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Fee Breakdown ── */
+.rb-fee-breakdown {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: grid;
+  gap: 10px;
 }
 
-.rb-summary-box {
-  padding: 16px;
+.rb-fee-rows { display: grid; gap: 10px; }
+
+.rb-fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.65);
 }
 
-.rb-summary-box strong {
-  font-size: 1.1rem;
-  color: #ffffff;
+.rb-fee-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 2px 0; }
+
+.rb-fee-total { font-size: 1.05rem; font-weight: 800; color: #ffffff; }
+.rb-fee-total span:last-child { color: #ffffff; font-size: 1.15rem; }
+
+.rb-fee-hint {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  text-align: center;
 }
 
-.rb-summary-box small {
-  color: rgba(255,255,255,0.55);
-}
-
+/* ── Buttons ── */
 .rb-primary-button {
   display: inline-flex;
   align-items: center;
@@ -378,14 +156,8 @@
   text-decoration: none;
 }
 
-.rb-primary-button:hover {
-  background: rgba(255,255,255,0.9);
-  transform: translateY(-1px);
-}
-
-.rb-full-width {
-  width: 100%;
-}
+.rb-primary-button:hover { background: rgba(255,255,255,0.9); transform: translateY(-1px); }
+.rb-full-width { width: 100%; }
 
 .rb-success-box {
   background: #eef8f1;
@@ -396,312 +168,21 @@
   text-align: left;
 }
 
-.rb-room-choices {
-  display: grid;
-  gap: 14px;
-  align-content: space-between;
-}
-
-.rb-choice-card {
-  cursor: pointer;
-  justify-content: flex-start;
-  align-items: stretch;
-  transition: border 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-}
-
-.rb-choice-card:hover {
-  box-shadow: 0 24px 50px rgba(8, 20, 61, 0.12);
-}
-
-.rb-card-selected {
-  border: 2px solid rgba(255,255,255,0.6) !important;
-  background: rgba(255,255,255,0.12) !important;
-}
-
-.rb-choice-card > div {
-  display: grid;
-  gap: 6px;
-  text-align: left;
-}
-
-.rb-reservation-title {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
-  color: #ffffff;
-  margin: 0 0 32px;
-  text-align: center;
-}
-
-.rb-fee-breakdown {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 18px;
-  padding: 18px 20px;
-  display: grid;
-  gap: 10px;
-}
-
-.rb-fee-rows {
-  display: grid;
-  gap: 10px;
-}
-
-.rb-fee-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.95rem;
-  color: rgba(255,255,255,0.65);
-}
-
-.rb-fee-row small {
-  color: rgba(255,255,255,0.45);
-  font-size: 0.8rem;
-}
-
-.rb-fee-subtotal {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.rb-fee-divider {
-  height: 1px;
-  background: rgba(255,255,255,0.12);
-  margin: 2px 0;
-}
-
-.rb-fee-total {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: #ffffff;
-}
-
-.rb-fee-total span:last-child {
-  color: #ffffff;
-  font-size: 1.15rem;
-}
-
-.rb-fee-hint {
-  margin: 0;
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.45);
-  text-align: center;
-}
-
-.rb-empty-state {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-@media (max-width: 980px) {
-  .rb-room-grid,
-  .rb-details-grid,
-  .rb-meta-row {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 760px) {
-  .rb-room-grid,
-  .rb-amenities-list,
-  .rb-two-col {
-    grid-template-columns: 1fr;
-  }
-
-  .rb-room-card-footer,
-  .rb-selected-room-box,
-  .rb-choice-card,
-  .rb-summary-box > div {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-/* CENTERED BOOKING FORM */
-.rb-centered-form {
-  display: flex;
-  justify-content: center;
-}
+/* ── Centered Form (white panel overrides) ── */
+.rb-centered-form { display: flex; justify-content: center; }
 
 .rb-centered-form .rb-booking-panel {
   width: 100%;
   max-width: 100%;
-}
-
-/* INCREASED FONT SIZES FOR BOOKING FORM */
-.rb-centered-form .rb-booking-form label span {
-  font-size: 1.05rem;
-}
-
-.rb-centered-form .rb-booking-form input,
-.rb-centered-form .rb-booking-form textarea {
-  font-size: 1rem;
-  padding: 16px 18px;
-}
-
-.rb-centered-form .rb-section-label {
-  font-size: 1.1rem;
-}
-
-.rb-centered-form .rb-guest-row {
-  font-size: 1rem;
-  padding: 15px 18px;
-}
-
-.rb-centered-form .rb-guest-controls {
-  font-size: 1.05rem;
-}
-
-.rb-centered-form .rb-selected-room-title {
-  font-size: 1.1rem;
-}
-
-.rb-centered-form .rb-selected-room-price {
-  font-size: 1rem;
-}
-
-.rb-centered-form .rb-fee-row {
-  font-size: 1.05rem;
-}
-
-.rb-centered-form .rb-fee-total {
-  font-size: 1.15rem;
-}
-
-.rb-centered-form .rb-fee-total span:last-child {
-  font-size: 1.25rem;
-}
-
-.rb-centered-form .rb-fee-hint {
-  font-size: 0.95rem;
-}
-
-.rb-centered-form .rb-primary-button {
-  font-size: 1.05rem;
-  padding: 16px 28px;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
 }
 
 .rb-centered-form .rb-booking-panel h3 {
   font-size: 1.4rem;
-}
-
-/* ROOM BROWSING SECTION */
-.rb-browse-section {
-  margin-top: 64px;
-}
-
-.rb-browse-title {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-  color: #ffffff;
-  margin: 0 0 24px;
-}
-
-.rb-browse-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-.rb-browse-card {
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-  cursor: pointer;
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-  background: #160d35;
-}
-
-.rb-browse-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(8, 20, 61, 0.13);
-}
-
-.rb-browse-image-wrap {
-  width: 100%;
-  aspect-ratio: 16 / 7;
-  overflow: hidden;
-  position: relative;
-}
-
-.rb-browse-image-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-  display: block;
-}
-
-.rb-browse-card:hover .rb-browse-image-wrap img {
-  transform: scale(1.04);
-}
-
-.rb-browse-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 28px 18px 14px;
-  background: linear-gradient(to top, rgba(8, 20, 61, 0.72) 0%, transparent 100%);
-}
-
-.rb-browse-name {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.rb-browse-price {
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: #ffffff;
-  white-space: nowrap;
-}
-
-@media (max-width: 640px) {
-  .rb-browse-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* 1cm INNER SIDE PADDING FOR EACH FORM SECTION IN CENTERED FORM */
-.rb-centered-form .rb-form-grid,
-.rb-centered-form .rb-form-section,
-.rb-centered-form > .rb-booking-panel > .rb-booking-form > label {
   padding-left: 1cm;
   padding-right: 1cm;
-}
-
-.rb-centered-form .rb-booking-panel > h3 {
-  padding-left: 1cm;
-  padding-right: 1cm;
-}
-
-/* .rb-centered-form .rb-selected-room-box margin now handled by .rb-room-switcher */
-
-.rb-centered-form .rb-fee-breakdown {
-  margin-left: 1cm;
-  margin-right: 1cm;
-}
-
-.rb-centered-form .rb-primary-button,
-.rb-centered-form .rb-success-box {
-  margin-left: 1cm;
-  margin-right: 1cm;
-  width: calc(100% - 2cm);
-  box-sizing: border-box;
-}
-
-/* ── BOOKING PANEL: WHITE BOX OVERRIDE ── */
-.rb-centered-form .rb-booking-panel {
-  background: #ffffff;
-  border: 1px solid rgba(0,0,0,0.08);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
 }
 
 .rb-centered-form .rb-booking-panel h3,
@@ -711,21 +192,25 @@
 .rb-centered-form .rb-selected-room-price,
 .rb-centered-form .rb-guest-row,
 .rb-centered-form .rb-fee-total,
-.rb-centered-form .rb-fee-total span:last-child {
-  color: #0e081f !important;
-}
+.rb-centered-form .rb-fee-total span:last-child { color: #0e081f !important; }
+
+.rb-centered-form .rb-booking-form label span { font-size: 1.05rem; }
+.rb-centered-form .rb-section-label           { font-size: 1.1rem; }
+.rb-centered-form .rb-selected-room-title     { font-size: 1.1rem; }
+.rb-centered-form .rb-selected-room-price     { font-size: 1rem; }
+.rb-centered-form .rb-guest-controls          { font-size: 1.05rem; }
 
 .rb-centered-form .rb-booking-form input,
 .rb-centered-form .rb-booking-form textarea {
   background: #f5f5f7;
   border: 1px solid rgba(0,0,0,0.12);
   color: #0e081f;
+  font-size: 1rem;
+  padding: 16px 18px;
 }
 
 .rb-centered-form .rb-booking-form input::placeholder,
-.rb-centered-form .rb-booking-form textarea::placeholder {
-  color: rgba(0,0,0,0.35);
-}
+.rb-centered-form .rb-booking-form textarea::placeholder { color: rgba(0,0,0,0.35); }
 
 .rb-centered-form .rb-booking-form input:focus,
 .rb-centered-form .rb-booking-form textarea:focus {
@@ -733,11 +218,16 @@
   outline: 2px solid rgba(14,8,31,0.1);
 }
 
-.rb-centered-form .rb-selected-room-box {
-  background: #f0eef5;
+.rb-centered-form .rb-form-grid,
+.rb-centered-form .rb-form-section,
+.rb-centered-form > .rb-booking-panel > .rb-booking-form > label {
+  padding-left: 1cm;
+  padding-right: 1cm;
 }
 
 .rb-centered-form .rb-guest-row {
+  font-size: 1rem;
+  padding: 15px 18px;
   border: 1px solid rgba(0,0,0,0.12);
   color: #0e081f;
 }
@@ -748,52 +238,59 @@
   color: #0e081f;
 }
 
+.rb-centered-form .rb-selected-room-box { background: #f0eef5; }
+
 .rb-centered-form .rb-fee-breakdown {
   background: #f0eef5;
   border: 1px solid rgba(0,0,0,0.08);
-}
-
-.rb-centered-form .rb-fee-row {
-  color: #3a3550;
-}
-
-.rb-centered-form .rb-fee-hint {
-  color: rgba(0,0,0,0.4);
-}
-
-.rb-centered-form .rb-fee-divider {
-  background: rgba(0,0,0,0.1);
-}
-
-.rb-centered-form .rb-primary-button {
-  background: #0e081f;
-  color: #ffffff;
-}
-
-.rb-centered-form .rb-primary-button:hover {
-  background: #1e1240;
-}
-
-/* ── ROOM SWITCHER ── */
-.rb-room-switcher {
-  position: relative;
   margin-left: 1cm;
   margin-right: 1cm;
 }
 
-.rb-selected-room-box--clickable {
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.18s ease;
+.rb-centered-form .rb-fee-row    { color: #3a3550; font-size: 1.05rem; }
+.rb-centered-form .rb-fee-total  { font-size: 1.15rem; }
+.rb-centered-form .rb-fee-total span:last-child { font-size: 1.25rem; }
+.rb-centered-form .rb-fee-hint   { color: rgba(0,0,0,0.4); font-size: 0.95rem; }
+.rb-centered-form .rb-fee-divider { background: rgba(0,0,0,0.1); }
+
+.rb-centered-form .rb-primary-button {
+  background: #0e081f;
+  color: #ffffff;
+  font-size: 1.05rem;
+  padding: 16px 28px;
+  margin-left: 1cm;
+  margin-right: 1cm;
+  width: calc(100% - 2cm);
+  box-sizing: border-box;
 }
 
-.rb-selected-room-box--clickable:hover {
-  background: #e4e0f0;
+.rb-centered-form .rb-primary-button:hover { background: #1e1240; }
+
+.rb-centered-form .rb-success-box {
+  margin-left: 1cm;
+  margin-right: 1cm;
+  width: calc(100% - 2cm);
+  box-sizing: border-box;
 }
 
-.rb-selected-room-info {
-  flex: 1;
+/* ── Room Switcher ── */
+.rb-room-switcher { position: relative; margin-left: 1cm; margin-right: 1cm; }
+
+.rb-selected-room-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 18px;
 }
+
+.rb-selected-room-box img { width: 92px; height: 72px; object-fit: cover; border-radius: 14px; }
+.rb-selected-room-box--clickable { cursor: pointer; user-select: none; transition: background 0.18s ease; }
+.rb-selected-room-box--clickable:hover { background: #e4e0f0; }
+.rb-selected-room-info { flex: 1; }
+.rb-selected-room-title { margin: 0 0 4px; font-weight: 700; color: #ffffff; }
+.rb-selected-room-price { margin: 0; color: #ffffff; font-weight: 700; }
 
 .rb-switcher-chevron {
   font-size: 1.1rem;
@@ -804,10 +301,7 @@
   flex-shrink: 0;
 }
 
-.rb-switcher-chevron--open {
-  transform: rotate(180deg);
-  opacity: 0.8;
-}
+.rb-switcher-chevron--open { transform: rotate(180deg); opacity: 0.8; }
 
 .rb-switcher-dropdown {
   position: absolute;
@@ -842,31 +336,63 @@
   transition: background 0.15s ease;
 }
 
-.rb-switcher-option:hover {
-  background: #f0eef5;
+.rb-switcher-option:hover { background: #f0eef5; }
+.rb-switcher-option img { width: 72px; height: 54px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+.rb-switcher-option-info { flex: 1; }
+.rb-switcher-option-title { margin: 0 0 3px; font-weight: 600; font-size: 0.9rem; color: #0e081f; }
+.rb-switcher-option-price { margin: 0; font-size: 0.8rem; color: rgba(0,0,0,0.45); }
+
+/* ── Browse Section ── */
+.rb-browse-section { margin-top: 64px; }
+
+.rb-browse-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  color: #ffffff;
+  margin: 0 0 24px;
 }
 
-.rb-switcher-option img {
-  width: 72px;
-  height: 54px;
-  object-fit: cover;
-  border-radius: 10px;
-  flex-shrink: 0;
+.rb-browse-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
-.rb-switcher-option-info {
-  flex: 1;
+.rb-browse-card {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  background: #160d35;
 }
 
-.rb-switcher-option-title {
-  margin: 0 0 3px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #0e081f;
+.rb-browse-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(8,20,61,0.13); }
+
+.rb-browse-image-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  position: relative;
 }
 
-.rb-switcher-option-price {
-  margin: 0;
-  font-size: 0.8rem;
-  color: rgba(0,0,0,0.45);
+.rb-browse-image-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; display: block; }
+.rb-browse-card:hover .rb-browse-image-wrap img { transform: scale(1.04); }
+
+.rb-browse-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 28px 18px 14px;
+  background: linear-gradient(to top, rgba(8,20,61,0.72) 0%, transparent 100%);
 }
+
+.rb-browse-name  { font-family: Georgia, "Times New Roman", serif; font-size: 1rem; font-weight: 600; color: #ffffff; }
+.rb-browse-price { font-size: 0.92rem; font-weight: 700; color: #ffffff; white-space: nowrap; }
+
+/* ── Responsive ── */
+@media (max-width: 760px) { .rb-two-col { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .rb-browse-grid { grid-template-columns: 1fr; } }

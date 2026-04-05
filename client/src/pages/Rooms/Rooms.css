@@ -47,17 +47,8 @@
 
 .rooms-hero__inner {
   max-width: 900px;
-  color: #f8f3ec;
-}
-
-.rooms-hero__eyebrow {
-  margin: 0 0 16px;
-  font-family: "Inter", sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.30em;
-  text-transform: uppercase;
-  opacity: 0.95;
+  color: #ffffff;
+  text-shadow: 0 0 24px rgba(0,0,0,0.95), 0 0 50px rgba(0,0,0,0.7);
 }
 
 .rooms-hero__title {
@@ -68,6 +59,7 @@
   line-height: 0.95;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  text-shadow: 0 0 24px rgba(0,0,0,0.95), 0 0 50px rgba(0,0,0,0.7);
 }
 
 .rooms-hero__subtitle {
@@ -77,7 +69,8 @@
   font-size: 1rem;
   line-height: 1.85;
   font-weight: 300;
-  color: rgba(248, 243, 236, 0.92);
+  color: #f3f3f3;
+  text-shadow: 0 0 16px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.6);
 }
 
 /* =========================
@@ -88,16 +81,6 @@
   margin: 0 auto;
   padding: 90px 56px 40px;
   text-align: center;
-}
-
-.rooms-intro__label {
-  margin: 0 0 14px;
-  font-family: "Inter", sans-serif;
-  font-size: 0.80rem;
-  font-weight: 500;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.5);
 }
 
 .rooms-intro__heading {
@@ -200,7 +183,6 @@
   color: rgba(255,255,255,0.6);
 }
 
-/* ✅ UPDATED ACTIONS (BUTTON + PRICE ALIGNMENT) */
 .room-card-luxury__actions {
   margin-top: 26px;
   display: flex;
@@ -231,7 +213,6 @@
   transform: translateY(-1px);
 }
 
-/* ✅ PRICE STYLE */
 .room-card-luxury__price {
   margin: 0;
   font-family: "Inter", sans-serif;
@@ -287,26 +268,10 @@
     padding-bottom: 72px;
   }
 
-  .rooms-hero__subtitle,
-  .rooms-intro__text,
-  .room-card-luxury__description {
-  margin: 16px 0 0;
-  max-width: 90%;
-  font-family: "Inter", sans-serif;
-  font-size: 0.98rem;
-  line-height: 1.85;
-  color: rgba(255,255,255,0.65);
-
-  min-height: 72px;   /* minimum */
-  max-height: 72px;   /* lock height */
-  overflow: hidden;   /* prevent pushing layout */
-}
-
   .room-card-luxury__meta {
     gap: 12px 18px;
   }
 
-  /* ✅ MOBILE PRICE FIX */
   .room-card-luxury__actions {
     gap: 14px;
   }
