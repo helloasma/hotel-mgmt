@@ -16,7 +16,7 @@ function Footer() {
             <img src={img1} alt="GitHub Project" />
         </a>
 
-        <a href="http://localhost:5173/">
+        <a href="https://drive.google.com/file/d/16IaL10L6Lp18T8UUzN1mT2LwGbBKbGx5/view?usp=sharing" target="_blank" rel="noopener noreferrer">
             <img src={img2} alt="Local Site" />
         </a>
 
@@ -56,7 +56,7 @@ function Footer() {
         <Link to="/contact">Contact</Link>
     </div>
 
-    <p className="footer-credit">Site by Lova Group</p>
+    <p className="footer-credit">Site by Lovender Island Resort</p>
     </div>
     </footer>
   );
