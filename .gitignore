@@ -61,3 +61,6 @@ vite.config.ts.timestamp-*
 .docusaurus
 .serverless/
 .firebase/
+
+node_modules
+.env
