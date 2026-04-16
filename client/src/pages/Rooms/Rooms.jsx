@@ -1,10 +1,31 @@
 import "./Rooms.css";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import api from "../../services/api";
+import { getImage } from "../../utils/roomImages";
 
 import heroVideo from "../../assets/Rooms/RoomVideo.mp4";
-import { rooms } from "../../data/rooms";
 
 function Rooms() {
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const response = await api.get("/rooms");
+        setRooms(response.data.data);
+      } catch {
+        setError("Failed to load rooms. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRooms();
+  }, []);
+
   return (
     <main className="rooms-page">
       <section className="rooms-hero">
@@ -34,60 +55,74 @@ function Rooms() {
         <p className="rooms-intro__text">
           Where Every Room Tells a Story
           <br />
-          Each space at Lovender is designed with intention — blending natural textures,
-          curated detail, and unhurried calm. From overwater retreats to mountain
-          sanctuaries, find the setting that speaks to you.
+          Each space at Lovender is designed with intention — blending natural
+          textures, curated detail, and unhurried calm. From overwater retreats
+          to mountain sanctuaries, find the setting that speaks to you.
         </p>
       </section>
 
       <section className="rooms-listing" id="rooms-list">
-        <div className="rooms-grid">
-          {rooms.map((room) => (
-            <article className="room-card-luxury" key={room.id}>
-              <div className="room-card-luxury__image-wrap">
-                <img
-                  src={room.image}
-                  alt={room.title}
-                  className="room-card-luxury__image"
-                />
-              </div>
+        {loading && (
+          <p style={{ textAlign: "center", padding: "2rem" }}>
+            Loading rooms...
+          </p>
+        )}
 
-              <div className="room-card-luxury__content">
-                <h3 className="room-card-luxury__title">{room.title}</h3>
+        {error && (
+          <p style={{ textAlign: "center", padding: "2rem", color: "red" }}>
+            {error}
+          </p>
+        )}
 
-                <p className="room-card-luxury__description">
-                  {room.shortDescription}
-                </p>
-
-                <div className="room-card-luxury__meta">
-                  <span className="room-card-luxury__meta-item">
-                    {room.size}
-                  </span>
-                  <span className="room-card-luxury__meta-item">
-                    {room.bed}
-                  </span>
-                  <span className="room-card-luxury__meta-item">
-                    {room.view}
-                  </span>
+        {!loading && !error && (
+          <div className="rooms-grid">
+            {rooms.map((room) => (
+              <article className="room-card-luxury" key={room._id}>
+                <div className="room-card-luxury__image-wrap">
+                  <img
+                    src={getImage(room.images[0])}
+                    alt={room.title}
+                    className="room-card-luxury__image"
+                  />
                 </div>
 
-                <div className="room-card-luxury__actions">
-                  <Link
-                    to={`/rooms/${room.id}`}
-                    className="room-card-luxury__button"
-                  >
-                    View Room
-                  </Link>
+                <div className="room-card-luxury__content">
+                  <h3 className="room-card-luxury__title">{room.title}</h3>
 
-                  <p className="room-card-luxury__price">
-                    ${room.price}
-                    <span> / night</span>
+                  <p className="room-card-luxury__description">
+                    {room.description}
                   </p>
+
+                  <div className="room-card-luxury__meta">
+                    <span className="room-card-luxury__meta-item">
+                      {room.size}
+                    </span>
+                    <span className="room-card-luxury__meta-item">
+                      {room.bed}
+                    </span>
+                    <span className="room-card-luxury__meta-item">
+                      {room.view}
+                    </span>
+                  </div>
+
+                  <div className="room-card-luxury__actions">
+                    <Link
+                      to={`/rooms/${room._id}`}
+                      className="room-card-luxury__button"
+                    >
+                      View Room
+                    </Link>
+
+                    <p className="room-card-luxury__price">
+                      ${room.price}
+                      <span> / night</span>
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
