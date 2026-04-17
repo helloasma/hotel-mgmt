@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from "react";
-import { rooms } from "../data/rooms";
+import { getImage } from "../utils/roomImages";
 
 function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
   return (
@@ -26,7 +26,7 @@ function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
   );
 }
 
-function BookingForm({ room, onRoomChange }) {
+function BookingForm({ room, allRooms = [], onRoomChange }) {
   const today = new Date().toISOString().split("T")[0];
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -39,7 +39,7 @@ function BookingForm({ room, onRoomChange }) {
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const switcherRef = useRef(null);
 
-  const otherRooms = rooms.filter((r) => r.id !== room?.id);
+  const otherRooms = allRooms.filter((r) => r._id !== room?._id);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -84,7 +84,7 @@ function BookingForm({ room, onRoomChange }) {
             tabIndex={0}
             onKeyDown={(e) => e.key === "Enter" && setSwitcherOpen((o) => !o)}
           >
-            <img src={room.image} alt={room.title} />
+            <img src={getImage(room.images?.[0])} alt={room.title} />
             <div className="rb-selected-room-info">
               <p className="rb-selected-room-title">{room.title}</p>
               <p className="rb-selected-room-price">${room.price} / night</p>
@@ -100,11 +100,11 @@ function BookingForm({ room, onRoomChange }) {
               <p className="rb-switcher-label">Switch room</p>
               {otherRooms.map((r) => (
                 <div
-                  key={r.id}
+                  key={r._id}
                   className="rb-switcher-option"
                   onClick={() => handleRoomSwitch(r)}
                 >
-                  <img src={r.image} alt={r.title} />
+                  <img src={getImage(r.images?.[0])} alt={r.title} />
                   <div className="rb-switcher-option-info">
                     <p className="rb-switcher-option-title">{r.title}</p>
                     <p className="rb-switcher-option-price">${r.price} / night</p>
