@@ -1,22 +1,48 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getRoomById } from "../../data/rooms";
+import api from "../../services/api";
+import { getImage } from "../../utils/roomImages";
 import "./RoomDetails.css";
 
 function RoomDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const room = getRoomById(id);
-
+  const [room, setRoom] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // ✅ Scroll to top when room changes
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const fetchRoom = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await api.get(`/rooms/${id}`);
+        setRoom(res.data.data);
+        setCurrentImageIndex(0);
+      } catch {
+        setError("Room not found.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoom();
   }, [id]);
 
-  // ✅ Handle invalid room safely
-  if (!room) {
+  if (loading) {
+    return (
+      <main className="room-detail-page">
+        <div className="room-detail-container">
+          <p style={{ textAlign: "center", padding: "2rem" }}>Loading...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error || !room) {
     return (
       <main className="room-detail-page">
         <div className="room-detail-container room-detail-not-found">
@@ -30,35 +56,21 @@ function RoomDetails() {
     );
   }
 
-  // ✅ Always fallback to at least 1 image
-  const images = room.images?.length ? room.images : [room.image];
-
-  // ✅ Prevent out-of-bounds issues
-  const safeIndex =
-    currentImageIndex >= images.length ? 0 : currentImageIndex;
-
+  const images = room.images?.length ? room.images.map(getImage) : [];
+  const safeIndex = currentImageIndex >= images.length ? 0 : currentImageIndex;
   const currentImage = images[safeIndex];
   const hasMultipleImages = images.length > 1;
 
   const goToPrevious = () => {
-    setCurrentImageIndex((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    );
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
-    setCurrentImageIndex((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
-    );
-  };
-
-  const handleBookNow = () => {
-    navigate(`/booking/${room.id}`);
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
   return (
     <main className="room-detail-page">
-      {/* ✅ KEY forces full reset when room changes */}
       <div className="room-detail-container" key={id}>
         <Link to="/rooms" className="room-detail-back">
           ← Back to Rooms
@@ -104,9 +116,7 @@ function RoomDetails() {
                   <button
                     key={index}
                     type="button"
-                    className={`room-detail-dot ${
-                      safeIndex === index ? "active" : ""
-                    }`}
+                    className={`room-detail-dot ${safeIndex === index ? "active" : ""}`}
                     onClick={() => setCurrentImageIndex(index)}
                     aria-label={`Go to image ${index + 1}`}
                   />
@@ -120,16 +130,12 @@ function RoomDetails() {
             <div>
               <h1 className="room-detail-title">{room.title}</h1>
 
-              <p className="room-detail-occupancy">{room.occupancy}</p>
-
-              <p className="room-detail-description">
-                {room.description}
-              </p>
+              <p className="room-detail-description">{room.description}</p>
 
               <div className="room-detail-facts">
                 <div className="room-detail-fact">
                   <strong>Guests</strong>
-                  {room.guests}
+                  {room.capacity}
                 </div>
 
                 <div className="room-detail-fact">
@@ -148,9 +154,7 @@ function RoomDetails() {
                 </div>
               </div>
 
-              <h2 className="room-detail-section-title">
-                Room Amenities
-              </h2>
+              <h2 className="room-detail-section-title">Room Amenities</h2>
 
               <ul className="room-detail-amenities">
                 {room.amenities.map((item) => (
@@ -162,7 +166,7 @@ function RoomDetails() {
             <button
               type="button"
               className="room-detail-book-btn"
-              onClick={handleBookNow}
+              onClick={() => navigate(`/booking/${room._id}`)}
             >
               Book Now
             </button>
