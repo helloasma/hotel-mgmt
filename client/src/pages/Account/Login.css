@@ -202,7 +202,9 @@ input::placeholder {
   font-weight: 300;
   color: #0e081f;
   cursor: pointer;
-  user-select: none;
+  
+  -webkit-user-select: none; /* Safari */
+  user-select: none;         /* Standard */
 }
 
 /* ── Checkbox ── */

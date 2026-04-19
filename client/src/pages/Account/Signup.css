@@ -195,7 +195,9 @@ input::placeholder {
   color: #0e081f;
   line-height: 1.65;
   cursor: pointer;
-  user-select: none;
+  
+  -webkit-user-select: none; /* Safari */
+  user-select: none;         /* Standard */
 }
 
 .signup-terms-a {
