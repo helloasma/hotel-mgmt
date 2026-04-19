@@ -3,46 +3,9 @@ import "./ChatWidget.css";
 import lovenderWhite from "../assets/lovenderWhite.png";
 import lovenderBlack from "../assets/LovenderCrop.jpg";
 
-/* ── Bot responses map ── */
-const BOT_RESPONSES = {
-  rooms:
-    "We offer 8 unique stays — from our Overwater Bungalow Suites to the Sunset Honeymoon Retreat. Would you like me to help you find the perfect room?",
-  book:
-    "To make a reservation, head to our Rooms page and select your preferred suite. You can also visit the Booking page directly. Shall I guide you there?",
-  booking:
-    "To make a reservation, head to our Rooms page and select your preferred suite. You can also visit the Booking page directly. Shall I guide you there?",
-  price:
-    "Our rooms range from $180/night for the Classic Standard Room up to $720/night for the Overwater Bungalow Suite. Every stay includes ocean access and breakfast.",
-  prices:
-    "Our rooms range from $180/night for the Classic Standard Room up to $720/night for the Overwater Bungalow Suite. Every stay includes ocean access and breakfast.",
-  packages:
-    "Lovender offers curated packages including our Honeymoon Escape, Family Island Retreat, and the Full Lavender Experience. Visit the Packages page for details.",
-  location:
-    "Lovender is nestled on a private heart-shaped island surrounded by lavender fields and crystal-blue waters. We are accessible by private ferry or helicopter.",
-  contact:
-    "You can reach our concierge team through the Contact page. We are available 24/7 to assist with any enquiry.",
-  checkin:
-    "Check-in is from 3:00 PM and check-out is by 11:00 AM. Early arrivals and late departures can be arranged upon request.",
-  "check-in":
-    "Check-in is from 3:00 PM and check-out is by 11:00 AM. Early arrivals and late departures can be arranged upon request.",
-  checkout:
-    "Check-in is from 3:00 PM and check-out is by 11:00 AM. Early arrivals and late departures can be arranged upon request.",
-  breakfast:
-    "All stays at Lovender include a complimentary island breakfast served on your private terrace each morning.",
-  wifi:
-    "High-speed Wi-Fi is available throughout the resort, including all rooms and outdoor terraces.",
-  pool:
-    "Lovender features three infinity pools overlooking the ocean, open from sunrise to midnight.",
-  spa:
-    "Our Lavender Spa offers signature treatments including the Sea Stone Ritual and the Lavender Dream massage. Bookable upon arrival.",
-  default:
-    "I am Lova. I can help with room enquiries, bookings, pricing, packages, and resort information. What would you like to know?",
-};
-
 const QUICK_REPLIES = ["Our rooms", "Pricing", "Book a stay", "Packages"];
 const WELCOME_MSG =
   "Welcome to Lovender. I am Lova, your personal island assistant. How may I assist you today?";
-const BOT_REPLY_DELAY = 1200;
 const WELCOME_DELAY = 1800;
 const CLOSE_DELAY = 220;
 
@@ -51,16 +14,6 @@ function getTime() {
     hour: "2-digit",
     minute: "2-digit",
   });
-}
-
-function getBotReply(text) {
-  const lower = text.toLowerCase();
-
-  for (const key of Object.keys(BOT_RESPONSES)) {
-    if (lower.includes(key)) return BOT_RESPONSES[key];
-  }
-
-  return BOT_RESPONSES.default;
 }
 
 export default function ChatWidget() {
@@ -73,10 +26,11 @@ export default function ChatWidget() {
   const [quickReplies, setQuickReplies] = useState([]);
   const [hasOpened, setHasOpened] = useState(false);
 
+  const [chatHistory, setChatHistory] = useState([]);
+
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const closeTimerRef = useRef(null);
-  const replyTimerRef = useRef(null);
   const welcomeTimerRef = useRef(null);
 
   useEffect(() => {
@@ -92,7 +46,6 @@ export default function ChatWidget() {
   useEffect(() => {
     return () => {
       if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-      if (replyTimerRef.current) clearTimeout(replyTimerRef.current);
       if (welcomeTimerRef.current) clearTimeout(welcomeTimerRef.current);
     };
   }, []);
@@ -106,9 +59,7 @@ export default function ChatWidget() {
       setShowUnread(false);
       setIsTyping(true);
 
-      if (welcomeTimerRef.current) {
-        clearTimeout(welcomeTimerRef.current);
-      }
+      if (welcomeTimerRef.current) clearTimeout(welcomeTimerRef.current);
 
       welcomeTimerRef.current = setTimeout(() => {
         setIsTyping(false);
@@ -120,44 +71,58 @@ export default function ChatWidget() {
 
   function closeWidget() {
     setClosing(true);
-
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-    }
-
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     closeTimerRef.current = setTimeout(() => {
       setIsOpen(false);
     }, CLOSE_DELAY);
   }
 
-  function sendMessage(text) {
+  async function sendMessage(text) {
     const trimmedText = text.trim();
     if (!trimmedText) return;
 
-    const userMsg = {
-      from: "user",
-      text: trimmedText,
-      time: getTime(),
-    };
-
+    const userMsg = { from: "user", text: trimmedText, time: getTime() };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setQuickReplies([]);
     setIsTyping(true);
 
-    if (replyTimerRef.current) {
-      clearTimeout(replyTimerRef.current);
-    }
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: trimmedText,
+          history: chatHistory,
+        }),
+      });
 
-    replyTimerRef.current = setTimeout(() => {
-      const reply = getBotReply(trimmedText);
+      const data = await res.json();
+      const reply = data.reply || "I'm sorry, I couldn't get a response. Please try again.";
+
+      setChatHistory((prev) => [
+        ...prev,
+        { role: "user", content: trimmedText },
+        { role: "assistant", content: reply },
+      ]);
 
       setIsTyping(false);
       setMessages((prev) => [
         ...prev,
         { from: "bot", text: reply, time: getTime() },
       ]);
-    }, BOT_REPLY_DELAY);
+    } catch (err) {
+      console.error("Chat error:", err);
+      setIsTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          from: "bot",
+          text: "I'm having trouble connecting right now. Please try again in a moment.",
+          time: getTime(),
+        },
+      ]);
+    }
   }
 
   function handleKeyDown(e) {

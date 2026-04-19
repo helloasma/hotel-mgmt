@@ -1,12 +1,13 @@
-const express = require("express");
 const dotenv = require("dotenv");
+dotenv.config({ path: require('path').resolve(__dirname, '.env') });
+
+const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const roomRoutes = require("./routes/roomRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
-
-dotenv.config();
 connectDB();
 
 const app = express();
@@ -30,6 +31,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
