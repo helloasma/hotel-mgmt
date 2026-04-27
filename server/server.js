@@ -7,6 +7,7 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 connectDB();
 
@@ -32,6 +33,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
