@@ -7,17 +7,16 @@ import "./rooms-booking.css";
 
 function Booking() {
   const { roomId } = useParams();
-  const navigate = useNavigate();
+  const navigate   = useNavigate();
 
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [allRooms, setAllRooms] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [allRooms,     setAllRooms]     = useState([]);
+  const [loading,      setLoading]      = useState(true);
+  const [error,        setError]        = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+      setLoading(true); setError(null);
       try {
         const [roomRes, allRoomsRes] = await Promise.all([
           api.get(`/rooms/${roomId}`),
@@ -25,40 +24,26 @@ function Booking() {
         ]);
         setSelectedRoom(roomRes.data.data);
         setAllRooms(allRoomsRes.data.data);
-      } catch {
-        setError("Failed to load room data.");
-      } finally {
-        setLoading(false);
-      }
+      } catch { setError("Failed to load room data."); }
+      finally   { setLoading(false); }
     };
-
     fetchData();
   }, [roomId]);
 
-  if (loading) {
-    return (
-      <section className="rb-section">
-        <div className="rb-container">
-          <p style={{ textAlign: "center", padding: "2rem" }}>Loading...</p>
-        </div>
-      </section>
-    );
-  }
+  if (loading) return (
+    <div className="ck-page">
+      <div className="ck-wrap"><p style={{padding:"4rem",textAlign:"center",color:"#888"}}>Loading…</p></div>
+    </div>
+  );
 
-  if (error || !selectedRoom) {
-    return (
-      <section className="rb-section">
-        <div className="rb-container">
-          <p style={{ textAlign: "center", padding: "2rem", color: "red" }}>
-            {error || "Room not found."}
-          </p>
-        </div>
-      </section>
-    );
-  }
+  if (error || !selectedRoom) return (
+    <div className="ck-page">
+      <div className="ck-wrap"><p style={{padding:"4rem",textAlign:"center",color:"#c0392b"}}>{error || "Room not found."}</p></div>
+    </div>
+  );
 
   const browseRooms = (() => {
-    const others = allRooms.filter((r) => r._id !== selectedRoom._id);
+    const others   = allRooms.filter(r => r._id !== selectedRoom._id);
     const shuffled = [...others];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -68,46 +53,47 @@ function Booking() {
   })();
 
   return (
-    <section className="rb-section">
-      <div className="rb-container">
-        <h1 className="rb-reservation-title">Room Reservation Form</h1>
+    <div className="ck-page">
+      <div className="ck-wrap">
 
-        <div className="rb-centered-form">
-          <div className="rb-booking-panel">
-            <h3>Booking form</h3>
-            <BookingForm
-              room={selectedRoom}
-              allRooms={allRooms}
-              onRoomChange={(newRoom) => {
-                setSelectedRoom(newRoom);
-                navigate(`/booking/${newRoom._id}`);
-              }}
-            />
-          </div>
-        </div>
+        {/* Breadcrumb */}
+        <nav className="ck-breadcrumb">
+          <span onClick={() => navigate("/")} className="ck-breadcrumb-link">Hotel</span>
+          <span className="ck-breadcrumb-sep">›</span>
+          <span>Checkout</span>
+        </nav>
 
-        <div className="rb-browse-section">
-          <h2 className="rb-browse-title">Explore Other Rooms</h2>
-          <div className="rb-browse-grid">
-            {browseRooms.map((room) => (
-              <div
-                key={room._id}
-                className="rb-browse-card"
-                onClick={() => navigate(`/rooms/${room._id}`)}
-              >
-                <div className="rb-browse-image-wrap">
+        <h1 className="ck-page-title">Book your stay securely</h1>
+
+        <BookingForm
+          room={selectedRoom}
+          allRooms={allRooms}
+          onRoomChange={newRoom => {
+            setSelectedRoom(newRoom);
+            navigate(`/booking/${newRoom._id}`);
+          }}
+        />
+
+        {/* Explore other rooms */}
+        <div className="ck-browse-section">
+          <h2 className="ck-browse-title">Explore Other Rooms</h2>
+          <div className="ck-browse-grid">
+            {browseRooms.map(room => (
+              <div key={room._id} className="ck-browse-card" onClick={() => navigate(`/rooms/${room._id}`)}>
+                <div className="ck-browse-img-wrap">
                   <img src={getImage(room.images[0])} alt={room.title} />
-                  <div className="rb-browse-overlay">
-                    <span className="rb-browse-name">{room.title}</span>
-                    <span className="rb-browse-price">${room.price} / night</span>
+                  <div className="ck-browse-overlay">
+                    <span>{room.title}</span>
+                    <span>${room.price} / night</span>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
       </div>
-    </section>
+    </div>
   );
 }
 
