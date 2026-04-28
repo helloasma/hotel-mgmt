@@ -80,6 +80,7 @@
 .ck-room-card {
   flex-shrink: 0;
   margin-top: auto;
+  min-height: 300px;
 }
 
 /* ── Section cards ──────────────────────────────────────── */

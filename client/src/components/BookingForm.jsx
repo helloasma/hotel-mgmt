@@ -515,7 +515,7 @@ function BookingForm({ room }) {
             <img src={getImage(room.images?.[0])} alt={room.title} className="ck-room-img" />
             <h3 className="ck-sidebar-heading" style={{ marginTop: 16 }}>Hotel Summary Card</h3>
             <div className="ck-summary-rows">
-              <div className="ck-summary-row"><span>🏨 Room Type</span><span>{room.title}</span></div>
+              <div className="ck-summary-row"><span>🏨 Room Type</span><span>{room.title.replace("Bungalows ", "")}</span></div>
               <div className="ck-summary-row"><span>🛏 Bed</span><span>{room.bed || "King Bed"}</span></div>
               <div className="ck-summary-row"><span>👤 Guests</span>
                 <span>{adults} Adult{adults !== 1 ? "s" : ""}{children > 0 ? `, ${children} Child${children !== 1 ? "ren" : ""}` : ""}</span>
