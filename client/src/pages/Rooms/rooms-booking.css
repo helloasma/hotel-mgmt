@@ -1,14 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
 /* ══════════════════════════════════════════════════════════
    CHECKOUT PAGE  —  Two-column hotel booking layout
    ══════════════════════════════════════════════════════════ */
 
 /* ── Page shell ─────────────────────────────────────────── */
 .ck-page {
-  background: #f4f4f4;
+  background: #0e081f;
   min-height: 100vh;
   padding: 40px 0 100px;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
   color: #1a1a1a;
+}
+
+.ck-page, .ck-page * {
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
 }
 
 .ck-wrap {
@@ -34,7 +40,7 @@
   font-size: clamp(1.6rem, 3vw, 2.1rem);
   font-weight: 700;
   margin: 0 0 32px;
-  color: #111;
+  color: #fff;
   letter-spacing: -0.02em;
 }
 
@@ -47,38 +53,33 @@
 .ck-form {
   display: grid;
   grid-template-columns: 1fr 340px;
-  grid-template-rows: auto auto;
   column-gap: 24px;
-  row-gap: 0;
-  align-items: start;
+  align-items: stretch;
 }
 
-/* Top-left: wraps Dates + Guests with gap between them */
-.ck-rows-top {
+/* Left column: Dates, Guests, Who's checking in — all stacked */
+.ck-left-col {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 16px;
 }
 
-/* Who's checking in sits in col 1 row 2 naturally */
-.ck-form > .ck-section {
-  grid-column: 1;
+/* Right column: Price card at top, room card pushed to bottom */
+.ck-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* Price card: col 2 row 1, stretch to fill both rows of col-1 */
+/* Price card stays at top */
 .ck-price-card {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: start;
+  flex-shrink: 0;
 }
 
-/* Room/summary card: col 2 row 2 */
+/* Room card pushed to bottom — aligns with bottom of left column */
 .ck-room-card {
-  grid-column: 2;
-  grid-row: 2;
-  align-self: start;
-  margin-top: 16px;
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
 /* ── Section cards ──────────────────────────────────────── */
@@ -160,7 +161,7 @@
 .ck-two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 8px;
 }
 
 /* ── Phone row ──────────────────────────────────────────── */
@@ -350,8 +351,9 @@
 .ck-sidebar-card {
   background: #ffffff;
   border-radius: 12px;
-  padding: 24px;
+  padding: 17px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  font-family: "Inter", sans-serif;
 }
 
 .ck-sidebar-heading {
@@ -384,7 +386,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   color: #444;
   gap: 12px;
 }
@@ -400,7 +402,7 @@
   font-size: 1rem;
   font-weight: 700;
   color: #111;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .ck-date-hint { font-size: 0.78rem; color: #aaa; text-align: center; margin: 0 0 14px; }
@@ -437,7 +439,7 @@
   width: 100%;
   height: 160px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px;
   display: block;
 }
 
@@ -533,7 +535,7 @@
 .ck-browse-title {
   font-size: clamp(1.3rem, 2.2vw, 1.7rem);
   font-weight: 700;
-  color: #111;
+  color: #fff;
   margin: 0 0 20px;
 }
 
@@ -575,13 +577,13 @@
     grid-template-columns: 1fr;
     grid-template-rows: auto;
   }
-  .ck-price-card,
-  .ck-room-card {
+  .ck-left-col,
+  .ck-right-col {
     grid-column: 1;
-    grid-row: auto;
+  }
+  .ck-room-card {
     margin-top: 0;
   }
-  .ck-form > .ck-section { grid-column: 1; }
 }
 
 @media (max-width: 640px) {
@@ -629,36 +631,38 @@
 
 /* Header */
 .pp-header {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
   padding: 18px 24px;
   border-bottom: 1px solid #f0f0f0;
 }
 
 .pp-back {
-  background: none;
-  border: none;
+  all: unset;
   color: #555;
-  font-size: 0.85rem;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  padding: 6px 0;
-  font-family: inherit;
   white-space: nowrap;
 }
 .pp-back:hover { color: #111; }
 
 .pp-header-center {
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  pointer-events: none;
 }
 .pp-lock { font-size: 1rem; }
 .pp-header-title { font-weight: 700; font-size: 0.97rem; color: #111; }
 
 .pp-amount-badge {
+  margin-left: auto;
   background: #1a1a1a;
   color: #fff;
   border-radius: 20px;
@@ -868,8 +872,8 @@
 
 /* Actions */
 .pp-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   gap: 12px;
 }
 
