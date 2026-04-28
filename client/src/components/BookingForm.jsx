@@ -395,8 +395,8 @@ function BookingForm({ room }) {
       {/* ── Two-column booking form — flat grid for precise row alignment ── */}
       <form className="ck-form" onSubmit={handleBookingSubmit}>
 
-        {/* ── ROW 1 LEFT: Dates + Guests (span 2 rows) ── */}
-        <div className="ck-rows-top">
+        {/* ── LEFT COLUMN ── */}
+        <div className="ck-left-col">
 
           {/* Dates */}
           <section className="ck-section">
@@ -423,9 +423,58 @@ function BookingForm({ room }) {
             <GuestCounter label="Children" value={children} onChange={setChildren} min={0} max={4} />
           </section>
 
+          {/* Who's checking in */}
+          <section className="ck-section">
+            <h2 className="ck-section-title">Who&rsquo;s checking in?</h2>
+            <div className="ck-two-col">
+              <div className="ck-field">
+                <label>First Name <span className="ck-req">*</span></label>
+                <input type="text" placeholder="Enter your first name"
+                  value={firstName} onChange={e => setFirstName(e.target.value)} required />
+              </div>
+              <div className="ck-field">
+                <label>Last Name <span className="ck-req">*</span></label>
+                <input type="text" placeholder="Enter your last name"
+                  value={lastName} onChange={e => setLastName(e.target.value)} required />
+              </div>
+            </div>
+            <div className="ck-field">
+              <label>Email <span className="ck-req">*</span></label>
+              <input type="email" placeholder="Enter your email"
+                value={email} onChange={e => setEmail(e.target.value)} required />
+            </div>
+            <div className="ck-field">
+              <label>Mobile Number</label>
+              <div className="ck-phone-row">
+                <select className="ck-phone-code" value={phoneCode} onChange={e => setPhoneCode(e.target.value)}>
+                  <option value="+1">+1</option>
+                  <option value="+44">+44</option>
+                  <option value="+971">+971</option>
+                  <option value="+62">+62</option>
+                  <option value="+91">+91</option>
+                  <option value="+61">+61</option>
+                </select>
+                <input
+                  type="tel"
+                  className="ck-phone-input"
+                  placeholder="Enter your phone number"
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                />
+              </div>
+            </div>
+            <label className="ck-checkbox-row">
+              <input type="checkbox" checked={alerts} onChange={e => setAlerts(e.target.checked)} />
+              <span>Receive text alerts about this trip</span>
+            </label>
+          </section>
+
         </div>
 
-        {/* ── ROW 1 RIGHT: Price Details ── */}
+        {/* ── RIGHT COLUMN ── */}
+        <div className="ck-right-col">
+
+        {/* Price Details */}
         <div className="ck-sidebar-card ck-price-card">
           <h3 className="ck-sidebar-heading">Price Details</h3>
           <div className="ck-coupon-row">
@@ -459,53 +508,8 @@ function BookingForm({ room }) {
           </button>
         </div>
 
-        {/* ── ROW 2 LEFT: Who's checking in ── */}
-        <section className="ck-section">
-          <h2 className="ck-section-title">Who&rsquo;s checking in?</h2>
-          <div className="ck-two-col">
-            <div className="ck-field">
-              <label>First Name <span className="ck-req">*</span></label>
-              <input type="text" placeholder="Enter your first name"
-                value={firstName} onChange={e => setFirstName(e.target.value)} required />
-            </div>
-            <div className="ck-field">
-              <label>Last Name <span className="ck-req">*</span></label>
-              <input type="text" placeholder="Enter your last name"
-                value={lastName} onChange={e => setLastName(e.target.value)} required />
-            </div>
-          </div>
-          <div className="ck-field">
-            <label>Email <span className="ck-req">*</span></label>
-            <input type="email" placeholder="Enter your email"
-              value={email} onChange={e => setEmail(e.target.value)} required />
-          </div>
-          <div className="ck-field">
-            <label>Mobile Number</label>
-            <div className="ck-phone-row">
-              <select className="ck-phone-code" value={phoneCode} onChange={e => setPhoneCode(e.target.value)}>
-                <option value="+1">+1</option>
-                <option value="+44">+44</option>
-                <option value="+971">+971</option>
-                <option value="+62">+62</option>
-                <option value="+91">+91</option>
-                <option value="+61">+61</option>
-              </select>
-              <input
-                type="tel"
-                className="ck-phone-input"
-                placeholder="Enter your phone number"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-              />
-            </div>
-          </div>
-          <label className="ck-checkbox-row">
-            <input type="checkbox" checked={alerts} onChange={e => setAlerts(e.target.checked)} />
-            <span>Receive text alerts about this trip</span>
-          </label>
-        </section>
 
-        {/* ── ROW 2 RIGHT: Hotel Summary Card ── */}
+        {/* Hotel Summary Card */}
         {room && (
           <div className="ck-sidebar-card ck-room-card">
             <img src={getImage(room.images?.[0])} alt={room.title} className="ck-room-img" />
@@ -532,6 +536,8 @@ function BookingForm({ room }) {
             </div>
           </div>
         )}
+
+        </div> {/* end .ck-right-col */}
 
       </form>
     </>

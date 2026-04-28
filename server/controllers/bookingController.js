@@ -65,6 +65,7 @@ const createBooking = async (req, res, next) => {
     const totalPrice = room.price * nights;
 
     const booking = await Booking.create({
+      user: req.user._id,
       room: roomId, checkIn: checkInDate, checkOut: checkOutDate,
       adults: adults || 1, children: children || 0,
       firstName, lastName, email, phone, paymentMethod, totalPrice, specialRequest,
@@ -87,4 +88,34 @@ const getAllBookings = async (req, res, next) => {
   }
 };
 
-module.exports = { checkAvailability, createBooking, getAllBookings };
+// Get bookings for the logged-in user
+const getUserBookings = async (req, res, next) => {
+  try {
+    const bookings = await Booking.find({ user: req.user._id })
+      .populate("room", "title price images")
+      .sort({ createdAt: -1 });
+    return res.json({ success: true, data: bookings });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Cancel a booking (owner only)
+const cancelBooking = async (req, res, next) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking)
+      return res.status(404).json({ success: false, message: "Booking not found." });
+
+    if (booking.user.toString() !== req.user._id.toString())
+      return res.status(403).json({ success: false, message: "Not authorized." });
+
+    booking.status = "cancelled";
+    await booking.save();
+    return res.json({ success: true, data: booking });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { checkAvailability, createBooking, getAllBookings, getUserBookings, cancelBooking };

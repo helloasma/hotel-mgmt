@@ -142,7 +142,10 @@
 }
 
 .room-card-luxury__content {
+  flex: 1;
   padding-top: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .room-card-luxury__title {
@@ -166,6 +169,7 @@
   font-size: 0.98rem;
   line-height: 1.85;
   color: rgba(255,255,255,0.65);
+  flex: 1;
 }
 
 .room-card-luxury__meta {
