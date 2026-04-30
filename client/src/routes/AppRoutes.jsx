@@ -11,24 +11,47 @@ import Signup from "../pages/Account/Signup";
 import Validation from "../pages/Account/Validation";
 import Booking from "../pages/Rooms/Booking";
 import Journey from "../pages/Journey/Journey";
-
-
+import PrivateRoute from "../components/PrivateRoute";
 
 function AppRoutes() {
   return (
     <Routes>
+      {/* Public routes */}
       <Route path="/" element={<Home />} />
-      <Route path="/account" element={<Account />} />
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/rooms/:id" element={<RoomDetails />} />
-      <Route path="/booking" element={<Booking />} />
-      <Route path="/booking/:roomId" element={<Booking />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Signup" element={<Signup />} />
-      <Route path="/Validation" element={<Validation />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
       <Route path="/journey" element={<Journey />} />
+      <Route path="/Login" element={<Login />} />
+      <Route path="/Signup" element={<Signup />} />
+      <Route path="/Validation" element={<Validation />} />
+
+      {/* Protected: logged-in users only */}
+      <Route
+        path="/account"
+        element={
+          <PrivateRoute>
+            <Account />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/booking"
+        element={
+          <PrivateRoute>
+            <Booking />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/booking/:roomId"
+        element={
+          <PrivateRoute>
+            <Booking />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
