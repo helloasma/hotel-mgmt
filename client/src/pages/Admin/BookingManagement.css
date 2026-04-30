@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+
+.admin-content-with-sidebar {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 30px;
+  align-items: start;
+}
+
+.booking-table-wrapper {
+  width: 100%;
+}
+
+.booking-table-wrapper h1 {
+  color: #0e081f;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #2f5148;
+  padding-bottom: 15px;
+}
+
+.booking-stats-wrapper {
+  width: 100%;
+}
+
+/* Table Styles */
+.admin-page table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+
+.admin-page thead {
+  background: #0e081f;
+  color: white;
+}
+
+.admin-page th {
+  padding: 15px;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-page td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+.admin-page tbody tr:hover {
+  background: #f9f9f9;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: "Inter", sans-serif;
+}
+
+.status-confirmed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.status-completed {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+/* Action Buttons */
+.delete-btn {
+  padding: 8px 14px;
+  background: #c84d3d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #a53d2d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(200, 77, 61, 0.3);
+}
+
+.no-action {
+  color: #ccc;
+  font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+  .admin-content-with-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-stats-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .booking-table-wrapper h1 {
+    font-size: 24px;
+  }
+
+  .admin-page th {
+    font-size: 11px;
+    padding: 10px;
+  }
+
+  .admin-page td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .booking-stats-wrapper {
+    grid-template-columns: 1fr;
+  }
+}

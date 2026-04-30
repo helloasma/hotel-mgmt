@@ -3,7 +3,7 @@ const generateToken = require("../utils/generateToken");
 
 const registerUser = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, role, responsibility } = req.body;
 
     const existingUser = await User.findOne({ email });
 
@@ -12,10 +12,15 @@ const registerUser = async (req, res, next) => {
       throw new Error("User already exists");
     }
 
+    const userRole = role || "user";
     const user = await User.create({
       name,
       email,
       password,
+      phone,
+      role: userRole,
+      responsibility:
+        userRole === "admin" ? responsibility || "New Staff" : undefined,
     });
 
     res.status(201).json({
@@ -25,7 +30,9 @@ const registerUser = async (req, res, next) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
         role: user.role,
+        responsibility: user.responsibility,
         token: generateToken(user._id, user.role),
       },
     });
@@ -52,7 +59,9 @@ const loginUser = async (req, res, next) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
         role: user.role,
+        responsibility: user.responsibility,
         token: generateToken(user._id, user.role),
       },
     });

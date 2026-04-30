@@ -64,8 +64,8 @@ const bookingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "confirmed", "cancelled"],
-      default: "pending",
+      enum: ["confirmed", "cancelled"],
+      default: "confirmed",
     },
     confirmationCode: {
       type: String,
@@ -76,14 +76,13 @@ const bookingSchema = new mongoose.Schema(
 );
 
 // Generate a confirmation code before saving
-bookingSchema.pre("save", function (next) {
+bookingSchema.pre("save", function () {
   if (!this.confirmationCode) {
     this.confirmationCode =
       "BK" +
       Date.now().toString(36).toUpperCase() +
       Math.random().toString(36).substring(2, 6).toUpperCase();
   }
-  next();
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);
