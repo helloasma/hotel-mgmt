@@ -144,7 +144,7 @@ export default function Signup() {
     if (!fields.every((f) => newErrors[f]?.status === "ok")) return;
 
     const fullName = `${form.fname.trim()} ${form.lname.trim()}`;
-    const result = await register({ name: fullName, email: form.email, password: form.password });
+    const result = await register({ name: fullName, email: form.email, password: form.password, phone: form.phone });
 
     if (result.success) {
       navigate("/account");
