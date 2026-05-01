@@ -54,6 +54,15 @@ const createBooking = async (req, res, next) => {
     const room = await Room.findById(roomId);
     if (!room) return res.status(404).json({ success: false, message: "Room not found." });
 
+    // Capacity check
+    const totalGuests = (adults || 1) + (children || 0);
+    if (totalGuests > room.capacity) {
+      return res.status(400).json({
+        success: false,
+        message: `This room has a maximum capacity of ${room.capacity} guest${room.capacity !== 1 ? "s" : ""}.`,
+      });
+    }
+
     // Check if the room is available for the requested dates
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
@@ -98,9 +107,10 @@ const createBooking = async (req, res, next) => {
     }
     await room.save();
 
-    const populated = await booking.populate("room", "title price images");
-    return res.status(201).json({ success: true, data: populated });
+    // Return the created booking with success
+    res.status(201).json({ success: true, data: booking });
   } catch (error) {
+    console.error("Booking creation error:", error);
     next(error);
   }
 };

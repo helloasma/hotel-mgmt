@@ -47,3 +47,11 @@ const roomImages = {
 };
 
 export const getImage = (filename) => roomImages[filename] || null;
+
+const roomsPageNames = {
+  "overwater-bungalow": "Overwater Bungalows Standard",
+  "forest-cabin": "Forest Cabins Standard",
+};
+
+export const getRoomsPageDisplayName = (room) =>
+  roomsPageNames[room?.type] ?? room?.title ?? "";
