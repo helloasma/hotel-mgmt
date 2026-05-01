@@ -49,29 +49,46 @@ const createRoom = async (req, res, next) => {
   }
 };
 
+
 // PUT /api/rooms/:id — update room (admin only)
 const updateRoom = async (req, res, next) => {
   try {
+    // Find and update the room
     const room = await Room.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
+      req.params.id,   // Find by room ID
+      req.body,         // Update data from request body
+      { new: true, runValidators: true }  // Get updated document with validation
     );
 
+    // Check if the room exists
     if (!room) {
-      res.status(404);
-      throw new Error("Room not found");
+      return res.status(404).json({
+        success: false,
+        message: "Room not found",
+      });
     }
 
+    // Ensure available field updates based on availableRooms
+    if (room.availableRooms === 0) {
+      room.available = false;  // If availableRooms is 0, set available to false
+    } else {
+      room.available = true;  // Otherwise, set available to true
+    }
+
+    // Save the room after making the necessary changes
+    await room.save();
+
+    // Send success response
     res.status(200).json({
       success: true,
-      message: "Room updated successfully",
-      data: room,
+      message: "Room updated successfully",  // Success message
+      data: room,  // Return the updated room data
     });
   } catch (error) {
-    next(error);
+    next(error);  // If an error occurs, pass it to the error handler
   }
 };
+
 
 // DELETE /api/rooms/:id — delete room (admin only)
 const deleteRoom = async (req, res, next) => {

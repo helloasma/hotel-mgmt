@@ -15,9 +15,15 @@ router.post(
   [
     body("name").trim().notEmpty().withMessage("Name is required"),
     body("email").isEmail().withMessage("Valid email is required").normalizeEmail(),
+    body("phone").trim().notEmpty().withMessage("Phone number is required"),
     body("password")
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
+    body("responsibility")
+      .optional()
+      .trim()
+      .isIn(["Manager", "Receptionist", "Housekeeper", "Maintenance", "New Staff"])
+      .withMessage("Invalid responsibility"),
     handleValidationErrors,
   ],
   registerUser

@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 function Sidebar({ isOpen, setIsOpen }) {
   if (!isOpen) return null;
 
+  const handleAdminLogin = () => {
+    window.open("/admin/login", "_blank");
+  };
+
   return (
     <>
       {/* OVERLAY (optional dim background) */}
@@ -23,6 +27,11 @@ function Sidebar({ isOpen, setIsOpen }) {
             <li><Link to="/contact">Contact</Link></li>
             <li><Link to="/about">About Us</Link></li>
           </ul>
+          <div className="sidebar-footer">
+            <button className="staff-btn" onClick={handleAdminLogin}>
+              Lovender staff?
+            </button>
+          </div>
       </div>
     </>
   );

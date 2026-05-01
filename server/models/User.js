@@ -20,10 +20,21 @@ const userSchema = new mongoose.Schema(
       required: [true, "Password is required"],
       minlength: 6,
     },
+    phone: {
+      type: String,
+      required: [true, "Phone number is required"],
+      trim: true,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],
       default: "user",
+    },
+    responsibility: {
+      type: String,
+      enum: ["Manager", "Receptionist", "Housekeeper", "Maintenance", "New Staff"],
+      default: "New Staff",
+      // Only applicable when role is "admin"
     },
   },
   {

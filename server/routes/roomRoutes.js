@@ -18,5 +18,6 @@ router.get("/:id", getRoomById);
 router.post("/", protect, adminOnly, createRoom);
 router.put("/:id", protect, adminOnly, updateRoom);
 router.delete("/:id", protect, adminOnly, deleteRoom);
+router.put("/:id", protect, adminOnly, updateRoom);
 
 module.exports = router;
