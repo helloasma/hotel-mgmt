@@ -36,7 +36,7 @@ function Navbar() {
 
           {/* RIGHT SIDE */}
           <div className="nav-right">
-            <Link to="/Account" className="icon-btn">
+            <Link to="/account" className="icon-btn">
               <img src={accountIcon} alt="account" className="icon-img" />
             </Link>
           </div>
