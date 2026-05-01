@@ -17,11 +17,11 @@ function Sidebar({ isOpen, setIsOpen }) {
         <h2>MENU</h2>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/Account">My Account</Link></li>
-            <li><Link to="/Rooms">Rooms</Link></li>
+            <li><Link to="/account">My Account</Link></li>
+            <li><Link to="/rooms">Rooms</Link></li>
             <li><Link to="/journey">Journey</Link></li>
-            <li><Link to="/Contact">Contact</Link></li>
-            <li><Link to="/About">About Us</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/about">About Us</Link></li>
           </ul>
       </div>
     </>

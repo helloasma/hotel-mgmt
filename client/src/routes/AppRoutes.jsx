@@ -18,8 +18,8 @@ function AppRoutes() {
     <Routes>
       {/* Public routes */}
       <Route path="/" element={<Home />} />
-      <Route path="/rooms" element={<Rooms />} />
-      <Route path="/rooms/:id" element={<RoomDetails />} />
+      <Route path="/rooms" element={<PrivateRoute showPrompt pageName="the Rooms page" pageDesc="explore our rooms"><Rooms /></PrivateRoute>} />
+      <Route path="/rooms/:id" element={<PrivateRoute showPrompt pageName="the Rooms page" pageDesc="explore our rooms"><RoomDetails /></PrivateRoute>} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
       <Route path="/journey" element={<Journey />} />
