@@ -84,6 +84,22 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
   async function handlePay(e) {
     e.preventDefault();
     setError("");
+
+    if (payTab === "card") {
+      const digits = cardNumber.replace(/\s/g, "");
+      if (!digits || !/^\d+$/.test(digits)) {
+        setError("Card number must contain digits only.");
+        return;
+      }
+    }
+
+    if (payTab === "paypal") {
+      if (!paypalEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paypalEmail)) {
+        setError("Please enter a valid email address for PayPal.");
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       const res = await api.post("/bookings/create", {
@@ -92,7 +108,9 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
       });
       onSuccess(res.data.data);
     } catch (err) {
-      setError(err?.response?.data?.message || "Something went wrong. Please try again.");
+      const errorMsg = err?.response?.data?.message || err?.message || "Something went wrong. Please try again.";
+      setError(errorMsg);
+      console.error("Booking error:", err);
     } finally {
       setLoading(false);
     }
@@ -119,7 +137,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
             <div className="pp-room-strip">
               <img src={getImage(room.images?.[0])} alt={room.title} className="pp-room-thumb" />
               <div>
-                <p className="pp-room-name">{room.title}</p>
+                <p className="pp-room-name">{getBookingDisplayName(room)}</p>
                 <p className="pp-room-sub">
                   {bookingData.adults} guest{bookingData.adults !== 1 ? "s" : ""}
                   {bookingData.children > 0 ? ` · ${bookingData.children} child${bookingData.children !== 1 ? "ren" : ""}` : ""}
@@ -286,7 +304,7 @@ function ConfirmationScreen({ booking, room }) {
         Confirmation Code: <strong>{booking.confirmationCode}</strong>
       </div>
       <div className="ck-confirm-details">
-        <div className="ck-conf-row"><span>Room</span><span>{room?.title || booking.room?.title}</span></div>
+        <div className="ck-conf-row"><span>Room</span><span>{getBookingDisplayName(room)}</span></div>
         <div className="ck-conf-row"><span>Guest</span><span>{booking.firstName} {booking.lastName}</span></div>
         <div className="ck-conf-row"><span>Check-in</span><span>{fmt(checkIn)}</span></div>
         <div className="ck-conf-row"><span>Check-out</span><span>{fmt(checkOut)}</span></div>
@@ -296,13 +314,25 @@ function ConfirmationScreen({ booking, room }) {
             {booking.children > 0 ? `, ${booking.children} child${booking.children !== 1 ? "ren" : ""}` : ""}
           </span>
         </div>
+        <div className="ck-conf-row"><span>Payment Method</span><span className="ck-payment-method">{booking.paymentMethod === "apple_pay" ? "Apple Pay" : booking.paymentMethod === "paypal" ? "PayPal" : "Card"}</span></div>
         <div className="ck-conf-divider" />
         <div className="ck-conf-row ck-conf-total"><span>Total Paid</span><span>${booking.totalPrice.toLocaleString()}</span></div>
       </div>
-      <p className="ck-confirm-email">A confirmation has been sent to <strong>{booking.email}</strong></p>
+      <p className="ck-confirm-email">A confirmation email has been sent to <strong>{booking.email}</strong></p>
+      <div className="ck-confirm-actions">
+        <a href="/Account" className="ck-confirm-btn-secondary">
+          View My Bookings
+        </a>
+        <a href="/Rooms" className="ck-confirm-btn-primary">
+          Book Another Room
+        </a>
+      </div>
     </div>
   );
 }
+
+const bookingDisplayNames = { "honeymoon": "Honeymoon Retreat" };
+const getBookingDisplayName = (room) => bookingDisplayNames[room?.type] ?? room?.title ?? "";
 
 // ─────────────────────────────────────────────────────────────
 // Main BookingForm
@@ -340,6 +370,12 @@ function BookingForm({ room }) {
   }, [checkIn, checkOut]);
 
   const total = room && nights > 0 ? room.price * nights : 0;
+
+  const maxAdults   = room ? Math.max(1, room.capacity - children) : 6;
+  const maxChildren = room ? Math.max(0, room.capacity - adults)   : 4;
+  const capacityError = room && adults + children > room.capacity
+    ? `This room fits a maximum of ${room.capacity} guest${room.capacity !== 1 ? "s" : ""}.`
+    : "";
 
   // Live availability check
   useEffect(() => {
@@ -419,8 +455,9 @@ function BookingForm({ room }) {
           {/* Guests */}
           <section className="ck-section">
             <h2 className="ck-section-title">Number of Guests</h2>
-            <GuestCounter label="Adults"   value={adults}   onChange={setAdults}   min={1} max={6} />
-            <GuestCounter label="Children" value={children} onChange={setChildren} min={0} max={4} />
+            <GuestCounter label="Adults"   value={adults}   onChange={setAdults}   min={1} max={maxAdults} />
+            <GuestCounter label="Children" value={children} onChange={setChildren} min={0} max={maxChildren} />
+            {capacityError && <div className="ck-error-msg">{capacityError}</div>}
           </section>
 
           {/* Who's checking in */}
@@ -503,7 +540,7 @@ function BookingForm({ room }) {
             By clicking the button below, I confirm that I have read and understood the Privacy Policy and User Agreement.
           </p>
           {submitError && <div className="ck-error-msg">{submitError}</div>}
-          <button type="submit" className="ck-confirm-btn" disabled={!!availError || !checkIn || !checkOut}>
+          <button type="submit" className="ck-confirm-btn" disabled={!!availError || !!capacityError || !checkIn || !checkOut}>
             {`CONFIRM & PAY${total > 0 ? ` $${total.toLocaleString()}` : ""}`}
           </button>
         </div>
@@ -515,7 +552,7 @@ function BookingForm({ room }) {
             <img src={getImage(room.images?.[0])} alt={room.title} className="ck-room-img" />
             <h3 className="ck-sidebar-heading" style={{ marginTop: 16 }}>Hotel Summary Card</h3>
             <div className="ck-summary-rows">
-              <div className="ck-summary-row"><span>🏨 Room Type</span><span>{room.title.replace("Bungalows ", "")}</span></div>
+              <div className="ck-summary-row"><span>🏨 Room Type</span><span>{getBookingDisplayName(room)}</span></div>
               <div className="ck-summary-row"><span>🛏 Bed</span><span>{room.bed || "King Bed"}</span></div>
               <div className="ck-summary-row"><span>👤 Guests</span>
                 <span>{adults} Adult{adults !== 1 ? "s" : ""}{children > 0 ? `, ${children} Child${children !== 1 ? "ren" : ""}` : ""}</span>

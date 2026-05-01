@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
-import { getImage } from "../../utils/roomImages";
+import { getImage, getRoomsPageDisplayName } from "../../utils/roomImages";
 import "./RoomDetails.css";
 
 function RoomDetails() {
@@ -128,7 +128,7 @@ function RoomDetails() {
           {/* RIGHT SIDE - DETAILS */}
           <div className="room-detail-content">
             <div>
-              <h1 className="room-detail-title">{room.title}</h1>
+              <h1 className="room-detail-title">{getRoomsPageDisplayName(room)}</h1>
 
               <p className="room-detail-description">{room.description}</p>
 
