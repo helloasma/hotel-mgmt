@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const colors = {
   lova: "#0e081f",
   white: "white",
   black: "black",
   green: "#406D61",
-
   navy:       "#12284B",
   lav:        "#BFB6CE",
   lavLight:   "#D4CEDF",
@@ -24,14 +24,6 @@ const colors = {
 };
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
-
-function HeartIcon({ size = 20, fill = colors.navy, opacity = 0.85 }) {
-  return (
-    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style={{ width: size, fill, opacity }}>
-      <path d="M16 27C16 27 4 19 4 11c0-4.2 3.6-7.5 8-7.5 1.8 0 3.4.7 4 1.6.6-.9 2.2-1.6 4-1.6C24.4 3.5 28 6.8 28 11c0 8-12 16-12 16z" />
-    </svg>
-  );
-}
 
 /* Password strength helper */
 function getStrength(pw) {
@@ -92,43 +84,77 @@ function FormInput({ label, id, type="text", placeholder, value, onChange, onBlu
 ══════════════════════════════ */
 export default function Signup() {
   const navigate = useNavigate();
+  const { register, loading } = useAuth();
 
   const [form, setForm] = useState({ fname:"", lname:"", email:"", phone:"", password:"", confirm:"" });
   const [errors, setErrors]   = useState({});
   const [touched, setTouched] = useState({});
   const [terms, setTerms]     = useState(false);
+  const [backendError, setBackendError] = useState("");
 
   const strength = getStrength(form.password);
 
-  const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
+  const update = (field) => (e) => {
+    setForm((f) => ({ ...f, [field]: e.target.value }));
+    setBackendError("");
+  };
 
   const validate = (field, val) => {
-    if (field === "fname" || field === "lname") return val.trim() ? "ok" : "error";
-    if (field === "email")    return isEmail(val) ? "ok" : "error";
-    if (field === "password") return val.length >= 8 ? "ok" : "error";
-    if (field === "confirm")  return val === form.password && val ? "ok" : "error";
-    return null;
+    if (field === "fname" || field === "lname") {
+      return val.trim() ? { status: "ok", msg: "" } : { status: "error", msg: "Required." };
+    }
+    if (field === "email") {
+      if (!val.trim()) return { status: "error", msg: "Email is required." };
+      if (!isEmail(val)) return { status: "error", msg: "Please enter a valid email address." };
+      return { status: "ok", msg: "" };
+    }
+    if (field === "password") {
+      if (!val) return { status: "error", msg: "Password is required." };
+      if (val.length < 8) return { status: "error", msg: "Must be at least 8 characters." };
+      return { status: "ok", msg: "" };
+    }
+    if (field === "confirm") {
+      if (!val) return { status: "error", msg: "Please confirm your password." };
+      if (val !== form.password) return { status: "error", msg: "Passwords do not match." };
+      return { status: "ok", msg: "" };
+    }
+    return { status: null, msg: "" };
   };
 
   const touch = (field) => () => {
     const val = form[field];
-    if (!val && field !== "fname" && field !== "lname") return;
     setTouched((t) => ({ ...t, [field]: true }));
     setErrors((e) => ({ ...e, [field]: validate(field, val) }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setBackendError("");
+
     const fields = ["fname","lname","email","password","confirm"];
     const newErrors = {};
     fields.forEach((f) => { newErrors[f] = validate(f, form[f]); });
     setErrors(newErrors);
     setTouched(Object.fromEntries(fields.map((f) => [f, true])));
-    if (!terms) { alert("Please accept the Terms of Stay to continue."); return; }
-    if (fields.every((f) => newErrors[f] === "ok")) navigate("/validation");
+
+    if (!terms) {
+      setBackendError("Please accept the Terms of Stay to continue.");
+      return;
+    }
+    if (!fields.every((f) => newErrors[f]?.status === "ok")) return;
+
+    const fullName = `${form.fname.trim()} ${form.lname.trim()}`;
+    const result = await register({ name: fullName, email: form.email, password: form.password });
+
+    if (result.success) {
+      navigate("/account");
+    } else {
+      setBackendError(result.message || "Registration failed. Please try again.");
+    }
   };
 
-  const st = (field) => touched[field] ? errors[field] : undefined;
+  const st = (field) => touched[field] ? errors[field]?.status : undefined;
+  const msg = (field) => errors[field]?.msg;
 
   const S = {
     page:  { display:"grid", gridTemplateColumns:"45% 55%", minHeight:"100vh", fontFamily:"'DM Sans',sans-serif" },
@@ -136,14 +162,8 @@ export default function Signup() {
       background: colors.lova, position:"relative", overflow:"hidden",
       display:"flex", flexDirection:"column", justifyContent:"space-between", padding:"44px 44px 48px",
     },
-    leftOverlay: {
-      content:"", position:"absolute", inset:0,
-      background:"radial-gradient(ellipse 80% 70% at 30% 40%, rgba(191,182,206,0.4) 0%, transparent 65%)",
-      pointerEvents:"none",
-    },
     heading: { marginTop: 60, fontFamily:"'Playfair Display',serif", fontWeight:400, fontSize:"clamp(26px,3vw,38px)", lineHeight:1.2, color:colors.white, marginBottom:14 },
     sub:   { fontSize:13, fontWeight:300, color:colors.white, lineHeight:1.75, maxWidth:280, marginBottom:36 },
-    
     right: {
       background:colors.white, padding:"50px 60px 50px 54px",
       position:"relative", overflow:"hidden", borderLeft:`1px solid rgba(191,182,206,0.4)`,
@@ -169,18 +189,32 @@ export default function Signup() {
     terms: { display:"flex", alignItems:"flex-start", gap:10, margin:"16px 0 22px" },
     chk: (on) => ({
       width:16, height:16, borderRadius:4, border:`1.5px solid ${colors.lova}`,
-      background: on ? colors.white : colors.lova, cursor:"pointer",
+      background: on ? colors.lova : colors.white, cursor:"pointer",
       position:"relative", flexShrink:0, marginTop:2, transition:"background .2s",
     }),
     termsP: { fontSize:12, fontWeight:300, color:colors.lova, lineHeight:1.65, cursor:"pointer", userSelect:"none" },
     termsA: { color:colors.lova, textDecoration:"none" },
     btnCta: {
-      width:"100%", padding:13, borderRadius:9, background:colors.green, color:"#fff", border:"none", cursor:"pointer",
+      width:"100%", padding:13, borderRadius:9,
+      background: loading ? colors.sageDark : colors.green,
+      color:"#fff", border:"none",
+      cursor: loading ? "not-allowed" : "pointer",
       fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:500, letterSpacing:"0.06em",
       display:"flex", alignItems:"center", justifyContent:"center", gap:9,
       boxShadow:"0 4px 14px rgba(64,109,97,0.28)", transition:"background .3s,transform .2s",
+      opacity: loading ? 0.8 : 1,
     },
     loginPrompt: { textAlign:"center", fontSize:12, fontWeight:300, color:colors.muted, marginTop:16 },
+    backendErrorBox: {
+      background: colors.errorBg,
+      border: `1px solid ${colors.errorBorder}`,
+      borderRadius: 8,
+      padding: "10px 14px",
+      marginBottom: 16,
+      fontSize: 12,
+      color: colors.error,
+      fontWeight: 400,
+    },
   };
 
   return (
@@ -196,8 +230,6 @@ export default function Signup() {
 
         {/* ── LEFT ── */}
         <div style={S.left}>
-
-          {/* Big botanical sprig art */}
           <svg style={{ position:"absolute", bottom:0, right:-20, zIndex:1, width:220, opacity:0.35, pointerEvents:"none" }}
             viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
             <line x1="100" y1="400" x2="100" y2="40" stroke="#9b92b8" strokeWidth="2.5" />
@@ -231,7 +263,6 @@ export default function Signup() {
 
         {/* ── RIGHT ── */}
         <div style={S.right}>
-          {/* top sprig accent */}
           <svg style={{ position:"absolute", top:-5, right:30, width:80, opacity:0.2, pointerEvents:"none" }}
             viewBox="0 0 80 140" xmlns="http://www.w3.org/2000/svg">
             <line x1="40" y1="140" x2="40" y2="38" stroke="#9b92b8" strokeWidth="1.5" />
@@ -243,7 +274,7 @@ export default function Signup() {
           </svg>
 
           <div style={{ maxWidth:420, margin:"0 auto", animation:"fadeUp .8s ease both" }}>
-            <button style={S.back} onClick={() => navigate("/login")}>
+            <button style={S.back} onClick={() => navigate("/Login")}>
               ← Back to Login
             </button>
 
@@ -251,6 +282,13 @@ export default function Signup() {
               Join <em style={{ fontStyle:"italic", color:colors.lova }}>Lovender</em>
             </h2>
             <p style={S.formSub}>Create your account and step onto the island.</p>
+
+            {/* Backend error banner */}
+            {backendError && (
+              <div style={S.backendErrorBox}>
+                {backendError}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} noValidate>
 
@@ -263,19 +301,19 @@ export default function Signup() {
                 <div>
                   <FormInput label="First Name" id="fname" placeholder="Élise"
                     value={form.fname} onChange={update("fname")} onBlur={touch("fname")}
-                    status={st("fname")} errorMsg="Required." />
+                    status={st("fname")} errorMsg={msg("fname")} />
                 </div>
                 <div>
                   <FormInput label="Last Name" id="lname" placeholder="Moreau"
                     value={form.lname} onChange={update("lname")} onBlur={touch("lname")}
-                    status={st("lname")} errorMsg="Required." />
+                    status={st("lname")} errorMsg={msg("lname")} />
                 </div>
               </div>
 
               <div style={S.fieldWrap}>
                 <FormInput label="Email Address" id="email" type="email" placeholder="your@email.com"
                   value={form.email} onChange={update("email")} onBlur={touch("email")}
-                  status={st("email")} errorMsg="Please enter a valid email address." />
+                  status={st("email")} errorMsg={msg("email")} />
               </div>
 
               <div style={S.fieldWrap}>
@@ -285,7 +323,7 @@ export default function Signup() {
 
               <div style={S.secLabel}>
                 Account Security
-                <div style={{ flex:1, height:1, background:"#0e081f" , opacity:1 }} />
+                <div style={{ flex:1, height:1, background:"#0e081f", opacity:1 }} />
               </div>
 
               <div style={S.fieldWrap}>
@@ -296,10 +334,11 @@ export default function Signup() {
                   type="password" placeholder="Min. 8 characters" value={form.password}
                   onChange={update("password")} onBlur={touch("password")}
                   style={{
-                    width:"100%", background: st("password") === "error" ? colors.lavSofter : colors.lavSofter,
+                    width:"100%",
+                    background: st("password") === "error" ? colors.errorBg : colors.lavSofter,
                     border:`1.5px solid ${st("password")==="error" ? colors.errorBorder : st("password")==="ok" ? colors.sageLight : "rgba(191,182,206,0.55)"}`,
                     borderRadius:9, padding:"11px 14px", fontFamily:"'DM Sans',sans-serif",
-                    fontSize:14, fontWeight:300, color:colors.lova, outline:"none", 
+                    fontSize:14, fontWeight:300, color:colors.lova, outline:"none",
                   }}
                 />
                 {/* Strength bar */}
@@ -316,14 +355,14 @@ export default function Signup() {
                   </>
                 )}
                 {st("password") === "error" && (
-                  <p style={{ fontSize:10.5, color:colors.lavSofter, marginTop:4, fontWeight:300 }}>Must be at least 8 characters.</p>
+                  <p style={{ fontSize:10.5, color:colors.error, marginTop:4, fontWeight:300 }}>{msg("password")}</p>
                 )}
               </div>
 
               <div style={S.fieldWrap}>
                 <FormInput label="Confirm Password" id="confirm" type="password" placeholder="••••••••"
                   value={form.confirm} onChange={update("confirm")} onBlur={touch("confirm")}
-                  status={st("confirm")} errorMsg="Passwords do not match." />
+                  status={st("confirm")} errorMsg={msg("confirm")} />
               </div>
 
               {/* Terms */}
@@ -344,18 +383,18 @@ export default function Signup() {
               </div>
 
               <button
-                type="submit" style={S.btnCta}
-                onMouseEnter={(e) => { e.currentTarget.style.background = colors.green; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = colors.green; }}
+                type="submit"
+                style={S.btnCta}
+                disabled={loading}
               >
-                Create My Account
+                {loading ? "Creating Account…" : "Create My Account"}
               </button>
             </form>
 
             <p style={S.loginPrompt}>
               Already a member?{" "}
               <span
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/Login")}
                 style={{ color:colors.navy, fontWeight:500, cursor:"pointer", borderBottom:`1px solid ${colors.lova}`, paddingBottom:1 }}
               >
                 Sign in here

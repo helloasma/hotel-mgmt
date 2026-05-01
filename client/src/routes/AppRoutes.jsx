@@ -11,6 +11,7 @@ import Signup from "../pages/Account/Signup";
 import Validation from "../pages/Account/Validation";
 import Booking from "../pages/Rooms/Booking";
 import Journey from "../pages/Journey/Journey";
+
 import AdminLogin from "../pages/Account/AdminLogin";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import BookingManagement from "../pages/Admin/BookingManagement";
@@ -19,22 +20,20 @@ import UserManagement from "../pages/Admin/UserManagement";
 import AdminLayout from "../layouts/AdminLayout";
 import ProtectedAdminRoute from "./ProtectedAdminRoute";
 
+import PrivateRoute from "../components/PrivateRoute";
+
 function AppRoutes() {
   return (
     <Routes>
-      {/* Regular Routes */}
+
+      {/* Public routes */}
       <Route path="/" element={<Home />} />
-      <Route path="/account" element={<Account />} />
-      <Route path="/rooms" element={<Rooms />} />
-      <Route path="/rooms/:id" element={<RoomDetails />} />
-      <Route path="/booking" element={<Booking />} />
-      <Route path="/booking/:roomId" element={<Booking />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/Signup" element={<Signup />} />
-      <Route path="/Validation" element={<Validation />} />
+      <Route path="/rooms" element={<PrivateRoute showPrompt pageName="the Rooms page" pageDesc="explore our rooms"><Rooms /></PrivateRoute>} />
+      <Route path="/rooms/:id" element={<PrivateRoute showPrompt pageName="the Rooms page" pageDesc="explore our rooms"><RoomDetails /></PrivateRoute>} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
       <Route path="/journey" element={<Journey />} />
+
 
       {/* Admin Routes */}
       <Route path="/admin/login" element={<AdminLogin />} />
@@ -46,6 +45,36 @@ function AppRoutes() {
         <Route path="/admin/rooms" element={<AdminLayout><RoomManagement /></AdminLayout>} />
         <Route path="/admin/users" element={<AdminLayout><UserManagement /></AdminLayout>} />
       </Route>
+
+      <Route path="/Login" element={<Login />} />
+      <Route path="/Signup" element={<Signup />} />
+      <Route path="/Validation" element={<Validation />} />
+
+      {/* Protected: logged-in users only */}
+      <Route
+        path="/account"
+        element={
+          <PrivateRoute>
+            <Account />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/booking"
+        element={
+          <PrivateRoute>
+            <Booking />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/booking/:roomId"
+        element={
+          <PrivateRoute>
+            <Booking />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 }
