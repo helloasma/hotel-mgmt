@@ -10,16 +10,7 @@ const roomSchema = new mongoose.Schema(
     type: {
       type: String,
       required: [true, "Room type is required"],
-      enum: [
-        "classic-standard",
-        "overwater-bungalow-suite",
-        "mountain-hotel-deluxe",
-        "honeymoon",
-        "overwater-bungalow",
-        "mountain-suite",
-        "forest-cabin",
-        "forest-cabin-suit"
-      ],
+      enum: ["Suite", "Standard"],
     },
     description: {
       type: String,
@@ -52,9 +43,9 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: [true, "Category is required"],
       enum: [
-        "Hotel",
-        "Cabin",
         "Bungalow",
+        "Cabin",
+        "Hotel",
       ],
     },
     size: {
@@ -80,23 +71,12 @@ const roomSchema = new mongoose.Schema(
   }
 );
 
-// Refactor pre-save hook to properly handle `next()`
-roomSchema.pre("save", async function (next) {
-  try {
-    // Set availableRooms equal to totalRooms only if the room is new
-    if (this.isNew && this.isModified("totalRooms")) {
-      this.availableRooms = this.totalRooms;
-    }
-
-    // Ensure `available` is correctly set based on availableRooms
-    if (this.isModified("availableRooms")) {
-      this.available = this.availableRooms > 0;
-    }
-
-    // Proceed to the next function in the chain
-    next();
-  } catch (error) {
-    next(error);  // Pass any error to the next handler
+roomSchema.pre("save", async function () {
+  if (this.isNew && this.isModified("totalRooms")) {
+    this.availableRooms = this.totalRooms;
+  }
+  if (this.isModified("availableRooms")) {
+    this.available = this.availableRooms > 0;
   }
 });
 

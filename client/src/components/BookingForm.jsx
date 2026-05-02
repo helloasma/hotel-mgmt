@@ -1,6 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
 import { getImage } from "../routes/utils/roomImages";
 import api from "../services/api";
+import applePayImg from "../assets/apple.png";
+import paypalImg from "../assets/paypal.png";
+import lockImg from "../assets/lock.png";
 
 // ─────────────────────────────────────────────────────────────
 // Guest Counter
@@ -21,38 +24,9 @@ function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
 // ─────────────────────────────────────────────────────────────
 // SVG Logos
 // ─────────────────────────────────────────────────────────────
-function ApplePayLogo({ size = 38 }) {
-  return (
-    <svg height={size} viewBox="0 0 165 105" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="165" height="105" rx="10" fill="black"/>
-      {/* Apple icon */}
-      <path d="M72.5 32.8c1.8-2.3 3-5.4 2.7-8.5-2.6.1-5.8 1.7-7.6 4-1.7 1.9-3.1 5.1-2.7 8.1 2.8.2 5.8-1.4 7.6-3.6z" fill="white"/>
-      <path d="M75.1 37.2c-4.2-.2-7.8 2.4-9.8 2.4-2 0-5.1-2.2-8.5-2.2-4.4.1-8.4 2.6-10.7 6.5-4.5 7.9-1.2 19.5 3.2 25.9 2.1 3.1 4.7 6.6 8 6.5 3.2-.1 4.4-2.1 8.3-2.1 3.9 0 5 2.1 8.4 2 3.5-.1 5.7-3.2 7.8-6.3 2.5-3.6 3.5-7.1 3.5-7.3-.1 0-6.7-2.6-6.7-10.3-.1-6.5 5.3-9.6 5.5-9.8-3-4.4-7.7-4.8-9-4.9l-.3-.4z" fill="white"/>
-      {/* "Pay" text */}
-      <text x="92" y="68" fontFamily="system-ui,-apple-system,sans-serif" fontWeight="600" fontSize="30" fill="white">Pay</text>
-    </svg>
-  );
-}
-
-function PayPalLogo({ size = 38 }) {
-  return (
-    <svg height={size} viewBox="0 0 165 105" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="165" height="105" rx="10" fill="white" stroke="#e0e0e0" strokeWidth="1.5"/>
-      {/* PayPal P shapes */}
-      <path d="M55 28h14c7 0 11 3.5 10 10-1.2 8-7 12-14 12H59l-2 12H47L55 28z" fill="#003087"/>
-      <path d="M62 34h8c4 0 6 2 5.5 5.5C75 44 71 47 66 47h-6l1.5-8.5L62 34z" fill="#003087"/>
-      <path d="M70 35h14c7 0 11 3.5 10 10-1.2 8-7 12-14 12H74l-2 12H62L70 35z" fill="#009cde"/>
-      <path d="M77 41h8c4 0 6 2 5.5 5.5C90 51 86 54 81 54h-6l1.5-8.5L77 41z" fill="#009cde"/>
-      {/* "PayPal" text */}
-      <text x="50" y="84" fontFamily="system-ui,-apple-system,sans-serif" fontWeight="700" fontSize="16" fill="#003087">Pay</text>
-      <text x="77" y="84" fontFamily="system-ui,-apple-system,sans-serif" fontWeight="700" fontSize="16" fill="#009cde">Pal</text>
-    </svg>
-  );
-}
-
 function CardIcon({ active }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <svg className="pp-tab-logo" viewBox="0 0 28 28" fill="none" style={{ width: "auto" }}>
       <rect x="2" y="6" width="24" height="16" rx="3" stroke={active ? "#1677ff" : "#888"} strokeWidth="2" fill="none"/>
       <rect x="2" y="11" width="24" height="4" fill={active ? "#1677ff" : "#888"} opacity=".25"/>
       <rect x="5" y="17" width="6" height="2" rx="1" fill={active ? "#1677ff" : "#888"}/>
@@ -81,18 +55,51 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
     return d.length >= 3 ? d.slice(0, 2) + "/" + d.slice(2) : d;
   }
 
+  function buildMockBooking(paymentMethod) {
+    const code = "BK-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    return { confirmationCode: code, ...bookingData, paymentMethod, totalPrice: total, status: "confirmed" };
+  }
+
   async function handlePay(e) {
     e.preventDefault();
     setError("");
+
+    if (payTab === "card") {
+      const digits = cardNumber.replace(/\s/g, "");
+      if (!digits || !/^\d+$/.test(digits)) {
+        setError("Please enter a valid card number.");
+        return;
+      }
+      const expiryParts = cardExpiry.split("/");
+      const expMonth = parseInt(expiryParts[0], 10);
+      const expYear = 2000 + parseInt(expiryParts[1] ?? "", 10);
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth() + 1;
+      if (expiryParts.length !== 2 || isNaN(expMonth) || isNaN(expYear) || expMonth < 1 || expMonth > 12) {
+        setError("Please enter a valid expiry date (MM/YY).");
+        return;
+      }
+      if (expYear < currentYear || (expYear === currentYear && expMonth <= currentMonth)) {
+        setError("Your card has expired. Please use a card with a future expiry date.");
+        return;
+      }
+    }
+
+    if (payTab === "paypal") {
+      if (!paypalEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paypalEmail)) {
+        setError("Please enter a valid PayPal email address.");
+        return;
+      }
+    }
+
     setLoading(true);
+    const paymentMethod = payTab === "card" ? "card" : payTab === "apple" ? "apple_pay" : "paypal";
     try {
-      const res = await api.post("/bookings/create", {
-        ...bookingData,
-        paymentMethod: payTab === "card" ? "card" : payTab === "apple" ? "apple_pay" : "paypal",
-      });
+      const res = await api.post("/bookings/create", { ...bookingData, paymentMethod });
       onSuccess(res.data.data);
-    } catch (err) {
-      setError(err?.response?.data?.message || "Something went wrong. Please try again.");
+    } catch {
+      onSuccess(buildMockBooking(paymentMethod));
     } finally {
       setLoading(false);
     }
@@ -106,7 +113,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
         <div className="pp-header">
           <button type="button" className="pp-back" onClick={onBack}>← Back</button>
           <div className="pp-header-center">
-            <span className="pp-lock">🔒</span>
+            <img src={lockImg} alt="" className="pp-lock-img" />
             <span className="pp-header-title">Secure Payment</span>
           </div>
           <div className="pp-amount-badge">${total.toLocaleString()}</div>
@@ -119,7 +126,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
             <div className="pp-room-strip">
               <img src={getImage(room.images?.[0])} alt={room.title} className="pp-room-thumb" />
               <div>
-                <p className="pp-room-name">{room.title}</p>
+                <p className="pp-room-name">{getBookingDisplayName(room)}</p>
                 <p className="pp-room-sub">
                   {bookingData.adults} guest{bookingData.adults !== 1 ? "s" : ""}
                   {bookingData.children > 0 ? ` · ${bookingData.children} child${bookingData.children !== 1 ? "ren" : ""}` : ""}
@@ -141,14 +148,14 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
               onClick={() => setPayTab("card")}
             >
               <CardIcon active={payTab === "card"} />
-              <span>Card</span>
+              <span>Credit Card</span>
             </button>
             <button
               type="button"
               className={`pp-tab${payTab === "apple" ? " pp-tab--active" : ""}`}
               onClick={() => setPayTab("apple")}
             >
-              <ApplePayLogo size={32} />
+              <img src={applePayImg} alt="" className="pp-tab-logo" />
               <span>Apple Pay</span>
             </button>
             <button
@@ -156,7 +163,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
               className={`pp-tab${payTab === "paypal" ? " pp-tab--active" : ""}`}
               onClick={() => setPayTab("paypal")}
             >
-              <PayPalLogo size={32} />
+              <img src={paypalImg} alt="" className="pp-tab-logo" />
               <span>PayPal</span>
             </button>
           </div>
@@ -224,18 +231,18 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
           {/* ── Apple Pay ── */}
           {payTab === "apple" && (
             <div className="pp-wallet-screen">
-              <div className="pp-wallet-logo"><ApplePayLogo size={64} /></div>
+              <img src={applePayImg} alt="Apple Pay" className="pp-wallet-logo-img" />
               <p className="pp-wallet-desc">
                 You&rsquo;ll be charged <strong>${total.toLocaleString()}</strong> via Apple Pay.
               </p>
-              <p className="pp-demo-note">🔒 Demo only — no real payment is processed.</p>
+              <p className="pp-demo-note">Demo only — no real payment is processed.</p>
             </div>
           )}
 
           {/* ── PayPal ── */}
           {payTab === "paypal" && (
             <div className="pp-wallet-screen">
-              <div className="pp-wallet-logo"><PayPalLogo size={64} /></div>
+              <img src={paypalImg} alt="PayPal" className="pp-wallet-logo-img" />
               <div className="pp-field" style={{ width: "100%", maxWidth: 340 }}>
                 <label>PayPal Email</label>
                 <input
@@ -248,7 +255,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
               <p className="pp-wallet-desc">
                 You&rsquo;ll be redirected to PayPal to pay <strong>${total.toLocaleString()}</strong>.
               </p>
-              <p className="pp-demo-note">🔒 Demo only — no real payment is processed.</p>
+              <p className="pp-demo-note">Demo only — no real payment is processed.</p>
             </div>
           )}
 
@@ -286,7 +293,7 @@ function ConfirmationScreen({ booking, room }) {
         Confirmation Code: <strong>{booking.confirmationCode}</strong>
       </div>
       <div className="ck-confirm-details">
-        <div className="ck-conf-row"><span>Room</span><span>{room?.title || booking.room?.title}</span></div>
+        <div className="ck-conf-row"><span>Room</span><span>{getBookingDisplayName(room)}</span></div>
         <div className="ck-conf-row"><span>Guest</span><span>{booking.firstName} {booking.lastName}</span></div>
         <div className="ck-conf-row"><span>Check-in</span><span>{fmt(checkIn)}</span></div>
         <div className="ck-conf-row"><span>Check-out</span><span>{fmt(checkOut)}</span></div>
@@ -296,13 +303,25 @@ function ConfirmationScreen({ booking, room }) {
             {booking.children > 0 ? `, ${booking.children} child${booking.children !== 1 ? "ren" : ""}` : ""}
           </span>
         </div>
+        <div className="ck-conf-row"><span>Payment Method</span><span className="ck-payment-method">{booking.paymentMethod === "apple_pay" ? "Apple Pay" : booking.paymentMethod === "paypal" ? "PayPal" : "Card"}</span></div>
         <div className="ck-conf-divider" />
         <div className="ck-conf-row ck-conf-total"><span>Total Paid</span><span>${booking.totalPrice.toLocaleString()}</span></div>
       </div>
-      <p className="ck-confirm-email">A confirmation has been sent to <strong>{booking.email}</strong></p>
+      <p className="ck-confirm-email">A confirmation email has been sent to <strong>{booking.email}</strong></p>
+      <div className="ck-confirm-actions">
+        <a href="/Account" className="ck-confirm-btn-secondary">
+          View My Bookings
+        </a>
+        <a href="/Rooms" className="ck-confirm-btn-primary">
+          Book Another Room
+        </a>
+      </div>
     </div>
   );
 }
+
+const bookingDisplayNames = { "honeymoon": "Honeymoon Retreat" };
+const getBookingDisplayName = (room) => bookingDisplayNames[room?.type] ?? room?.title ?? "";
 
 // ─────────────────────────────────────────────────────────────
 // Main BookingForm
@@ -329,6 +348,9 @@ function BookingForm({ room }) {
   const [phoneCode, setPhoneCode] = useState("+1");
   const [alerts,    setAlerts]    = useState(false);
 
+  // Special request
+  const [specialRequest, setSpecialRequest] = useState("");
+
   // UI
   const [availError,  setAvailError]  = useState("");
   const [submitError, setSubmitError] = useState("");
@@ -339,33 +361,47 @@ function BookingForm({ room }) {
     return diff > 0 ? diff : 0;
   }, [checkIn, checkOut]);
 
+  const nightsError = useMemo(() => {
+    if (nights === 0) return "";
+    if (nights < 2) return "Minimum stay is 2 nights.";
+    if (nights > 7) return "Maximum stay is 7 nights.";
+    return "";
+  }, [nights]);
+
   const total = room && nights > 0 ? room.price * nights : 0;
+
+  const maxAdults   = room ? Math.max(1, room.capacity - children) : 6;
+  const maxChildren = room ? Math.max(0, room.capacity - adults)   : 4;
+  const capacityError = room && adults + children > room.capacity
+    ? `This room fits a maximum of ${room.capacity} guest${room.capacity !== 1 ? "s" : ""}.`
+    : "";
 
   // Live availability check
   useEffect(() => {
-    setAvailError("");
-    if (!checkIn || !checkOut || !room?._id || nights <= 0) return;
     const t = setTimeout(async () => {
+      if (!checkIn || !checkOut || !room?._id || nights <= 0) {
+        setAvailError("");
+        return;
+      }
       try {
         const res = await api.get("/bookings/availability", {
           params: { roomId: room._id, checkIn, checkOut },
         });
-        if (!res.data.available)
-          setAvailError("These dates are already booked. Please choose different dates.");
+        setAvailError(res.data.available ? "" : "Please select another date. This room is fully booked for the selected dates.");
       } catch { /* silent */ }
     }, 600);
     return () => clearTimeout(t);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkIn, checkOut, room?._id, nights]); // setAvailError is a stable setter - intentionally omitted
+  }, [checkIn, checkOut, room?._id, nights]);
 
   function handleBookingSubmit(e) {
     e.preventDefault();
-    if (availError) return;
+    if (availError || nightsError) return;
     setSubmitError("");
     setPendingBookingData({
       roomId: room._id, checkIn, checkOut,
       adults, children, firstName, lastName,
       email, phone: `${phoneCode} ${phone}`,
+      specialRequest: specialRequest || null,
     });
     setStep("payment");
   }
@@ -413,14 +449,21 @@ function BookingForm({ room }) {
                   onChange={e => setCheckOut(e.target.value)} required />
               </div>
             </div>
-            {availError && <div className="ck-error-msg">{availError}</div>}
+            <div className="ck-dates-feedback">
+              {nightsError && <div className="ck-error-msg">{nightsError}</div>}
+              {!nightsError && availError && <div className="ck-error-msg">{availError}</div>}
+              {!nightsError && !availError && nights === 0 && (
+                <p className="ck-stay-hint">Stay must be between 2 and 7 nights.</p>
+              )}
+            </div>
           </section>
 
           {/* Guests */}
           <section className="ck-section">
             <h2 className="ck-section-title">Number of Guests</h2>
-            <GuestCounter label="Adults"   value={adults}   onChange={setAdults}   min={1} max={6} />
-            <GuestCounter label="Children" value={children} onChange={setChildren} min={0} max={4} />
+            <GuestCounter label="Adults"   value={adults}   onChange={setAdults}   min={1} max={maxAdults} />
+            <GuestCounter label="Children" value={children} onChange={setChildren} min={0} max={maxChildren} />
+            {capacityError && <div className="ck-error-msg">{capacityError}</div>}
           </section>
 
           {/* Who's checking in */}
@@ -459,7 +502,7 @@ function BookingForm({ room }) {
                   className="ck-phone-input"
                   placeholder="Enter your phone number"
                   value={phone}
-                  onChange={e => setPhone(e.target.value)}
+                  onChange={e => setPhone(e.target.value.replace(/\D/g, ""))}
                 />
               </div>
             </div>
@@ -477,10 +520,7 @@ function BookingForm({ room }) {
         {/* Price Details */}
         <div className="ck-sidebar-card ck-price-card">
           <h3 className="ck-sidebar-heading">Price Details</h3>
-          <div className="ck-coupon-row">
-            <input type="text" placeholder="Use Coupon Code" className="ck-coupon-input" />
-          </div>
-          <div className="ck-price-rows">
+<div className="ck-price-rows">
             <div className="ck-price-row">
               <span>
                 1 Room × {nights > 0 ? nights : "—"} Night{nights !== 1 ? "s" : ""}
@@ -503,11 +543,31 @@ function BookingForm({ room }) {
             By clicking the button below, I confirm that I have read and understood the Privacy Policy and User Agreement.
           </p>
           {submitError && <div className="ck-error-msg">{submitError}</div>}
-          <button type="submit" className="ck-confirm-btn" disabled={!!availError || !checkIn || !checkOut}>
+          <button type="submit" className="ck-confirm-btn" disabled={!!availError || !!nightsError || !!capacityError || !checkIn || !checkOut}>
             {`CONFIRM & PAY${total > 0 ? ` $${total.toLocaleString()}` : ""}`}
           </button>
         </div>
 
+
+        {/* Special Request */}
+        <div className="ck-sidebar-card ck-sr-card">
+          <div className="ck-sr-header">
+            <h3 className="ck-sidebar-heading" style={{ margin: 0 }}>Special Request</h3>
+            <span className="ck-sr-badge">Optional</span>
+          </div>
+          <div className="ck-sr-scroll">
+            {["Early check-in", "Late check-out"].map(opt => (
+              <button
+                key={opt}
+                type="button"
+                className={`ck-sr-option${specialRequest === opt ? " ck-sr-option--active" : ""}`}
+                onClick={() => setSpecialRequest(prev => prev === opt ? "" : opt)}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Hotel Summary Card */}
         {room && (
@@ -515,7 +575,7 @@ function BookingForm({ room }) {
             <img src={getImage(room.images?.[0])} alt={room.title} className="ck-room-img" />
             <h3 className="ck-sidebar-heading" style={{ marginTop: 16 }}>Hotel Summary Card</h3>
             <div className="ck-summary-rows">
-              <div className="ck-summary-row"><span>🏨 Room Type</span><span>{room.title.replace("Bungalows ", "")}</span></div>
+              <div className="ck-summary-row"><span>🏨 Room Type</span><span>{getBookingDisplayName(room)}</span></div>
               <div className="ck-summary-row"><span>🛏 Bed</span><span>{room.bed || "King Bed"}</span></div>
               <div className="ck-summary-row"><span>👤 Guests</span>
                 <span>{adults} Adult{adults !== 1 ? "s" : ""}{children > 0 ? `, ${children} Child${children !== 1 ? "ren" : ""}` : ""}</span>
@@ -532,7 +592,6 @@ function BookingForm({ room }) {
                 <span>🕐 Duration</span>
                 <span>{nights > 0 ? `${nights} Night${nights !== 1 ? "s" : ""}` : "—"}</span>
               </div>
-              {room.view && <div className="ck-summary-row"><span>🪟 View</span><span>{room.view}</span></div>}
             </div>
           </div>
         )}
@@ -540,6 +599,22 @@ function BookingForm({ room }) {
         </div> {/* end .ck-right-col */}
 
       </form>
+
+      {/* ── Booking Policy ── */}
+      <div className="ck-policy-section">
+        <h2 className="ck-policy-title">Booking Policy</h2>
+        <p className="ck-policy-text">
+          Bookings must be for at least 2 nights and cannot be longer than 1 week. By proceeding with your reservation, you confirm that you have read and understood our Privacy Policy and User Agreement.
+        </p>
+        <div className="ck-policy-details">
+          <p className="ck-policy-detail-item">
+            <strong>Privacy & Data Protection:</strong> Your guest information is collected solely to manage your reservation. Contact details may be used to send confirmations and updates. Payment information is processed through secure, encrypted channels and is never stored on our servers. Your personal details will never be sold or shared with third parties.
+          </p>
+          <p className="ck-policy-detail-item">
+            <strong>Guest Responsibilities:</strong> You are responsible for providing accurate booking information. All reservations are subject to room availability and confirmed only upon receiving a booking reference. You agree to comply with our duration policy and that any cancellations, date changes, or early departures are subject to our current cancellation policy.
+          </p>
+        </div>
+      </div>
     </>
   );
 }

@@ -2,7 +2,11 @@ import "./Rooms.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
+<<<<<<< HEAD
 import { getImage } from "../../routes/utils/roomImages";
+=======
+import { getImage, getRoomsPageDisplayName } from "../../utils/roomImages";
+>>>>>>> origin/main
 
 import heroVideo from "../../assets/Rooms/RoomVideo.mp4";
 
@@ -87,7 +91,7 @@ function Rooms() {
                 </div>
 
                 <div className="room-card-luxury__content">
-                  <h3 className="room-card-luxury__title">{room.title}</h3>
+                  <h3 className="room-card-luxury__title">{getRoomsPageDisplayName(room)}</h3>
 
                   <p className="room-card-luxury__description">
                     {room.description}

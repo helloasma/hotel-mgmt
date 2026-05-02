@@ -6,14 +6,47 @@ const {
   updateOperationStaff,
   deleteOperationStaff,
 } = require("../controllers/operationStaffController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+
+const {
+  protectAdmin,
+  allowRoles,
+} = require("../middleware/adminAuthMiddleware");
 
 const router = express.Router();
 
-router.get("/", protect, adminOnly, getAllOperationStaff);
-router.get("/:id", protect, adminOnly, getOperationStaffById);
-router.post("/", protect, adminOnly, createOperationStaff);
-router.put("/:id", protect, adminOnly, updateOperationStaff);
-router.delete("/:id", protect, adminOnly, deleteOperationStaff);
+router.get(
+  "/",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  getAllOperationStaff
+);
+
+router.get(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  getOperationStaffById
+);
+
+router.post(
+  "/",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  createOperationStaff
+);
+
+router.put(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  updateOperationStaff
+);
+
+router.delete(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  deleteOperationStaff
+);
 
 module.exports = router;

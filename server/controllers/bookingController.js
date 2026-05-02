@@ -17,16 +17,27 @@ const checkAvailability = async (req, res, next) => {
       return res.status(400).json({ success: false, message: "Check-out must be after check-in." });
     }
 
-    // Find any booking that overlaps with the requested check-in/check-out dates
-    const conflict = await Booking.findOne({
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json({ success: false, message: "Room not found." });
+    }
+
+    // Count confirmed bookings that overlap with the requested date range
+    const bookedCount = await Booking.countDocuments({
       room: roomId,
       status: "confirmed",
-      $or: [
-        { checkIn: { $lt: checkOutDate }, checkOut: { $gt: checkInDate } } // Checking if dates overlap
-      ],
+      checkIn: { $lt: checkOutDate },
+      checkOut: { $gt: checkInDate },
     });
 
-    return res.json({ success: true, available: !conflict });
+    const remainingUnits = room.totalRooms - bookedCount;
+
+    return res.json({
+      success: true,
+      available: bookedCount < room.totalRooms,
+      remainingUnits,
+      totalUnits: room.totalRooms,
+    });
   } catch (error) {
     next(error);
   }
@@ -50,31 +61,39 @@ const createBooking = async (req, res, next) => {
       specialRequest,
     } = req.body;
 
-    // Validate room and booking dates
     const room = await Room.findById(roomId);
     if (!room) return res.status(404).json({ success: false, message: "Room not found." });
 
-    // Check if the room is available for the requested dates
+    // Capacity check
+    const totalGuests = (adults || 1) + (children || 0);
+    if (totalGuests > room.capacity) {
+      return res.status(400).json({
+        success: false,
+        message: `This room has a maximum capacity of ${room.capacity} guest${room.capacity !== 1 ? "s" : ""}.`,
+      });
+    }
+
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
 
-    // Check if there's any booking for the room within the same dates
-    const conflict = await Booking.findOne({
+    // Count confirmed bookings that overlap with the requested date range
+    const bookedCount = await Booking.countDocuments({
       room: roomId,
       status: "confirmed",
-      $or: [
-        { checkIn: { $lt: checkOutDate }, checkOut: { $gt: checkInDate } } // Dates overlap
-      ],
+      checkIn: { $lt: checkOutDate },
+      checkOut: { $gt: checkInDate },
     });
 
-    if (conflict) {
-      return res.status(400).json({ success: false, message: "Room is already booked for the selected dates." });
+    if (bookedCount >= room.totalRooms) {
+      return res.status(400).json({
+        success: false,
+        message: "Please select another date. This room is fully booked for the selected dates.",
+      });
     }
 
     const nights = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / 86400000);
     const totalPrice = room.price * nights;
 
-    // Create booking
     const booking = await Booking.create({
       user: req.user._id,
       room: roomId,
@@ -91,16 +110,12 @@ const createBooking = async (req, res, next) => {
       specialRequest,
     });
 
-    // Update the room's available rooms
-    room.availableRooms -= 1; // Decrease available rooms by 1
-    if (room.availableRooms === 0) {
-      room.available = false; // Mark room as unavailable if no rooms left
-    }
-    await room.save();
+    // Populate room details before returning
+    const populatedBooking = await Booking.findById(booking._id).populate("room", "title price images");
 
-    const populated = await booking.populate("room", "title price images");
-    return res.status(201).json({ success: true, data: populated });
+    res.status(201).json({ success: true, data: populatedBooking });
   } catch (error) {
+    console.error("Booking creation error:", error);
     next(error);
   }
 };
@@ -110,7 +125,12 @@ const createBooking = async (req, res, next) => {
 // Get all bookings (admin)
 const getAllBookings = async (req, res, next) => {
   try {
-    const bookings = await Booking.find().populate("room", "title price").sort({ createdAt: -1 });
+    const bookings = await Booking.find()
+      .populate({
+        path: "room",
+        select: "title price images"
+      })
+      .sort({ createdAt: -1 });
     return res.json({ success: true, data: bookings });
   } catch (error) {
     next(error);
@@ -121,7 +141,10 @@ const getAllBookings = async (req, res, next) => {
 const getUserBookings = async (req, res, next) => {
   try {
     const bookings = await Booking.find({ user: req.user._id })
-      .populate("room", "title price images")
+      .populate({
+        path: "room",
+        select: "title price images"
+      })
       .sort({ createdAt: -1 });
     return res.json({ success: true, data: bookings });
   } catch (error) {
@@ -138,24 +161,17 @@ const cancelBooking = async (req, res, next) => {
     if (booking.user.toString() !== req.user._id.toString())
       return res.status(403).json({ success: false, message: "Not authorized." });
 
-    booking.status = "cancelled"; // Update booking status to cancelled
-    await booking.save();  // Save the updated booking status
+    booking.status = "cancelled";
+    await booking.save();
 
-    // Free up the room after cancellation
-    const room = await Room.findById(booking.room);
-    room.availableRooms += 1; // Increase available rooms by 1
-    if (room.availableRooms > 0) {
-      room.available = true;  // Make room available if there are available rooms
-    }
-    await room.save(); // Save the updated room status
+    // Populate room details before returning
+    const populatedBooking = await Booking.findById(booking._id).populate("room", "title price images");
 
-    return res.json({ success: true, data: booking });
+    return res.json({ success: true, data: populatedBooking });
   } catch (error) {
     next(error);
   }
 };
-
-
 
 
 // ADMIN: update booking status

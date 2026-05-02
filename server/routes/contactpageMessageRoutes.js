@@ -1,4 +1,5 @@
 const express = require("express");
+
 const {
   getAllContactMessages,
   getContactMessageById,
@@ -6,14 +7,44 @@ const {
   updateContactMessage,
   deleteContactMessage,
 } = require("../controllers/contactpageMessageController");
-const { protect, userSupportOnly } = require("../middleware/authMiddleware");
+
+const {
+  protectAdmin,
+  allowRoles,
+} = require("../middleware/adminAuthMiddleware");
 
 const router = express.Router();
 
-router.get("/", protect, userSupportOnly, getAllContactMessages);
-router.get("/:id", protect, userSupportOnly, getContactMessageById);
+// Admin side: Chief Manager and User support only
+router.get(
+  "/",
+  protectAdmin,
+  allowRoles("Chief Manager", "User support"),
+  getAllContactMessages
+);
+
+router.get(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "User support"),
+  getContactMessageById
+);
+
+// Public website contact form
 router.post("/", createContactMessage);
-router.put("/:id", protect, userSupportOnly, updateContactMessage);
-router.delete("/:id", protect, userSupportOnly, deleteContactMessage);
+
+router.put(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "User support"),
+  updateContactMessage
+);
+
+router.delete(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "User support"),
+  deleteContactMessage
+);
 
 module.exports = router;

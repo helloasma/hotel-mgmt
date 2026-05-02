@@ -2,11 +2,19 @@ const express = require("express");
 
 const { getDashboardStats } = require("../controllers/adminController");
 
-const { protect, chiefManagerOnly } = require("../middleware/authMiddleware");
+const {
+  protectAdmin,
+  allowRoles,
+} = require("../middleware/adminAuthMiddleware");
 
 const router = express.Router();
 
-// Get dashboard stats (bookings, users, rooms, staff)
-router.get("/dashboard", protect, chiefManagerOnly, getDashboardStats);
+// Visual Summary stats — Chief Manager only
+router.get(
+  "/dashboard",
+  protectAdmin,
+  allowRoles("Chief Manager"),
+  getDashboardStats
+);
 
 module.exports = router;

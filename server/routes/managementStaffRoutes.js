@@ -6,14 +6,47 @@ const {
   updateManagementStaff,
   deleteManagementStaff,
 } = require("../controllers/managementStaffController");
-const { protect, chiefManagerOnly } = require("../middleware/authMiddleware");
+
+const {
+  protectAdmin,
+  allowRoles,
+} = require("../middleware/adminAuthMiddleware");
 
 const router = express.Router();
 
-router.get("/", protect, chiefManagerOnly, getAllManagementStaff);
-router.get("/:id", protect, chiefManagerOnly, getManagementStaffById);
-router.post("/", protect, chiefManagerOnly, createManagementStaff);
-router.put("/:id", protect, chiefManagerOnly, updateManagementStaff);
-router.delete("/:id", protect, chiefManagerOnly, deleteManagementStaff);
+router.get(
+  "/",
+  protectAdmin,
+  allowRoles("Chief Manager"),
+  getAllManagementStaff
+);
+
+router.get(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager"),
+  getManagementStaffById
+);
+
+router.post(
+  "/",
+  protectAdmin,
+  allowRoles("Chief Manager"),
+  createManagementStaff
+);
+
+router.put(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager"),
+  updateManagementStaff
+);
+
+router.delete(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager"),
+  deleteManagementStaff
+);
 
 module.exports = router;
