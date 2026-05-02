@@ -1,6 +1,9 @@
 import { useMemo, useState, useEffect } from "react";
 import { getImage } from "../utils/roomImages";
 import api from "../services/api";
+import applePayImg from "../assets/apple.png";
+import paypalImg from "../assets/paypal.png";
+import lockImg from "../assets/lock.png";
 
 // ─────────────────────────────────────────────────────────────
 // Guest Counter
@@ -21,38 +24,9 @@ function GuestCounter({ label, value, onChange, min = 0, max = 10 }) {
 // ─────────────────────────────────────────────────────────────
 // SVG Logos
 // ─────────────────────────────────────────────────────────────
-function ApplePayLogo({ size = 38 }) {
-  return (
-    <svg height={size} viewBox="0 0 165 105" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="165" height="105" rx="10" fill="black"/>
-      {/* Apple icon */}
-      <path d="M72.5 32.8c1.8-2.3 3-5.4 2.7-8.5-2.6.1-5.8 1.7-7.6 4-1.7 1.9-3.1 5.1-2.7 8.1 2.8.2 5.8-1.4 7.6-3.6z" fill="white"/>
-      <path d="M75.1 37.2c-4.2-.2-7.8 2.4-9.8 2.4-2 0-5.1-2.2-8.5-2.2-4.4.1-8.4 2.6-10.7 6.5-4.5 7.9-1.2 19.5 3.2 25.9 2.1 3.1 4.7 6.6 8 6.5 3.2-.1 4.4-2.1 8.3-2.1 3.9 0 5 2.1 8.4 2 3.5-.1 5.7-3.2 7.8-6.3 2.5-3.6 3.5-7.1 3.5-7.3-.1 0-6.7-2.6-6.7-10.3-.1-6.5 5.3-9.6 5.5-9.8-3-4.4-7.7-4.8-9-4.9l-.3-.4z" fill="white"/>
-      {/* "Pay" text */}
-      <text x="92" y="68" fontFamily="system-ui,-apple-system,sans-serif" fontWeight="600" fontSize="30" fill="white">Pay</text>
-    </svg>
-  );
-}
-
-function PayPalLogo({ size = 38 }) {
-  return (
-    <svg height={size} viewBox="0 0 165 105" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="165" height="105" rx="10" fill="white" stroke="#e0e0e0" strokeWidth="1.5"/>
-      {/* PayPal P shapes */}
-      <path d="M55 28h14c7 0 11 3.5 10 10-1.2 8-7 12-14 12H59l-2 12H47L55 28z" fill="#003087"/>
-      <path d="M62 34h8c4 0 6 2 5.5 5.5C75 44 71 47 66 47h-6l1.5-8.5L62 34z" fill="#003087"/>
-      <path d="M70 35h14c7 0 11 3.5 10 10-1.2 8-7 12-14 12H74l-2 12H62L70 35z" fill="#009cde"/>
-      <path d="M77 41h8c4 0 6 2 5.5 5.5C90 51 86 54 81 54h-6l1.5-8.5L77 41z" fill="#009cde"/>
-      {/* "PayPal" text */}
-      <text x="50" y="84" fontFamily="system-ui,-apple-system,sans-serif" fontWeight="700" fontSize="16" fill="#003087">Pay</text>
-      <text x="77" y="84" fontFamily="system-ui,-apple-system,sans-serif" fontWeight="700" fontSize="16" fill="#009cde">Pal</text>
-    </svg>
-  );
-}
-
 function CardIcon({ active }) {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <svg className="pp-tab-logo" viewBox="0 0 28 28" fill="none" style={{ width: "auto" }}>
       <rect x="2" y="6" width="24" height="16" rx="3" stroke={active ? "#1677ff" : "#888"} strokeWidth="2" fill="none"/>
       <rect x="2" y="11" width="24" height="4" fill={active ? "#1677ff" : "#888"} opacity=".25"/>
       <rect x="5" y="17" width="6" height="2" rx="1" fill={active ? "#1677ff" : "#888"}/>
@@ -139,7 +113,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
         <div className="pp-header">
           <button type="button" className="pp-back" onClick={onBack}>← Back</button>
           <div className="pp-header-center">
-            <span className="pp-lock">🔒</span>
+            <img src={lockImg} alt="" className="pp-lock-img" />
             <span className="pp-header-title">Secure Payment</span>
           </div>
           <div className="pp-amount-badge">${total.toLocaleString()}</div>
@@ -174,14 +148,14 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
               onClick={() => setPayTab("card")}
             >
               <CardIcon active={payTab === "card"} />
-              <span>Card</span>
+              <span>Credit Card</span>
             </button>
             <button
               type="button"
               className={`pp-tab${payTab === "apple" ? " pp-tab--active" : ""}`}
               onClick={() => setPayTab("apple")}
             >
-              <ApplePayLogo size={32} />
+              <img src={applePayImg} alt="" className="pp-tab-logo" />
               <span>Apple Pay</span>
             </button>
             <button
@@ -189,7 +163,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
               className={`pp-tab${payTab === "paypal" ? " pp-tab--active" : ""}`}
               onClick={() => setPayTab("paypal")}
             >
-              <PayPalLogo size={32} />
+              <img src={paypalImg} alt="" className="pp-tab-logo" />
               <span>PayPal</span>
             </button>
           </div>
@@ -257,18 +231,18 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
           {/* ── Apple Pay ── */}
           {payTab === "apple" && (
             <div className="pp-wallet-screen">
-              <div className="pp-wallet-logo"><ApplePayLogo size={64} /></div>
+              <img src={applePayImg} alt="Apple Pay" className="pp-wallet-logo-img" />
               <p className="pp-wallet-desc">
                 You&rsquo;ll be charged <strong>${total.toLocaleString()}</strong> via Apple Pay.
               </p>
-              <p className="pp-demo-note">🔒 Demo only — no real payment is processed.</p>
+              <p className="pp-demo-note">Demo only — no real payment is processed.</p>
             </div>
           )}
 
           {/* ── PayPal ── */}
           {payTab === "paypal" && (
             <div className="pp-wallet-screen">
-              <div className="pp-wallet-logo"><PayPalLogo size={64} /></div>
+              <img src={paypalImg} alt="PayPal" className="pp-wallet-logo-img" />
               <div className="pp-field" style={{ width: "100%", maxWidth: 340 }}>
                 <label>PayPal Email</label>
                 <input
@@ -281,7 +255,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
               <p className="pp-wallet-desc">
                 You&rsquo;ll be redirected to PayPal to pay <strong>${total.toLocaleString()}</strong>.
               </p>
-              <p className="pp-demo-note">🔒 Demo only — no real payment is processed.</p>
+              <p className="pp-demo-note">Demo only — no real payment is processed.</p>
             </div>
           )}
 
@@ -374,6 +348,9 @@ function BookingForm({ room }) {
   const [phoneCode, setPhoneCode] = useState("+1");
   const [alerts,    setAlerts]    = useState(false);
 
+  // Special request
+  const [specialRequest, setSpecialRequest] = useState("");
+
   // UI
   const [availError,  setAvailError]  = useState("");
   const [submitError, setSubmitError] = useState("");
@@ -401,20 +378,20 @@ function BookingForm({ room }) {
 
   // Live availability check
   useEffect(() => {
-    setAvailError("");
-    if (!checkIn || !checkOut || !room?._id || nights <= 0) return;
     const t = setTimeout(async () => {
+      if (!checkIn || !checkOut || !room?._id || nights <= 0) {
+        setAvailError("");
+        return;
+      }
       try {
         const res = await api.get("/bookings/availability", {
           params: { roomId: room._id, checkIn, checkOut },
         });
-        if (!res.data.available)
-          setAvailError("These dates are already booked. Please choose different dates.");
+        setAvailError(res.data.available ? "" : "Please select another date. This room is fully booked for the selected dates.");
       } catch { /* silent */ }
     }, 600);
     return () => clearTimeout(t);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [checkIn, checkOut, room?._id, nights]); // setAvailError is a stable setter - intentionally omitted
+  }, [checkIn, checkOut, room?._id, nights]);
 
   function handleBookingSubmit(e) {
     e.preventDefault();
@@ -424,6 +401,7 @@ function BookingForm({ room }) {
       roomId: room._id, checkIn, checkOut,
       adults, children, firstName, lastName,
       email, phone: `${phoneCode} ${phone}`,
+      specialRequest: specialRequest || null,
     });
     setStep("payment");
   }
@@ -471,11 +449,13 @@ function BookingForm({ room }) {
                   onChange={e => setCheckOut(e.target.value)} required />
               </div>
             </div>
-            {nightsError && <div className="ck-error-msg">{nightsError}</div>}
-            {availError && <div className="ck-error-msg">{availError}</div>}
-            {!nightsError && nights === 0 && (
-              <p className="ck-stay-hint">Stay must be between 2 and 7 nights.</p>
-            )}
+            <div className="ck-dates-feedback">
+              {nightsError && <div className="ck-error-msg">{nightsError}</div>}
+              {!nightsError && availError && <div className="ck-error-msg">{availError}</div>}
+              {!nightsError && !availError && nights === 0 && (
+                <p className="ck-stay-hint">Stay must be between 2 and 7 nights.</p>
+              )}
+            </div>
           </section>
 
           {/* Guests */}
@@ -540,10 +520,7 @@ function BookingForm({ room }) {
         {/* Price Details */}
         <div className="ck-sidebar-card ck-price-card">
           <h3 className="ck-sidebar-heading">Price Details</h3>
-          <div className="ck-coupon-row">
-            <input type="text" placeholder="Use Coupon Code" className="ck-coupon-input" />
-          </div>
-          <div className="ck-price-rows">
+<div className="ck-price-rows">
             <div className="ck-price-row">
               <span>
                 1 Room × {nights > 0 ? nights : "—"} Night{nights !== 1 ? "s" : ""}
@@ -572,6 +549,26 @@ function BookingForm({ room }) {
         </div>
 
 
+        {/* Special Request */}
+        <div className="ck-sidebar-card ck-sr-card">
+          <div className="ck-sr-header">
+            <h3 className="ck-sidebar-heading" style={{ margin: 0 }}>Special Request</h3>
+            <span className="ck-sr-badge">Optional</span>
+          </div>
+          <div className="ck-sr-scroll">
+            {["Early check-in", "Late check-out"].map(opt => (
+              <button
+                key={opt}
+                type="button"
+                className={`ck-sr-option${specialRequest === opt ? " ck-sr-option--active" : ""}`}
+                onClick={() => setSpecialRequest(prev => prev === opt ? "" : opt)}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Hotel Summary Card */}
         {room && (
           <div className="ck-sidebar-card ck-room-card">
@@ -595,7 +592,6 @@ function BookingForm({ room }) {
                 <span>🕐 Duration</span>
                 <span>{nights > 0 ? `${nights} Night${nights !== 1 ? "s" : ""}` : "—"}</span>
               </div>
-              {room.view && <div className="ck-summary-row"><span>🪟 View</span><span>{room.view}</span></div>}
             </div>
           </div>
         )}

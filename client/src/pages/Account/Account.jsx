@@ -69,6 +69,123 @@ function formatDate(dateStr) {
 }
 
 /* ══════════════════════════════════════
+   CANCEL CONFIRMATION MODAL
+══════════════════════════════════════ */
+function CancelConfirmModal({ booking, cancelling, error, onConfirm, onClose }) {
+  if (!booking) return null;
+  return (
+    <div
+      style={{
+        position: "fixed", inset: 0, zIndex: 1000,
+        background: "rgba(14,8,31,0.78)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: "20px",
+      }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{
+        background: colors.cream,
+        borderRadius: 16,
+        padding: "40px 36px 36px",
+        maxWidth: 420,
+        width: "100%",
+        boxShadow: "0 28px 64px rgba(14,8,31,0.32)",
+      }}>
+        {/* Warning icon */}
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+          <div style={{
+            width: 58, height: 58, borderRadius: "50%",
+            background: colors.errorBg,
+            border: `2px solid ${colors.errorBorder}`,
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                stroke={colors.error} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <line x1="12" y1="9" x2="12" y2="13" stroke={colors.error} strokeWidth="2" strokeLinecap="round"/>
+              <line x1="12" y1="17" x2="12.01" y2="17" stroke={colors.error} strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <h3 style={{
+          fontFamily: "'Playfair Display', serif",
+          fontSize: 22, fontWeight: 400,
+          color: colors.lova, textAlign: "center", marginBottom: 12,
+        }}>
+          Cancel Booking?
+        </h3>
+
+        <p style={{ fontSize: 13.5, color: colors.muted, textAlign: "center", lineHeight: 1.65, marginBottom: 6 }}>
+          Are you sure you want to cancel your booking for
+        </p>
+        <p style={{
+          fontSize: 15, color: colors.error, fontWeight: 500,
+          fontFamily: "'Playfair Display', serif",
+          textAlign: "center", marginBottom: 10,
+        }}>
+          {booking.room?.title || "this room"}
+        </p>
+        <p style={{ fontSize: 12, color: colors.muted, textAlign: "center", lineHeight: 1.5, marginBottom: 28 }}>
+          This action cannot be undone.
+        </p>
+
+        {/* Inline error */}
+        {error && (
+          <div style={{
+            background: colors.errorBg, border: `1px solid ${colors.errorBorder}`,
+            borderRadius: 8, padding: "11px 16px",
+            color: colors.error, fontSize: 13, marginBottom: 20,
+            lineHeight: 1.5,
+          }}>
+            {error}
+          </div>
+        )}
+
+        {/* Buttons */}
+        <div style={{ display: "flex", gap: 12 }}>
+          <button
+            onClick={onClose}
+            disabled={cancelling}
+            style={{
+              flex: 1, padding: "11px 14px", borderRadius: 8,
+              background: "transparent",
+              border: "1px solid rgba(191,182,206,0.5)",
+              color: colors.text,
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 400,
+              cursor: cancelling ? "not-allowed" : "pointer",
+              opacity: cancelling ? 0.5 : 1,
+              transition: "border-color .2s",
+            }}
+            onMouseEnter={(e) => { if (!cancelling) e.currentTarget.style.borderColor = colors.lav; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(191,182,206,0.5)"; }}
+          >
+            No, Go Back
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={cancelling}
+            style={{
+              flex: 1, padding: "11px 14px", borderRadius: 8,
+              background: cancelling ? "#c06055" : colors.error,
+              border: "none",
+              color: "#fff",
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 500,
+              cursor: cancelling ? "not-allowed" : "pointer",
+              transition: "background .2s",
+            }}
+            onMouseEnter={(e) => { if (!cancelling) e.currentTarget.style.background = "#9e3830"; }}
+            onMouseLeave={(e) => { if (!cancelling) e.currentTarget.style.background = colors.error; }}
+          >
+            {cancelling ? "Cancelling…" : "Yes, Cancel Booking"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════
    LOGGED-OUT CARD (original design)
 ══════════════════════════════════════ */
 function LoggedOutView({ navigate }) {
@@ -128,7 +245,7 @@ function LoggedOutView({ navigate }) {
 /* ══════════════════════════════════════
    LOGGED-IN DASHBOARD
 ══════════════════════════════════════ */
-function Dashboard({ user, bookings, loadingBookings, bookingError, onCancel, cancellingId, onLogout }) {
+function Dashboard({ user, bookings, loadingBookings, bookingError, onCancel, onLogout }) {
   return (
     <div style={{
       minHeight: "100vh",
@@ -339,33 +456,29 @@ function Dashboard({ user, bookings, loadingBookings, bookingError, onCancel, ca
                   <div style={{ paddingTop: 4 }}>
                     {booking.status !== "cancelled" && (
                       <button
-                        onClick={() => onCancel(booking._id)}
-                        disabled={cancellingId === booking._id}
+                        onClick={() => onCancel(booking)}
                         style={{
                           padding: "7px 14px",
                           borderRadius: 7,
                           background: "transparent",
                           border: `1px solid ${colors.errorBorder}`,
                           color: colors.error,
-                          cursor: cancellingId === booking._id ? "not-allowed" : "pointer",
+                          cursor: "pointer",
                           fontFamily: "'DM Sans', sans-serif",
                           fontSize: 11,
                           fontWeight: 500,
                           letterSpacing: "0.06em",
                           transition: "background .2s, color .2s",
-                          opacity: cancellingId === booking._id ? 0.6 : 1,
                           whiteSpace: "nowrap",
                         }}
                         onMouseEnter={(e) => {
-                          if (cancellingId !== booking._id) {
-                            e.currentTarget.style.background = colors.errorBg;
-                          }
+                          e.currentTarget.style.background = colors.errorBg;
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = "transparent";
                         }}
                       >
-                        {cancellingId === booking._id ? "Cancelling…" : "Cancel Booking"}
+                        Cancel Booking
                       </button>
                     )}
                     {booking.status === "cancelled" && (
@@ -395,10 +508,12 @@ export default function Account() {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
 
-  const [bookings, setBookings]             = useState([]);
+  const [bookings, setBookings]               = useState([]);
   const [loadingBookings, setLoadingBookings] = useState(false);
-  const [bookingError, setBookingError]     = useState("");
-  const [cancellingId, setCancellingId]     = useState(null);
+  const [bookingError, setBookingError]       = useState("");
+  const [bookingToCancel, setBookingToCancel] = useState(null);
+  const [cancelError, setCancelError]         = useState("");
+  const [cancelling, setCancelling]           = useState(false);
 
   /* Fetch user bookings when logged in */
   const fetchBookings = useCallback(async () => {
@@ -421,21 +536,34 @@ export default function Account() {
     }
   }, [isAuthenticated, fetchBookings]);
 
-  /* Cancel a booking */
-  const handleCancel = async (bookingId) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
-    setCancellingId(bookingId);
+  /* Open cancel confirmation modal */
+  const openCancelModal = (booking) => {
+    setBookingToCancel(booking);
+    setCancelError("");
+  };
+
+  const closeCancelModal = () => {
+    if (cancelling) return;
+    setBookingToCancel(null);
+    setCancelError("");
+  };
+
+  /* Execute cancellation after user confirms */
+  const handleConfirmCancel = async () => {
+    if (!bookingToCancel) return;
+    setCancelling(true);
+    setCancelError("");
     try {
-      await api.put(`/bookings/${bookingId}/cancel`);
-      // Update local state immediately so UI reflects the change
+      await api.put(`/bookings/${bookingToCancel._id}/cancel`);
       setBookings((prev) =>
-        prev.map((b) => b._id === bookingId ? { ...b, status: "cancelled" } : b)
+        prev.map((b) => b._id === bookingToCancel._id ? { ...b, status: "cancelled" } : b)
       );
+      setBookingToCancel(null);
     } catch (err) {
       const msg = err?.response?.data?.message || "Failed to cancel booking. Please try again.";
-      alert(msg);
+      setCancelError(msg);
     } finally {
-      setCancellingId(null);
+      setCancelling(false);
     }
   };
 
@@ -451,14 +579,22 @@ export default function Account() {
   }
 
   return (
-    <Dashboard
-      user={user}
-      bookings={bookings}
-      loadingBookings={loadingBookings}
-      bookingError={bookingError}
-      onCancel={handleCancel}
-      cancellingId={cancellingId}
-      onLogout={handleLogout}
-    />
+    <>
+      <Dashboard
+        user={user}
+        bookings={bookings}
+        loadingBookings={loadingBookings}
+        bookingError={bookingError}
+        onCancel={openCancelModal}
+        onLogout={handleLogout}
+      />
+      <CancelConfirmModal
+        booking={bookingToCancel}
+        cancelling={cancelling}
+        error={cancelError}
+        onConfirm={handleConfirmCancel}
+        onClose={closeCancelModal}
+      />
+    </>
   );
 }
