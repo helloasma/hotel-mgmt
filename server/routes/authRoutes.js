@@ -3,12 +3,33 @@ const { body } = require("express-validator");
 const {
   registerUser,
   loginUser,
+  loginManagementStaff,
   getMe,
+  updateMe,
 } = require("../controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
 const handleValidationErrors = require("../middleware/validateMiddleware");
+const ManagementStaff = require("../models/ManagementStaff");
 
 const router = express.Router();
+
+// Temporary debug route
+router.get("/debug/staff", async (req, res) => {
+  try {
+    const staff = await ManagementStaff.find({});
+    res.json({
+      count: staff.length,
+      staff: staff.map(s => ({ 
+        fullName: s.fullName, 
+        email: s.email, 
+        role: s.role,
+        hasPassword: !!s.password
+      }))
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 router.post(
   "/register",
@@ -39,6 +60,16 @@ router.post(
   loginUser
 );
 
+router.post(
+  "/management-login",
+  [
+    body("email").isEmail().withMessage("Valid email is required").normalizeEmail(),
+    body("password").notEmpty().withMessage("Password is required"),
+    handleValidationErrors,
+  ],
+  loginManagementStaff
+);
+
 const { adminOnly } = require("../middleware/authMiddleware");
 
 router.get("/admin-test", protect, adminOnly, (req, res) => {
@@ -49,5 +80,6 @@ router.get("/admin-test", protect, adminOnly, (req, res) => {
 });
 
 router.get("/me", protect, getMe);
+router.put("/me", protect, updateMe);
 
 module.exports = router;

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import api from "../../services/api";
 import "./Contact.css";
 import contactImage1 from "../../assets/contactGallery/contact1.png";
 import contactImage2 from "../../assets/contactGallery/contact2.png";
@@ -6,6 +7,57 @@ import contactImage3 from "../../assets/contactGallery/contact3.png";
 import contactImage4 from "../../assets/contactGallery/contact4.png";
 
 const Contact = () => {
+  const fileInputRef = useRef(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [file, setFile] = useState(null);
+  const [status, setStatus] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setStatus("");
+    setError("");
+
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setError("Please fill in your name, email, and message.");
+      return;
+    }
+
+    try {
+      const payload = {
+        name: name.trim(),
+        email: email.trim(),
+        message: message.trim(),
+      };
+
+      if (file) {
+        const extension = file.name.split(".").pop()?.toLowerCase() || "";
+        payload.attachments = [
+          {
+            filename: file.name,
+            fileType: extension,
+            size: file.size,
+            url: "",
+          },
+        ];
+      }
+
+      await api.post("/contact-messages", payload);
+      setStatus("Message sent successfully. We will get back to you soon.");
+      setName("");
+      setEmail("");
+      setMessage("");
+      setFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (err) {
+      setError(err?.response?.data?.message || "Unable to send message. Please try again.");
+    }
+  };
+
   return (
     <div className="contact-container">
       <div className="contact-card">
@@ -49,15 +101,37 @@ const Contact = () => {
         <div className="contact-right">
           <h2>Contact Us</h2>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="row">
-              <input type="text" placeholder="Name" />
-              <input type="email" placeholder="Email" />
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
-            <textarea placeholder="Type here"></textarea>
+            <textarea
+              placeholder="Type here"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
 
-            <input type="file" className="file-input" />
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="file-input"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+            />
+
+            {status && <p className="contact-success">{status}</p>}
+            {error && <p className="contact-error">{error}</p>}
 
             <button type="submit">Send Message</button>
           </form>

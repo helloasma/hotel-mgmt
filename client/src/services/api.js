@@ -7,12 +7,19 @@ const api = axios.create({
 // Automatically attach the token to every request if the user is logged in
 api.interceptors.request.use((config) => {
   try {
+    const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user?.token) {
-      config.headers.Authorization = `Bearer ${user.token}`;
+    const authToken = token || user?.token;
+    if (authToken) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${authToken}`;
     }
   } catch {
-    // Ignore malformed localStorage data
+    const authToken = localStorage.getItem("token");
+    if (authToken) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${authToken}`;
+    }
   }
   return config;
 });

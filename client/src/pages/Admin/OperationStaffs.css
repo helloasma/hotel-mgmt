@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap");
+
+.admin-content {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.admin-content h1 {
+  color: #0e081f;
+  font-family: "Inter", sans-serif;
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.section-description {
+  margin-bottom: 24px;
+  color: #4d5264;
+  max-width: 720px;
+}
+
+.staff-table-wrapper {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+}
+
+.staff-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.staff-table-wrapper th,
+.staff-table-wrapper td {
+  padding: 14px 16px;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  color: #2e2a3d;
+}
+
+.staff-table-wrapper thead {
+  background: #0e081f;
+  color: #fff;
+}
+
+.staff-table-wrapper td {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.staff-table-wrapper tbody tr:hover {
+  background: #f9f9fb;
+}
+
+.delete-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #c84d3d;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+.delete-btn:hover {
+  background: #a53d2d;
+}
+
+@media (max-width: 768px) {
+  .staff-table-wrapper th,
+  .staff-table-wrapper td {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+}

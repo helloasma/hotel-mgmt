@@ -17,6 +17,8 @@ import AdminDashboard from "../pages/Admin/AdminDashboard";
 import BookingManagement from "../pages/Admin/BookingManagement";
 import RoomManagement from "../pages/Admin/RoomManagement";
 import UserManagement from "../pages/Admin/UserManagement";
+import OperationStaffs from "../pages/Admin/OperationStaffs";
+import ManagementStaffs from "../pages/Admin/ManagementStaffs";
 import AdminLayout from "../layouts/AdminLayout";
 import ProtectedAdminRoute from "./ProtectedAdminRoute";
 
@@ -44,6 +46,8 @@ function AppRoutes() {
         <Route path="/admin/bookings" element={<AdminLayout><BookingManagement /></AdminLayout>} />
         <Route path="/admin/rooms" element={<AdminLayout><RoomManagement /></AdminLayout>} />
         <Route path="/admin/users" element={<AdminLayout><UserManagement /></AdminLayout>} />
+        <Route path="/admin/operation-staffs" element={<AdminLayout><OperationStaffs /></AdminLayout>} />
+        <Route path="/admin/management-staffs" element={<AdminLayout><ManagementStaffs /></AdminLayout>} />
       </Route>
 
       <Route path="/Login" element={<Login />} />

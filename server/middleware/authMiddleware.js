@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const ManagementStaff = require("../models/ManagementStaff");
 
 // Protect middleware - ensures that a valid user is logged in
 const protect = async (req, res, next) => {
@@ -17,8 +18,13 @@ const protect = async (req, res, next) => {
     // Verify the JWT token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Fetch the user based on the decoded user ID
-    const user = await User.findById(decoded.userId).select("-password");
+    let user;
+    const managementRoles = ["Chief Manager", "Manager", "User support", "Receptionist"];
+    if (managementRoles.includes(decoded.role)) {
+      user = await ManagementStaff.findById(decoded.userId).select("-password");
+    } else {
+      user = await User.findById(decoded.userId).select("-password");
+    }
 
     if (!user) {
       // If user doesn't exist, redirect to login
@@ -34,15 +40,15 @@ const protect = async (req, res, next) => {
   }
 };
 
-// Admin-only middleware - ensures only admin users can access specific routes
+// Admin-only middleware - ensures only admin or management staff can access specific routes
 const adminOnly = (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ success: false, message: "Not authorized" });
   }
 
-  // Check if the logged-in user is an admin
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ success: false, message: "Access denied: Admins only" });
+  const allowedRoles = ["admin", "Chief Manager", "Manager", "Receptionist", "User support"];
+  if (!allowedRoles.includes(req.user.role)) {
+    return res.status(403).json({ success: false, message: "Access denied: Insufficient privileges" });
   }
 
   next();

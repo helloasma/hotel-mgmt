@@ -23,7 +23,7 @@ const operationStaffSchema = new mongoose.Schema(
       trim: true,
       validate: {
         validator: function (value) {
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+          return /^[a-zA-Z][a-zA-Z0-9_]*@[a-zA-Z]+\.[a-zA-Z]+$/i.test(value);
         },
         message: "Please enter a valid email address",
       },

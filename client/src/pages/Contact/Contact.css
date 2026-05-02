@@ -150,6 +150,16 @@ button:hover {
   background: #ddd;
 }
 
+.contact-success {
+  color: #46a049;
+  font-size: 14px;
+}
+
+.contact-error {
+  color: #f16565;
+  font-size: 14px;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .contact-card {

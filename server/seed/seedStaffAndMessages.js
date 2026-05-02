@@ -24,13 +24,13 @@ const seedStaffAndMessages = async () => {
     const operationStaffData = [
       {
         fullName: "Maria Garcia",
-        email: "maria.garcia@hotelstaff.com",
+        email: "maria_garcia@lotelstaff.com",
         phone: "0912345678",
         role: "Housekeeper",
       },
       {
         fullName: "Juan Miguel Rodriguez",
-        email: "juan.rodriguez@hotelstaff.com",
+        email: "juan_rodriguez@hotelstaff.com",
         phone: "0987654321",
         role: "Maintenance",
       },
@@ -43,14 +43,14 @@ const seedStaffAndMessages = async () => {
     const managementStaffData = [
       {
         fullName: "Robert James Thompson",
-        email: "robert.thompson@hotelmanagement.com",
+        email: "robert_thompson@lovendermgmt.com",
         password: "SecurePass123!",
         phone: "0911223344",
         role: "Chief Manager",
       },
       {
         fullName: "Sarah Elizabeth Wilson",
-        email: "sarah.wilson@hotelmanagement.com",
+        email: "sarah_wilson@lovendermgmt.com",
         password: "ManagerPass456@",
         phone: "0922334455",
         role: "Manager",

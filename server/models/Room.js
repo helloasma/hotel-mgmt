@@ -50,9 +50,9 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: [true, "Category is required"],
       enum: [
-        "hotel",
-        "cabin",
-        "bungalow",
+        "Hotel",
+        "Cabin",
+        "Bungalow",
       ],
     },
     size: {

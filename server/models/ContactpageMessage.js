@@ -19,6 +19,7 @@ const attachmentSchema = new mongoose.Schema(
         message: "Attachments must be JPG, PNG, PDF, DOC, or DOCX",
       },
     },
+
     size: {
       type: Number,
       required: [true, "Attachment size is required"],
@@ -72,6 +73,11 @@ const contactpageMessageSchema = new mongoose.Schema(
         },
         message: "You can attach up to 5 files",
       },
+    },
+    status: {
+      type: String,
+      enum: ["New", "Closed"],
+      default: "New",
     },
   },
   {

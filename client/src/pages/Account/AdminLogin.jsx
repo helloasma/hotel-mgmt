@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./AdminLogin.css";
@@ -9,26 +9,36 @@ const AdminLogin = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.title = "Lovender Opration Portal";
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    console.log("Sending login:", {
+      email: email.trim().toLowerCase(),
+      password,
+    });
+
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
+      const res = await axios.post("http://localhost:5000/api/auth/management-login", {
+        email: email.trim().toLowerCase(),
         password,
       });
 
+      console.log("LOGIN SUCCESS:", res.data);
+
       const user = res.data.data;
-
-      if (user.role !== "admin") {
-        setErrorMessage("Not an admin");
-        return;
-      }
-
       localStorage.setItem("token", user.token);
       localStorage.setItem("role", user.role);
+      localStorage.setItem("name", user.fullName || user.name || "");
       navigate("/admin/dashboard");
     } catch (err) {
+      console.log("FULL ERROR:", err);
+      console.log("STATUS:", err.response?.status);
+      console.log("BACKEND RESPONSE:", err.response?.data);
+
       setErrorMessage(err.response?.data?.message || "Login failed");
     }
   };
@@ -36,7 +46,7 @@ const AdminLogin = () => {
   return (
     <div className="admin-login-container">
       <div className="admin-login-box">
-        <h2>Admin Login</h2>
+        <h2>Lovender Opration Portal</h2>
 
         {/* Show error message if login failed */}
         {errorMessage && <div className="error-message">{errorMessage}</div>}

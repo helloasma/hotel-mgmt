@@ -10,6 +10,9 @@ const chatRoutes = require("./routes/chatRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoutes");
+const managementStaffRoutes = require("./routes/managementStaffRoutes");
+const operationStaffRoutes = require("./routes/operationStaffRoutes");
+const contactpageMessageRoutes = require("./routes/contactpageMessageRoutes");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 connectDB();
@@ -59,6 +62,9 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/management-staff", managementStaffRoutes);
+app.use("/api/operation-staff", operationStaffRoutes);
+app.use("/api/contact-messages", contactpageMessageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
