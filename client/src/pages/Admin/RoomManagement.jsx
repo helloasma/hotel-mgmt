@@ -79,8 +79,9 @@ const RoomManagement = () => {
             <tr>
               <th>Room Name</th>
               <th>Category</th>
+              <th>Type</th>
               <th>Price</th>
-              <th>Available Rooms</th>
+              <th>Units</th>
               <th>Description</th>
               <th>Amenities</th>
               <th>View</th>
@@ -93,10 +94,9 @@ const RoomManagement = () => {
               <tr key={room._id}>
                 <td>{room.title}</td>
                 <td>{room.category}</td>
+                <td>{room.type}</td>
                 <td>${room.price}</td>
-                <td>
-                  {room.availableRooms} / {room.totalRooms}
-                </td>
+                <td>{room.totalRooms}</td>
                 <td>
                   {editingId === room._id ? (
                     <textarea

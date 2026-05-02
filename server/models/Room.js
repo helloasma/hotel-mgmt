@@ -10,17 +10,7 @@ const roomSchema = new mongoose.Schema(
     type: {
       type: String,
       required: [true, "Room type is required"],
-      enum: [
-        "overwater-bungalow",
-        "overwater-bungalow-suite",
-        "forest-cabin",
-        "forest-cabin-suite",
-        "mountain-room",
-        "mountain-suite",
-        "mountain-hotel-deluxe",
-        "honeymoon",
-        "classic-standard",
-      ],
+      enum: ["Suite", "Standard"],
     },
     description: {
       type: String,
@@ -81,14 +71,13 @@ const roomSchema = new mongoose.Schema(
   }
 );
 
-roomSchema.pre("save", function (next) {
+roomSchema.pre("save", async function () {
   if (this.isNew && this.isModified("totalRooms")) {
     this.availableRooms = this.totalRooms;
   }
   if (this.isModified("availableRooms")) {
     this.available = this.availableRooms > 0;
   }
-  next();
 });
 
 module.exports = mongoose.model("Room", roomSchema);

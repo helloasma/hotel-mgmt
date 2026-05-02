@@ -76,7 +76,7 @@ const bookingSchema = new mongoose.Schema(
 );
 
 // Generate a confirmation code before saving
-bookingSchema.pre("save", function () {
+bookingSchema.pre("save", async function () {
   if (!this.confirmationCode) {
     this.confirmationCode =
       "BK" +
