@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
 
 .admin-navbar {
-  background: #0e081f;
+  background: #0e081f ;
   color: white;
   padding: 20px 30px;
   display: flex;
@@ -36,8 +36,8 @@
 }
 
 .admin-navbar a:hover {
-  background: #2f5148;
-  color: #a8d8cc;
+  background: #50115a;
+  color: white;
   transform: translateY(-2px);
 }
 

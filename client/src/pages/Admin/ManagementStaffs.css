@@ -67,10 +67,140 @@
   background: #a53d2d;
 }
 
+.page-actions {
+  margin-bottom: 20px;
+}
+
+.add-staff-button,
+.edit-btn,
+.save-btn,
+.cancel-btn,
+.delete-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.add-staff-button {
+  background: #2f5148;
+  color: #ffffff;
+}
+
+.add-staff-button:hover,
+.edit-btn:hover,
+.save-btn:hover,
+.cancel-btn:hover,
+.delete-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(47, 81, 72, 0.12);
+}
+
+.staff-form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  color: #2e2a3d;
+}
+
+.input-group span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.save-btn {
+  background: #2c9f67;
+  color: #ffffff;
+}
+
+.cancel-btn {
+  background: #6c6c6c;
+  color: #ffffff;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.staff-table-wrapper input,
+.staff-table-wrapper select,
+.staff-form input,
+.staff-form select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+}
+
+.staff-table-wrapper input:focus,
+.staff-table-wrapper select:focus,
+.staff-form input:focus,
+.staff-form select:focus {
+  outline: none;
+  border-color: #2f5148;
+  box-shadow: 0 0 0 3px rgba(47, 81, 72, 0.12);
+}
+
+@media (max-width: 900px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .staff-table-wrapper th,
   .staff-table-wrapper td {
     padding: 12px 10px;
     font-size: 13px;
+  }
+
+  .add-staff-button,
+  .edit-btn,
+  .save-btn,
+  .cancel-btn,
+  .delete-btn {
+    font-size: 12px;
+    padding: 8px 12px;
   }
 }

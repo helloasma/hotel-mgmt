@@ -2,7 +2,7 @@ import "./Rooms.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import { getImage } from "../../utils/roomImages";
+import { getImage } from "../../routes/utils/roomImages";
 
 import heroVideo from "../../assets/Rooms/RoomVideo.mp4";
 

@@ -70,7 +70,6 @@
   background: #c84d3d;
 }
 
-input,
 select {
   width: 100%;
   padding: 8px 10px;
@@ -78,27 +77,6 @@ select {
   border: 1px solid #d1d5db;
   font-family: "Inter", sans-serif;
   font-size: 14px;
-}
-
-.add-btn {
-  margin-bottom: 20px;
-  padding: 12px 24px;
-  background: #2f5148;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.add-btn:hover {
-  background: #1f3d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(47, 81, 72, 0.3);
 }
 
 @media (max-width: 768px) {

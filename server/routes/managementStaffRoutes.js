@@ -6,14 +6,14 @@ const {
   updateManagementStaff,
   deleteManagementStaff,
 } = require("../controllers/managementStaffController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+const { protect, chiefManagerOnly } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/", protect, adminOnly, getAllManagementStaff);
-router.get("/:id", protect, adminOnly, getManagementStaffById);
-router.post("/", protect, adminOnly, createManagementStaff);
-router.put("/:id", protect, adminOnly, updateManagementStaff);
-router.delete("/:id", protect, adminOnly, deleteManagementStaff);
+router.get("/", protect, chiefManagerOnly, getAllManagementStaff);
+router.get("/:id", protect, chiefManagerOnly, getManagementStaffById);
+router.post("/", protect, chiefManagerOnly, createManagementStaff);
+router.put("/:id", protect, chiefManagerOnly, updateManagementStaff);
+router.delete("/:id", protect, chiefManagerOnly, deleteManagementStaff);
 
 module.exports = router;

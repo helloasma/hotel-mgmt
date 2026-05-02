@@ -6,14 +6,14 @@ const {
   updateContactMessage,
   deleteContactMessage,
 } = require("../controllers/contactpageMessageController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+const { protect, userSupportOnly } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.get("/", protect, adminOnly, getAllContactMessages);
-router.get("/:id", protect, adminOnly, getContactMessageById);
+router.get("/", protect, userSupportOnly, getAllContactMessages);
+router.get("/:id", protect, userSupportOnly, getContactMessageById);
 router.post("/", createContactMessage);
-router.put("/:id", protect, adminOnly, updateContactMessage);
-router.delete("/:id", protect, adminOnly, deleteContactMessage);
+router.put("/:id", protect, userSupportOnly, updateContactMessage);
+router.delete("/:id", protect, userSupportOnly, deleteContactMessage);
 
 module.exports = router;

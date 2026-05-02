@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { getImage } from "../utils/roomImages";
+import { getImage } from "../routes/utils/roomImages";
 import api from "../services/api";
 
 // ─────────────────────────────────────────────────────────────

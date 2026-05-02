@@ -71,22 +71,26 @@ const loginUser = async (req, res, next) => {
   }
 };
 
+const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+
+
+
 const loginManagementStaff = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log("Login attempt with email:", email);
 
-    const staff = await ManagementStaff.findOne({ email });
-    console.log("Staff found:", staff ? `Yes - ${staff.fullName}` : "No");
+    const escapedEmail = escapeRegExp(email.trim());
+    const staff = await ManagementStaff.findOne({
+      email: { $regex: `^${escapedEmail}$`, $options: "i" },
+    });
 
     if (!staff) {
-      console.log("Staff not found in database");
       res.status(401);
       throw new Error("Invalid email or password");
     }
 
     const passwordMatch = await staff.matchPassword(password);
-    console.log("Password match:", passwordMatch);
 
     if (!passwordMatch) {
       res.status(401);
@@ -106,10 +110,13 @@ const loginManagementStaff = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.error("Login error:", error.message);
     next(error);
   }
 };
+
+
+
+
 
 const getMe = async (req, res, next) => {
   try {
@@ -122,35 +129,115 @@ const getMe = async (req, res, next) => {
   }
 };
 
+
+
+
+
+
+
 const updateMe = async (req, res, next) => {
   try {
-    const { name, phone, responsibility } = req.body;
-    const user = req.user;
+    const { name, email, phone, password, confirmPassword } = req.body;
 
-    if (!user) {
-      res.status(404);
-      throw new Error("User not found");
+    if (!req.user) {
+      return res.status(404).json({
+        success: false,
+        message: "Management staff account not found",
+      });
     }
 
-    if (user.fullName !== undefined) {
-      user.fullName = name || user.fullName;
-    } else {
-      user.name = name || user.name;
+    const staff = await ManagementStaff.findById(req.user._id);
+
+    if (!staff) {
+      return res.status(404).json({
+        success: false,
+        message: "Management staff account not found",
+      });
     }
 
-    if (phone) user.phone = phone;
-    if (responsibility) user.responsibility = responsibility;
+    if (name !== undefined) {
+      staff.fullName = name;
+    }
 
-    await user.save();
+    if (email !== undefined) {
+      const normalizedEmail = email.trim().toLowerCase();
+
+      if (normalizedEmail !== staff.email) {
+        const existingStaff = await ManagementStaff.findOne({
+          email: normalizedEmail,
+          _id: { $ne: staff._id },
+        });
+
+        if (existingStaff) {
+          return res.status(400).json({
+            success: false,
+            message: "Email is already in use",
+          });
+        }
+
+        if (!/^[a-zA-Z][a-zA-Z0-9_]*@lovendermgmt\.com$/i.test(normalizedEmail)) {
+          return res.status(400).json({
+            success: false,
+            message:
+              "Invalid email format for management staff. Email must be in the format: username@lovendermgmt.com",
+          });
+        }
+
+        staff.email = normalizedEmail;
+      }
+    }
+
+    if (phone !== undefined) {
+      staff.phone = phone;
+    }
+
+    if (password || confirmPassword) {
+      if (!password || !confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Please provide both password fields",
+        });
+      }
+
+      if (password !== confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "Passwords do not match",
+        });
+      }
+
+      staff.password = password;
+    }
+
+    const isPasswordChange = Boolean(password || confirmPassword);
+
+    await staff.save();
+
+    const updatedStaff = await ManagementStaff.findById(staff._id).select("-password");
 
     res.status(200).json({
       success: true,
-      data: user,
+      message: isPasswordChange
+        ? "Password successfully changed"
+        : "Profile updated successfully",
+      data: updatedStaff,
     });
   } catch (error) {
-    next(error);
+    console.error("UpdateMe error:", error.name, error.message);
+
+    const isPasswordChange = Boolean(req.body.password || req.body.confirmPassword);
+
+    return res.status(400).json({
+      success: false,
+      message: isPasswordChange
+        ? "Password change failed"
+        : error.message || "Update failed",
+    });
   }
 };
+
+
+
 
 module.exports = {
   registerUser,

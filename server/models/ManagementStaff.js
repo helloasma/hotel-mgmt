@@ -84,16 +84,21 @@ const managementStaffSchema = new mongoose.Schema(
 );
 
 managementStaffSchema.pre("save", async function () {
-  // If password is already hashed, do nothing
-  if (this.password && this.password.startsWith("$2")) {
+  if (!this.isModified("password")) {
     return;
   }
 
-  // If password is plain text, hash it
+  if (!this.password) {
+    return;
+  }
+
+  if (this.password.startsWith("$2")) {
+    return;
+  }
+
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
-
 
 managementStaffSchema.methods.matchPassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);

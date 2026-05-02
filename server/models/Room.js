@@ -11,12 +11,14 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: [true, "Room type is required"],
       enum: [
-        "overwater-standard-bungalow",
+        "classic-standard",
         "overwater-bungalow-suite",
-        "forest-standard-cabin",
-        "forest-cabin-suite",
-        "hotel-standard-room",
-        "hotel-suite",
+        "mountain-hotel-deluxe",
+        "honeymoon",
+        "overwater-bungalow",
+        "mountain-suite",
+        "forest-cabin",
+        "forest-cabin-suit"
       ],
     },
     description: {

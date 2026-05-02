@@ -1,18 +1,16 @@
-import React, { useEffect } from 'react';
-import AdminNavbar from '../components/Admin/AdminNavbar';
-import './AdminLayout.css';
+import React, { useEffect } from "react";
+import AdminNavbar from "../components/Admin/AdminNavbar";
+import "./AdminLayout.css";
 
 const AdminLayout = ({ children }) => {
   useEffect(() => {
-    document.title = 'Lovender Opration Portal';
+    document.title = "Lovender Operation Portal";
   }, []);
 
   return (
     <div className="admin-layout">
       <AdminNavbar />
-      <main className="admin-main-content">
-        {children}
-      </main>
+      <main className="admin-main-content">{children}</main>
     </div>
   );
 };

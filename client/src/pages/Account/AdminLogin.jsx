@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import lovenderLogo from "../../assets/LovenderBlack.png";
 import "./AdminLogin.css";
+
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -10,7 +12,7 @@ const AdminLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Lovender Opration Portal";
+    document.title = "Lovender Operation Portal";
   }, []);
 
   const handleLogin = async (e) => {
@@ -44,32 +46,39 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="admin-login-container">
-      <div className="admin-login-box">
-        <h2>Lovender Opration Portal</h2>
+    <main className="admin-login-page">
+      <section className="admin-login-container">
+        <div className="admin-login-box">
 
-        {/* Show error message if login failed */}
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <img src={lovenderLogo} alt="Lovender" className="admin-login-logo"/>
 
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    </div>
+          <h2>Lovender Operation Portal</h2>
+
+
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+          <form onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button type="submit">Login</button>
+          </form>
+        </div>
+      </section>
+    </main>
   );
 };
 
