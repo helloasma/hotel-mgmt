@@ -581,6 +581,62 @@
   transform: translateY(-2px);
 }
 
+/* ── Stay duration hint ─────────────────────────────────── */
+.ck-stay-hint {
+  font-size: 0.78rem;
+  color: #aaa;
+  margin: 10px 0 0;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════════
+   BOOKING POLICY
+   ══════════════════════════════════════════════════════════ */
+.ck-policy-section {
+  margin-top: 32px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 32px 36px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ck-policy-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 16px 0;
+  padding: 0;
+  letter-spacing: -0.01em;
+}
+
+.ck-policy-text {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.6;
+  margin: 0 0 18px 0;
+  padding: 0;
+}
+
+.ck-policy-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ck-policy-detail-item {
+  font-size: 0.93rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.ck-policy-detail-item strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
 /* ══════════════════════════════════════════════════════════
    BROWSE OTHER ROOMS (below the form)
    ══════════════════════════════════════════════════════════ */
@@ -644,6 +700,7 @@
   .ck-section { padding: 20px 18px; }
   .ck-two-col { grid-template-columns: 1fr; }
   .ck-browse-grid { grid-template-columns: 1fr 1fr; }
+  .ck-policy-section { padding: 24px 18px; }
 }
 
 @media (max-width: 480px) {
