@@ -12,8 +12,8 @@
   --chat-bubble-bot:  rgba(255,255,255,0.06);
   --chat-bubble-user: rgba(125,204,211,0.18);
   --chat-radius:      18px;
-  --chat-width:       min(450px, calc(100vw - 56px));
-  --chat-height:      min(700px, calc(100vh - 120px));
+  --chat-width:       min(360px, calc(100vw - 56px));
+  --chat-height:      min(550px, calc(100vh - 120px));
 }
 
 /* ── Toggle Button ── */
