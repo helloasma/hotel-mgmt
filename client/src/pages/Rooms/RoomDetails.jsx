@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
-<<<<<<< HEAD
-import { getImage } from "../../routes/utils/roomImages";
-=======
 import { getImage, getRoomsPageDisplayName } from "../../utils/roomImages";
->>>>>>> origin/main
 import "./RoomDetails.css";
 
 function RoomDetails() {

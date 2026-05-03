@@ -36,7 +36,7 @@ const AdminDashboard = () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get("http://localhost:5000/api/auth/me", {
+        const response = await axios.get("http://localhost:5000/api/admin/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -58,6 +58,9 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("fullName");
+    localStorage.removeItem("email");
+    localStorage.removeItem("phone");
     navigate("/admin/login");
   };
 
@@ -104,7 +107,7 @@ const AdminDashboard = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        "http://localhost:5000/api/auth/me",
+        "http://localhost:5000/api/admin/me",
         {
           name: editForm.name,
           email: editForm.email,
@@ -148,69 +151,75 @@ const AdminDashboard = () => {
     }));
   };
 
-  const handleChangePassword = async () => {
-    if (!passwordForm.newPassword || !passwordForm.confirmPassword) {
-      showMessage("Please fill in both password fields.", "error");
-      return;
-    }
 
-    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      showMessage(
-        "Passwords do not match. Please type the same password twice.",
-        "error"
-      );
-      return;
-    }
 
-    if (passwordForm.newPassword.length < 8) {
-      showMessage("Password must be at least 8 characters.", "error");
-      return;
-    }
+const handleChangePassword = async () => {
+  if (!passwordForm.newPassword || !passwordForm.confirmPassword) {
+    showMessage("Please fill in both password fields.", "error");
+    return;
+  }
 
-    if (!/(?=.*\d)(?=.*[\W_])/.test(passwordForm.newPassword)) {
-      showMessage(
-        "Password must contain at least one number and one special character.",
-        "error"
-      );
-      return;
-    }
+  if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+    showMessage(
+      "Passwords do not match. Please type the same password twice.",
+      "error"
+    );
+    return;
+  }
 
-    try {
-      const token = localStorage.getItem("token");
+  if (passwordForm.newPassword.length < 8) {
+    showMessage("Password must be at least 8 characters.", "error");
+    return;
+  }
 
-      const response = await axios.put(
-        "http://localhost:5000/api/auth/me",
-        {
-          password: passwordForm.newPassword,
-          confirmPassword: passwordForm.confirmPassword,
+  if (!/(?=.*\d)(?=.*[\W_])/.test(passwordForm.newPassword)) {
+    showMessage(
+      "Password must contain at least one number and one special character.",
+      "error"
+    );
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await axios.put(
+      "http://localhost:5000/api/admin/me/password",
+      {
+        newPassword: passwordForm.newPassword,
+        confirmPassword: passwordForm.confirmPassword,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      }
+    );
 
+    if (response.data.data) {
       setAdminUser(response.data.data);
-      setPasswordForm({
-        newPassword: "",
-        confirmPassword: "",
-      });
-      setIsChangingPassword(false);
-
-      showMessage(
-        response.data.message || "Password successfully changed.",
-        "success"
-      );
-    } catch (error) {
-      console.error("Unable to update password", error);
-
-      const errorMessage =
-        error.response?.data?.message || "Password change failed.";
-
-      showMessage(errorMessage, "error");
     }
-  };
+
+    setPasswordForm({
+      newPassword: "",
+      confirmPassword: "",
+    });
+
+    setIsChangingPassword(false);
+
+    showMessage(
+      response.data.message || "Password successfully changed.",
+      "success"
+    );
+  } catch (error) {
+    console.error("Unable to update password", error);
+
+    const errorMessage =
+      error.response?.data?.message || "Password change failed.";
+
+    showMessage(errorMessage, "error");
+  }
+};
 
   const handleCancelPasswordChange = () => {
     setIsChangingPassword(false);

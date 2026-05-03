@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import "../../Pages/Admin/VisualSummary.css";
 
 const BookingStats = ({ bookings = [] }) => {
@@ -6,18 +6,7 @@ const BookingStats = ({ bookings = [] }) => {
     new Date().toISOString().slice(0, 7)
   );
 
-  const [stats, setStats] = useState({
-    totalPrice: 0,
-    totalAdults: 0,
-    totalChildren: 0,
-    totalGuests: 0,
-  });
-
-  useEffect(() => {
-    calculateStats();
-  }, [selectedMonth, bookings]);
-
-  const calculateStats = () => {
+  const stats = useMemo(() => {
     const confirmedBookings = bookings.filter((booking) => {
       const bookingMonth = new Date(booking.checkIn).toISOString().slice(0, 7);
       return booking.status === "confirmed" && bookingMonth === selectedMonth;
@@ -33,13 +22,13 @@ const BookingStats = ({ bookings = [] }) => {
       totalChildren += booking.children || 0;
     });
 
-    setStats({
+    return {
       totalPrice,
       totalAdults,
       totalChildren,
       totalGuests: totalAdults + totalChildren,
-    });
-  };
+    };
+  }, [bookings, selectedMonth]);
 
   const currentMonth = new Date().toISOString().slice(0, 7);
 

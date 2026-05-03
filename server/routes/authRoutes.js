@@ -5,11 +5,8 @@ const {
   registerUser,
   loginUser,
   loginManagementStaff,
-  getMe,
-  updateMe,
 } = require("../controllers/authController");
 
-const { protect } = require("../middleware/authMiddleware");
 const handleValidationErrors = require("../middleware/validateMiddleware");
 
 const router = express.Router();
@@ -53,7 +50,5 @@ router.post(
   loginManagementStaff
 );
 
-router.get("/me", protect, getMe);
-router.put("/me", protect, updateMe);
 
 module.exports = router;

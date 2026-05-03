@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { getImage } from "../routes/utils/roomImages";
+import { getImage } from "../utils/roomImages";
 import api from "../services/api";
 import applePayImg from "../assets/apple.png";
 import paypalImg from "../assets/paypal.png";

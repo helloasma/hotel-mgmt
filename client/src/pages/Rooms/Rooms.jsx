@@ -2,12 +2,7 @@ import "./Rooms.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-<<<<<<< HEAD
-import { getImage } from "../../routes/utils/roomImages";
-=======
 import { getImage, getRoomsPageDisplayName } from "../../utils/roomImages";
->>>>>>> origin/main
-
 import heroVideo from "../../assets/Rooms/RoomVideo.mp4";
 
 function Rooms() {
@@ -20,7 +15,8 @@ function Rooms() {
       try {
         const response = await api.get("/rooms");
         setRooms(response.data.data);
-      } catch {
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
         setError("Failed to load rooms. Please try again.");
       } finally {
         setLoading(false);
@@ -32,6 +28,7 @@ function Rooms() {
 
   return (
     <main className="rooms-page">
+      {error && <p className="error-message">{error}</p>}
       <section className="rooms-hero">
         <video
           className="rooms-hero__video"

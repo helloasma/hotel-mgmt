@@ -7,7 +7,7 @@ const asyncHandler = (fn) => (req, res, next) => {
 };
 
 // Protect middleware - ensures that a valid user is logged in
-const protectUser = asyncHandler(async (req, res, next) => {
+const protect = asyncHandler(async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   // Check if the authorization header exists and starts with "Bearer "
@@ -33,4 +33,4 @@ const protectUser = asyncHandler(async (req, res, next) => {
   next();
 });
 
-module.exports = { protectUser};
+module.exports = { protect};

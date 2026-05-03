@@ -209,12 +209,21 @@ const RoomManagement = () => {
                         </button>
                       </>
                     ) : (
-                      <button
-                        className="edit-btn"
-                        onClick={() => handleEditClick(room)}
-                      >
-                        Edit
-                      </button>
+                      <>
+                        <button
+                          className="edit-btn"
+                          onClick={() => handleEditClick(room)}
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          className="delete-btn"
+                          onClick={() => handleDeleteRoom(room._id)}
+                        >
+                          Delete
+                        </button>
+                      </>
                     )}
                   </div>
                 </td>

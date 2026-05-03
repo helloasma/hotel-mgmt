@@ -42,6 +42,8 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+
+
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -75,7 +77,7 @@ const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 
 
-
+//Admin Login
 const loginManagementStaff = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -118,131 +120,10 @@ const loginManagementStaff = async (req, res, next) => {
 
 
 
-const getMe = async (req, res, next) => {
-  try {
-    res.status(200).json({
-      success: true,
-      data: req.user,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-
-
-
-
-
-
-const updateMe = async (req, res, next) => {
-  try {
-    const { name, email, phone, password, confirmPassword } = req.body;
-
-    if (!req.user) {
-      return res.status(404).json({
-        success: false,
-        message: "Management staff account not found",
-      });
-    }
-
-    const staff = await ManagementStaff.findById(req.user._id);
-
-    if (!staff) {
-      return res.status(404).json({
-        success: false,
-        message: "Management staff account not found",
-      });
-    }
-
-    if (name !== undefined) {
-      staff.fullName = name;
-    }
-
-    if (email !== undefined) {
-      const normalizedEmail = email.trim().toLowerCase();
-
-      if (normalizedEmail !== staff.email) {
-        const existingStaff = await ManagementStaff.findOne({
-          email: normalizedEmail,
-          _id: { $ne: staff._id },
-        });
-
-        if (existingStaff) {
-          return res.status(400).json({
-            success: false,
-            message: "Email is already in use",
-          });
-        }
-
-        if (!/^[a-zA-Z][a-zA-Z0-9_]*@lovendermgmt\.com$/i.test(normalizedEmail)) {
-          return res.status(400).json({
-            success: false,
-            message:
-              "Invalid email format for management staff. Email must be in the format: username@lovendermgmt.com",
-          });
-        }
-
-        staff.email = normalizedEmail;
-      }
-    }
-
-    if (phone !== undefined) {
-      staff.phone = phone;
-    }
-
-    if (password || confirmPassword) {
-      if (!password || !confirmPassword) {
-        return res.status(400).json({
-          success: false,
-          message: "Please provide both password fields",
-        });
-      }
-
-      if (password !== confirmPassword) {
-        return res.status(400).json({
-          success: false,
-          message: "Passwords do not match",
-        });
-      }
-
-      staff.password = password;
-    }
-
-    const isPasswordChange = Boolean(password || confirmPassword);
-
-    await staff.save();
-
-    const updatedStaff = await ManagementStaff.findById(staff._id).select("-password");
-
-    res.status(200).json({
-      success: true,
-      message: isPasswordChange
-        ? "Password successfully changed"
-        : "Profile updated successfully",
-      data: updatedStaff,
-    });
-  } catch (error) {
-    console.error("UpdateMe error:", error.name, error.message);
-
-    const isPasswordChange = Boolean(req.body.password || req.body.confirmPassword);
-
-    return res.status(400).json({
-      success: false,
-      message: isPasswordChange
-        ? "Password change failed"
-        : error.message || "Update failed",
-    });
-  }
-};
-
-
 
 
 module.exports = {
   registerUser,
   loginUser,
   loginManagementStaff,
-  getMe,
-  updateMe,
 };
