@@ -162,17 +162,6 @@ textarea {
   resize: none;
 }
 
-.file-input {
-  background: #fff;
-  cursor: pointer;
-}
-
-.file-info {
-  color: #fff;
-  font-size: 14px;
-  text-align: left;
-}
-
 button {
   width: 150px;
   padding: 10px;
