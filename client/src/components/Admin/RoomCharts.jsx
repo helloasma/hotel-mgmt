@@ -1,115 +1,192 @@
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import "../../Pages/Admin/VisualSummary.css";
 
-const RoomCharts = ({ rooms = [] }) => {
-  const totalRooms = rooms.reduce((sum, room) => sum + Number(room.totalRooms || 0), 0);
-  const totalAvailable = rooms.reduce((sum, room) => sum + Number(room.availableRooms || 0), 0);
-  const totalBooked = Math.max(totalRooms - totalAvailable, 0);
+const calculatePercentageFull = (room) => {
+  const totalRooms = room.totalRooms || 0;
+  const availableRooms = room.availableRooms || 0;
 
-  const availabilityPercentage =
-    totalRooms > 0 ? Math.round((totalAvailable / totalRooms) * 100) : 0;
+  if (!room || totalRooms === 0) return 0;
 
-  const categoryCounts = rooms.reduce((acc, room) => {
-    const category = room.category || "Uncategorized";
-    acc[category] = (acc[category] || 0) + 1;
-    return acc;
-  }, {});
+  return ((totalRooms - availableRooms) / totalRooms) * 100;
+};
 
-  const maxCategoryCount = Math.max(...Object.values(categoryCounts), 1);
-
-  const maxPrice = Math.max(...rooms.map((room) => Number(room.price || 0)), 1);
+const PieChart = ({ percentage, roomName, category }) => {
+  const circumference = 2 * Math.PI * 45;
+  const offset = circumference - (percentage / 100) * circumference;
 
   return (
-    <section className="room-charts-container">
-      <div className="section-header">
-        <h2>Room Charts</h2>
-        <p>Visual overview of room availability, categories, and prices.</p>
+    <div className="pie-chart-container">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle
+          cx="60"
+          cy="60"
+          r="45"
+          fill="none"
+          stroke="#e0e0e0"
+          strokeWidth="8"
+        />
+
+        <circle
+          cx="60"
+          cy="60"
+          r="45"
+          fill="none"
+          stroke="#2f5148"
+          strokeWidth="8"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          transform="rotate(-90 60 60)"
+        />
+
+        <text
+          x="60"
+          y="70"
+          textAnchor="middle"
+          fontSize="24"
+          fontWeight="bold"
+          fill="#0e081f"
+        >
+          {Math.round(percentage)}%
+        </text>
+      </svg>
+
+      <div className="chart-label">
+        <p className="room-name">{roomName}</p>
+        <p className="category">{category}</p>
       </div>
+    </div>
+  );
+};
 
-      {rooms.length === 0 ? (
-        <div className="empty-card">
-          <p>No room data available.</p>
+const BarChart = ({ rooms }) => {
+  const categoryStats = useMemo(() => {
+    const stats = {};
+
+    rooms.forEach((room) => {
+      const category = room.category || "Uncategorized";
+      const totalRooms = room.totalRooms || 0;
+      const availableRooms = room.availableRooms || 0;
+      const bookedRooms = totalRooms - availableRooms;
+
+      if (!stats[category]) {
+        stats[category] = {
+          total: 0,
+          booked: 0,
+        };
+      }
+
+      stats[category].total += totalRooms;
+      stats[category].booked += bookedRooms;
+    });
+
+    return stats;
+  }, [rooms]);
+
+  const maxBookings = Math.max(
+    0,
+    ...Object.values(categoryStats).map((stat) => stat.booked)
+  );
+
+  return (
+    <div className="bar-chart">
+      <h3>Room Popularity by Category</h3>
+
+      <div className="bars">
+        {Object.entries(categoryStats).map(([category, stat]) => {
+          const height = (stat.booked / (maxBookings || 1)) * 200;
+
+          return (
+            <div key={category} className="bar-item">
+              <div className="bar-wrapper">
+                <div
+                  className="bar"
+                  style={{
+                    height: `${height}px`,
+                  }}
+                />
+
+                <span className="bar-value">{stat.booked}</span>
+              </div>
+
+              <span className="bar-label">{category}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const RoomCharts = () => {
+  const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadRooms = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/rooms", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        setRooms(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching room chart data", error);
+        setError("Failed to load room chart data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRooms();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="room-charts-container">
+        <p>Loading room charts...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="room-charts-container">
+        <p className="chart-error">{error}</p>
+      </div>
+    );
+  }
+
+  if (rooms.length === 0) {
+    return (
+      <div className="room-charts-container">
+        <p>No room data available for charts.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="room-charts-container">
+      <BarChart rooms={rooms} />
+
+      <div className="pie-charts-section">
+        <h3>Room Occupancy by Type</h3>
+
+        <div className="pie-charts-grid">
+          {rooms.map((room) => (
+            <PieChart
+              key={room._id}
+              percentage={calculatePercentageFull(room)}
+              roomName={room.title}
+              category={room.category}
+            />
+          ))}
         </div>
-      ) : (
-        <div className="charts-grid">
-          <div className="chart-card">
-            <h3>Room Availability</h3>
-
-            <div className="availability-summary">
-              <div>
-                <span className="summary-label">Available</span>
-                <strong>{totalAvailable}</strong>
-              </div>
-
-              <div>
-                <span className="summary-label">Booked</span>
-                <strong>{totalBooked}</strong>
-              </div>
-
-              <div>
-                <span className="summary-label">Total</span>
-                <strong>{totalRooms}</strong>
-              </div>
-            </div>
-
-            <div className="progress-chart">
-              <div
-                className="progress-fill"
-                style={{ width: `${availabilityPercentage}%` }}
-              ></div>
-            </div>
-
-            <p className="chart-note">{availabilityPercentage}% rooms available</p>
-          </div>
-
-          <div className="chart-card">
-            <h3>Rooms by Category</h3>
-
-            <div className="bar-chart">
-              {Object.entries(categoryCounts).map(([category, count]) => {
-                const width = Math.round((count / maxCategoryCount) * 100);
-
-                return (
-                  <div className="bar-row" key={category}>
-                    <div className="bar-info">
-                      <span>{category}</span>
-                      <strong>{count}</strong>
-                    </div>
-
-                    <div className="bar-track">
-                      <div className="bar-fill" style={{ width: `${width}%` }}></div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="chart-card wide-chart-card">
-            <h3>Room Prices</h3>
-
-            <div className="price-chart">
-              {rooms.map((room) => {
-                const price = Number(room.price || 0);
-                const width = Math.round((price / maxPrice) * 100);
-
-                return (
-                  <div className="bar-row" key={room._id}>
-                    <div className="bar-info">
-                      <span>{room.title || "Unnamed Room"}</span>
-                      <strong>${price}</strong>
-                    </div>
-
-                    <div className="bar-track">
-                      <div className="bar-fill price-fill" style={{ width: `${width}%` }}></div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-    </section>
+      </div>
+    </div>
   );
 };
 
