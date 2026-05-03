@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import "./RoomManagement.css";
 
@@ -7,6 +7,37 @@ const RoomManagement = () => {
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [sortOption, setSortOption] = useState("relevance");
+
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newRoomData, setNewRoomData] = useState({
+    title: "",
+    type: "",
+    category: "",
+    price: "",
+    capacity: "",
+    totalRooms: "",
+  });
+
+  const [message, setMessage] = useState({
+    text: "",
+    type: "",
+    location: "",
+  });
+
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+
+  const showMessage = (text, type = "success", location = "global") => {
+    setMessage({ text, type, location });
+
+    setTimeout(() => {
+      setMessage({
+        text: "",
+        type: "",
+        location: "",
+      });
+    }, 3500);
+  };
 
   useEffect(() => {
     const loadRooms = async () => {
@@ -20,7 +51,7 @@ const RoomManagement = () => {
         setRooms(response.data.data || []);
       } catch (error) {
         console.error("Error fetching rooms", error);
-        alert("Failed to load rooms");
+        showMessage("Failed to load rooms.", "error", "global");
       } finally {
         setLoading(false);
       }
@@ -29,18 +60,31 @@ const RoomManagement = () => {
     loadRooms();
   }, []);
 
+  const sortedRooms = useMemo(() => {
+    const roomsCopy = [...rooms];
+
+    if (sortOption === "priceLowToHigh") {
+      return roomsCopy.sort((a, b) => Number(a.price) - Number(b.price));
+    }
+
+    if (sortOption === "priceHighToLow") {
+      return roomsCopy.sort((a, b) => Number(b.price) - Number(a.price));
+    }
+
+    return roomsCopy;
+  }, [rooms, sortOption]);
+
   const handleEditClick = (room) => {
     setEditingId(room._id);
+    setDeleteConfirmId(null);
 
     setEditData({
-      description: room.description || "",
-      amenities: Array.isArray(room.amenities)
-        ? room.amenities.join(", ")
-        : room.amenities || "",
-      view: room.view || "",
-      bed: room.bed || "",
+      title: room.title || "",
+      type: room.type || "",
+      category: room.category || "",
       price: room.price || 0,
       capacity: room.capacity || 0,
+      totalRooms: room.totalRooms || 0,
     });
   };
 
@@ -51,21 +95,46 @@ const RoomManagement = () => {
     }));
   };
 
-  const handleSaveEdit = async (roomId) => {
-    try {
-      const amenities =
-        typeof editData.amenities === "string"
-          ? editData.amenities
-              .split(",")
-              .map((item) => item.trim())
-              .filter((item) => item)
-          : editData.amenities;
+  const validateEditData = () => {
+    const { title, type, category, price, capacity, totalRooms } = editData;
 
+    if (!title || !type || !category || price === "" || capacity === "" || totalRooms === "") {
+      showMessage("Please fill in all edit fields.", "error", "edit");
+      return false;
+    }
+
+    if (Number(price) < 0 || Number.isNaN(Number(price))) {
+      showMessage("Price must be a valid number.", "error", "edit");
+      return false;
+    }
+
+    if (
+      Number(capacity) < 1 ||
+      Number(capacity) > 6 ||
+      Number.isNaN(Number(capacity))
+    ) {
+      showMessage("Capacity must be a number between 1 and 6.", "error", "edit");
+      return false;
+    }
+
+    if (Number(totalRooms) < 1 || Number.isNaN(Number(totalRooms))) {
+      showMessage("Units must be at least 1.", "error", "edit");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSaveEdit = async (roomId) => {
+    if (!validateEditData()) return;
+
+    try {
       const payload = {
         ...editData,
+        title: editData.title.trim(),
         price: Number(editData.price),
         capacity: Number(editData.capacity),
-        amenities,
+        totalRooms: Number(editData.totalRooms),
       };
 
       const response = await axios.put(
@@ -86,24 +155,30 @@ const RoomManagement = () => {
 
       setEditingId(null);
       setEditData({});
+      showMessage("Room updated successfully.", "success", "global");
     } catch (error) {
       console.error("Error saving room", error);
-      alert("Failed to save room details");
+      showMessage("Failed to save room details.", "error", "edit");
     }
   };
 
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditData({});
+    showMessage("Edit cancelled.", "error", "global");
   };
 
-  const handleDeleteRoom = async (roomId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this room?"
-    );
+  const handleDeleteClick = (roomId) => {
+    setDeleteConfirmId(roomId);
+    setEditingId(null);
+  };
 
-    if (!confirmDelete) return;
+  const handleCancelDelete = () => {
+    setDeleteConfirmId(null);
+    showMessage("Delete cancelled.", "error", "global");
+  };
 
+  const handleConfirmDeleteRoom = async (roomId) => {
     try {
       await axios.delete(`http://localhost:5000/api/rooms/${roomId}`, {
         headers: {
@@ -112,18 +187,124 @@ const RoomManagement = () => {
       });
 
       setRooms((prevRooms) => prevRooms.filter((room) => room._id !== roomId));
+      setDeleteConfirmId(null);
+      showMessage("Room deleted successfully.", "success", "global");
     } catch (error) {
       console.error("Error deleting room", error);
-      alert("Failed to delete room");
+      showMessage("Failed to delete room.", "error", `delete-${roomId}`);
     }
   };
 
-  const formatAmenities = (amenities) => {
-    if (Array.isArray(amenities)) {
-      return amenities.join(", ");
+  const handleNewRoomChange = (field, value) => {
+    setNewRoomData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const validateNewRoomData = () => {
+    const { title, type, category, price, capacity, totalRooms } = newRoomData;
+
+    if (!title || !type || !category || price === "" || capacity === "" || totalRooms === "") {
+      showMessage("Please fill in all fields before adding a room.", "error", "add");
+      return false;
     }
 
-    return amenities || "-";
+    if (Number(price) < 0 || Number.isNaN(Number(price))) {
+      showMessage("Price must be a valid number.", "error", "add");
+      return false;
+    }
+
+    if (
+      Number(capacity) < 1 ||
+      Number(capacity) > 6 ||
+      Number.isNaN(Number(capacity))
+    ) {
+      showMessage("Capacity must be a number between 1 and 6.", "error", "add");
+      return false;
+    }
+
+    if (Number(totalRooms) < 1 || Number.isNaN(Number(totalRooms))) {
+      showMessage("Units must be at least 1.", "error", "add");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleAddRoom = async (e) => {
+    e.preventDefault();
+
+    if (!validateNewRoomData()) return;
+
+    const { title, type, category, price, capacity, totalRooms } = newRoomData;
+
+    try {
+      const payload = {
+        title: title.trim(),
+        type,
+        category,
+        price: Number(price),
+        capacity: Number(capacity),
+        totalRooms: Number(totalRooms),
+        availableRooms: Number(totalRooms),
+        description: `${title.trim()} - ${type} ${category}`,
+        amenities: [],
+        images: [],
+        available: true,
+      };
+
+      const response = await axios.post(
+        "http://localhost:5000/api/rooms",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setRooms((prevRooms) => [...prevRooms, response.data.data]);
+
+      setNewRoomData({
+        title: "",
+        type: "",
+        category: "",
+        price: "",
+        capacity: "",
+        totalRooms: "",
+      });
+
+      setShowAddForm(false);
+      showMessage("New room added successfully.", "success", "global");
+    } catch (error) {
+      console.error("Error adding room", error);
+      showMessage("Failed to add new room.", "error", "add");
+    }
+  };
+
+  const handleCancelAddRoom = () => {
+    setNewRoomData({
+      title: "",
+      type: "",
+      category: "",
+      price: "",
+      capacity: "",
+      totalRooms: "",
+    });
+
+    setShowAddForm(false);
+    showMessage("Add room cancelled.", "error", "global");
+  };
+
+  const renderMessage = (location) => {
+    if (!message.text || message.location !== location) return null;
+
+    return (
+      <p className={`ui-message ${message.type === "success" ? "success" : "error"}`}>
+        {message.text}
+      </p>
+    );
   };
 
   if (loading) {
@@ -142,94 +323,254 @@ const RoomManagement = () => {
       <div className="admin-content">
         <h1>Rooms Management</h1>
 
+        <div className="table-toolbar">
+          <div className="sort-control">
+            <label htmlFor="room-sort">Sort By</label>
+            <select
+              id="room-sort"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="relevance">Relevance</option>
+              <option value="priceLowToHigh">Price Low to High</option>
+              <option value="priceHighToLow">Price High to Low</option>
+            </select>
+          </div>
+
+          <div className="add-room-area">
+            <button
+              className="add-room-btn"
+              onClick={() => {
+                setShowAddForm((prev) => !prev);
+                setDeleteConfirmId(null);
+                setEditingId(null);
+              }}
+            >
+              {showAddForm ? "Close Form" : "Add New Room"}
+            </button>
+          </div>
+        </div>
+
+        {renderMessage("global")}
+
+        {showAddForm && (
+          <form className="add-room-form" onSubmit={handleAddRoom}>
+            <div className="add-room-grid">
+              <div className="form-group">
+                <label>Room Name</label>
+                <input
+                  type="text"
+                  value={newRoomData.title}
+                  onChange={(e) =>
+                    handleNewRoomChange("title", e.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Type</label>
+                <select
+                  value={newRoomData.type}
+                  onChange={(e) => handleNewRoomChange("type", e.target.value)}
+                  required
+                >
+                  <option value="">Select type</option>
+                  <option value="Suite">Suite</option>
+                  <option value="Standard">Standard</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Category</label>
+                <select
+                  value={newRoomData.category}
+                  onChange={(e) =>
+                    handleNewRoomChange("category", e.target.value)
+                  }
+                  required
+                >
+                  <option value="">Select category</option>
+                  <option value="Bungalow">Bungalow</option>
+                  <option value="Cabin">Cabin</option>
+                  <option value="Hotel">Hotel</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Price</label>
+                <input
+                  type="number"
+                  min="0"
+                  value={newRoomData.price}
+                  onChange={(e) =>
+                    handleNewRoomChange("price", e.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Capacity</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="6"
+                  value={newRoomData.capacity}
+                  onChange={(e) =>
+                    handleNewRoomChange("capacity", e.target.value)
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Units</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={newRoomData.totalRooms}
+                  onChange={(e) =>
+                    handleNewRoomChange("totalRooms", e.target.value)
+                  }
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="add-form-actions">
+              <button type="submit" className="create-room-btn">
+                Save Room
+              </button>
+
+              <button
+                type="button"
+                className="cancel-add-room-btn"
+                onClick={handleCancelAddRoom}
+              >
+                Cancel
+              </button>
+            </div>
+
+            {renderMessage("add")}
+          </form>
+        )}
+
+        {renderMessage("edit")}
+
         <table>
           <thead>
             <tr>
               <th>Room Name</th>
-              <th>Category</th>
               <th>Type</th>
+              <th>Category</th>
               <th>Price</th>
-              <th>Units</th>
               <th>Capacity</th>
-              <th>Description</th>
-              <th>Amenities</th>
-              <th>View</th>
-              <th>Bed</th>
+              <th>Units</th>
               <th>Action</th>
             </tr>
           </thead>
 
           <tbody>
-            {rooms.length > 0 ? (
-              rooms.map((room) => (
+            {sortedRooms.length > 0 ? (
+              sortedRooms.map((room) => (
                 <tr key={room._id}>
-                  <td>{room.title}</td>
-                  <td>{room.category}</td>
-                  <td>{room.type}</td>
-                  <td>${room.price}</td>
-                  <td>{room.totalRooms}</td>
-
                   <td>
                     {editingId === room._id ? (
-                      <textarea
-                        value={editData.description}
+                      <input
+                        type="text"
+                        value={editData.title}
                         onChange={(e) =>
-                          handleEditChange("description", e.target.value)
+                          handleEditChange("title", e.target.value)
                         }
                         className="edit-input"
-                        rows="2"
                       />
                     ) : (
-                      <span className="cell-content">
-                        {room.description || "-"}
-                      </span>
+                      <span className="cell-content">{room.title}</span>
                     )}
                   </td>
 
                   <td>
                     {editingId === room._id ? (
-                      <textarea
-                        value={editData.amenities}
+                      <select
+                        value={editData.type}
                         onChange={(e) =>
-                          handleEditChange("amenities", e.target.value)
+                          handleEditChange("type", e.target.value)
                         }
                         className="edit-input"
-                        rows="2"
-                      />
+                      >
+                        <option value="Suite">Suite</option>
+                        <option value="Standard">Standard</option>
+                      </select>
                     ) : (
-                      <span className="cell-content">
-                        {formatAmenities(room.amenities)}
-                      </span>
+                      <span className="cell-content">{room.type}</span>
+                    )}
+                  </td>
+
+                  <td>
+                    {editingId === room._id ? (
+                      <select
+                        value={editData.category}
+                        onChange={(e) =>
+                          handleEditChange("category", e.target.value)
+                        }
+                        className="edit-input"
+                      >
+                        <option value="Bungalow">Bungalow</option>
+                        <option value="Cabin">Cabin</option>
+                        <option value="Hotel">Hotel</option>
+                      </select>
+                    ) : (
+                      <span className="cell-content">{room.category}</span>
                     )}
                   </td>
 
                   <td>
                     {editingId === room._id ? (
                       <input
-                        type="text"
-                        value={editData.view}
+                        type="number"
+                        min="0"
+                        value={editData.price}
                         onChange={(e) =>
-                          handleEditChange("view", e.target.value)
+                          handleEditChange("price", e.target.value)
                         }
                         className="edit-input"
                       />
                     ) : (
-                      <span className="cell-content">{room.view || "-"}</span>
+                      <span className="cell-content">${room.price}</span>
                     )}
                   </td>
 
                   <td>
                     {editingId === room._id ? (
                       <input
-                        type="text"
-                        value={editData.bed}
+                        type="number"
+                        min="1"
+                        max="6"
+                        value={editData.capacity}
                         onChange={(e) =>
-                          handleEditChange("bed", e.target.value)
+                          handleEditChange("capacity", e.target.value)
                         }
                         className="edit-input"
                       />
                     ) : (
-                      <span className="cell-content">{room.bed || "-"}</span>
+                      <span className="cell-content">{room.capacity}</span>
+                    )}
+                  </td>
+
+                  <td>
+                    {editingId === room._id ? (
+                      <input
+                        type="number"
+                        min="1"
+                        value={editData.totalRooms}
+                        onChange={(e) =>
+                          handleEditChange("totalRooms", e.target.value)
+                        }
+                        className="edit-input"
+                      />
+                    ) : (
+                      <span className="cell-content">{room.totalRooms}</span>
                     )}
                   </td>
 
@@ -251,6 +592,28 @@ const RoomManagement = () => {
                             Cancel
                           </button>
                         </>
+                      ) : deleteConfirmId === room._id ? (
+                        <div className="delete-confirm-box">
+                          <p>Delete this room?</p>
+
+                          <div className="delete-confirm-actions">
+                            <button
+                              className="confirm-delete-btn"
+                              onClick={() => handleConfirmDeleteRoom(room._id)}
+                            >
+                              Yes
+                            </button>
+
+                            <button
+                              className="keep-room-btn"
+                              onClick={handleCancelDelete}
+                            >
+                              No
+                            </button>
+                          </div>
+
+                          {renderMessage(`delete-${room._id}`)}
+                        </div>
                       ) : (
                         <>
                           <button
@@ -262,7 +625,7 @@ const RoomManagement = () => {
 
                           <button
                             className="delete-btn"
-                            onClick={() => handleDeleteRoom(room._id)}
+                            onClick={() => handleDeleteClick(room._id)}
                           >
                             Delete
                           </button>
@@ -274,7 +637,7 @@ const RoomManagement = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="10">No rooms found.</td>
+                <td colSpan="7">No rooms found.</td>
               </tr>
             )}
           </tbody>

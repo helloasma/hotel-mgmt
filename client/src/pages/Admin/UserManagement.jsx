@@ -22,6 +22,7 @@ const UserManagement = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+
         setUsers(response.data.data);
       } catch (error) {
         console.error("Error fetching users", error);
@@ -39,6 +40,7 @@ const UserManagement = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
+
         setUsers(users.filter((user) => user._id !== id));
       } catch (error) {
         console.error("Failed to delete user", error);
@@ -59,6 +61,7 @@ const UserManagement = () => {
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
+
     setEditingData((prev) => ({
       ...prev,
       [name]: value,
@@ -67,6 +70,12 @@ const UserManagement = () => {
 
   const handleCancelEdit = () => {
     setEditingUserId(null);
+    setEditingData({
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+    });
   };
 
   const handleUpdateUser = async (id) => {
@@ -76,6 +85,7 @@ const UserManagement = () => {
         email: editingData.email,
         phone: editingData.phone,
       };
+
       if (editingData.password) {
         payload.password = editingData.password;
       }
@@ -90,8 +100,17 @@ const UserManagement = () => {
         }
       );
 
-      setUsers(users.map((user) => (user._id === id ? response.data.data : user)));
+      setUsers(
+        users.map((user) => (user._id === id ? response.data.data : user))
+      );
+
       setEditingUserId(null);
+      setEditingData({
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+      });
     } catch (error) {
       console.error("Failed to update user", error);
       alert("Failed to update user");
@@ -100,6 +119,7 @@ const UserManagement = () => {
 
   const handleUserAdded = (newUser) => {
     setUsers([...users, newUser]);
+    setShowUserForm(false);
   };
 
   return (
@@ -107,12 +127,23 @@ const UserManagement = () => {
       <div className="admin-content">
         <h1>Website Users</h1>
 
-        <button
-          className="add-btn"
-          onClick={() => setShowUserForm(true)}
-        >
-          + Add New User
-        </button>
+        <div className="add-user-row">
+          <button
+            className="add-btn"
+            onClick={() => setShowUserForm(!showUserForm)}
+          >
+            Add New User
+          </button>
+        </div>
+
+        {showUserForm && (
+          <div className="user-form-wrapper">
+            <UserForm
+              onUserAdded={handleUserAdded}
+              onClose={() => setShowUserForm(false)}
+            />
+          </div>
+        )}
 
         <table>
           <thead>
@@ -124,6 +155,7 @@ const UserManagement = () => {
               <th>Action</th>
             </tr>
           </thead>
+
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
@@ -139,6 +171,7 @@ const UserManagement = () => {
                     user.name
                   )}
                 </td>
+
                 <td>
                   {editingUserId === user._id ? (
                     <input
@@ -151,6 +184,7 @@ const UserManagement = () => {
                     user.email
                   )}
                 </td>
+
                 <td>
                   {editingUserId === user._id ? (
                     <input
@@ -164,6 +198,7 @@ const UserManagement = () => {
                     "********"
                   )}
                 </td>
+
                 <td>
                   {editingUserId === user._id ? (
                     <input
@@ -176,6 +211,7 @@ const UserManagement = () => {
                     user.phone
                   )}
                 </td>
+
                 <td>
                   <div className="action-buttons">
                     {editingUserId === user._id ? (
@@ -186,7 +222,11 @@ const UserManagement = () => {
                         >
                           Save
                         </button>
-                        <button className="cancel-btn" onClick={handleCancelEdit}>
+
+                        <button
+                          className="cancel-btn"
+                          onClick={handleCancelEdit}
+                        >
                           Cancel
                         </button>
                       </>
@@ -198,6 +238,7 @@ const UserManagement = () => {
                         >
                           Edit
                         </button>
+
                         <button
                           className="delete-btn"
                           onClick={() => handleDeleteUser(user._id)}
@@ -212,13 +253,6 @@ const UserManagement = () => {
             ))}
           </tbody>
         </table>
-
-        {showUserForm && (
-          <UserForm
-            onUserAdded={handleUserAdded}
-            onClose={() => setShowUserForm(false)}
-          />
-        )}
       </div>
     </div>
   );

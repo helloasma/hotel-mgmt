@@ -1,5 +1,39 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
 
+.add-user-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.add-btn {
+  padding: 12px 24px;
+  background: #1f3d2f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-width: 150px;
+}
+
+.add-btn:hover {
+  background: #173024;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(31, 61, 47, 0.3);
+}
+
+.user-form-wrapper {
+  margin-bottom: 24px;
+}
+
 .action-buttons {
   display: flex;
   gap: 8px;
@@ -60,14 +94,20 @@
   background: #2f5148;
 }
 
-.save-btn:hover,
-.cancel-btn:hover {
+.save-btn:hover {
+  background: #1f3d2f;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(47, 81, 72, 0.3);
 }
 
 .cancel-btn {
   background: #c84d3d;
+}
+
+.cancel-btn:hover {
+  background: #a53d2d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(200, 77, 61, 0.3);
 }
 
 input,
@@ -78,36 +118,22 @@ select {
   border: 1px solid #d1d5db;
   font-family: "Inter", sans-serif;
   font-size: 14px;
-}
-
-.add-btn {
-  margin-bottom: 20px;
-  padding: 12px 24px;
-  background: #2f5148;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.add-btn:hover {
-  background: #1f3d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(47, 81, 72, 0.3);
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
+  .add-user-row {
+    justify-content: flex-start;
+  }
+
   .action-buttons {
     flex-direction: column;
   }
 
   .edit-btn,
-  .delete-btn {
+  .delete-btn,
+  .save-btn,
+  .cancel-btn {
     width: 100%;
   }
 }

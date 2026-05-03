@@ -6,13 +6,16 @@ const OperationStaffs = () => {
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+
   const [addData, setAddData] = useState({
     fullName: "",
     email: "",
     phone: "",
     role: "Housekeeper",
   });
+
   const [editingId, setEditingId] = useState(null);
+
   const [editData, setEditData] = useState({
     fullName: "",
     email: "",
@@ -23,11 +26,15 @@ const OperationStaffs = () => {
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/operation-staff", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:5000/api/operation-staff",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
         setStaff(response.data.data);
       } catch (error) {
         console.error("Error fetching operation staff", error);
@@ -61,7 +68,9 @@ const OperationStaffs = () => {
       );
 
       setStaff((prev) => [response.data.data, ...prev]);
+
       setShowAddForm(false);
+
       setAddData({
         fullName: "",
         email: "",
@@ -76,6 +85,7 @@ const OperationStaffs = () => {
 
   const handleEditClick = (member) => {
     setEditingId(member._id);
+
     setEditData({
       fullName: member.fullName || "",
       email: member.email || "",
@@ -104,11 +114,11 @@ const OperationStaffs = () => {
       );
 
       setStaff((prev) =>
-        prev.map((member) =>
-          member._id === id ? response.data.data : member
-        )
+        prev.map((member) => (member._id === id ? response.data.data : member))
       );
+
       setEditingId(null);
+
       setEditData({
         fullName: "",
         email: "",
@@ -123,6 +133,7 @@ const OperationStaffs = () => {
 
   const handleCancelEdit = () => {
     setEditingId(null);
+
     setEditData({
       fullName: "",
       email: "",
@@ -133,7 +144,7 @@ const OperationStaffs = () => {
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "are you sure you want to delete this satff?"
+      "Are you sure you want to delete this staff member?"
     );
 
     if (!confirmDelete) return;
@@ -144,6 +155,7 @@ const OperationStaffs = () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
       setStaff((prev) => prev.filter((member) => member._id !== id));
     } catch (error) {
       console.error("Could not delete staff", error);
@@ -178,6 +190,7 @@ const OperationStaffs = () => {
                   required
                 />
               </label>
+
               <label className="input-group">
                 <span>Email</span>
                 <input
@@ -187,6 +200,7 @@ const OperationStaffs = () => {
                   required
                 />
               </label>
+
               <label className="input-group">
                 <span>Phone</span>
                 <input
@@ -196,6 +210,7 @@ const OperationStaffs = () => {
                   required
                 />
               </label>
+
               <label className="input-group">
                 <span>Role</span>
                 <select
@@ -207,14 +222,18 @@ const OperationStaffs = () => {
                   <option value="Maintenance">Maintenance</option>
                   <option value="Guest Service">Guest Service</option>
                   <option value="Groundskeeper">Groundskeeper</option>
-                  <option value="Activities Coordinator">Activities Coordinator</option>
+                  <option value="Activities Coordinator">
+                    Activities Coordinator
+                  </option>
                 </select>
               </label>
             </div>
+
             <div className="form-actions">
               <button type="submit" className="save-btn">
                 Add Staff
               </button>
+
               <button
                 type="button"
                 className="cancel-btn"
@@ -229,8 +248,8 @@ const OperationStaffs = () => {
         {loading ? (
           <p>Loading operation staff...</p>
         ) : (
-          <div className="staff-table-wrapper">
-            <table>
+          <div className="operation-staff-table-container">
+            <table className="operation-staff-table">
               <thead>
                 <tr>
                   <th>Full Name</th>
@@ -240,6 +259,7 @@ const OperationStaffs = () => {
                   <th>Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 {staff.length > 0 ? (
                   staff.map((member) => (
@@ -249,96 +269,116 @@ const OperationStaffs = () => {
                           <input
                             type="text"
                             value={editData.fullName}
-                            onChange={(e) => handleEditChange("fullName", e.target.value)}
+                            onChange={(e) =>
+                              handleEditChange("fullName", e.target.value)
+                            }
                             required
                           />
                         ) : (
                           member.fullName
                         )}
                       </td>
+
                       <td>
                         {editingId === member._id ? (
                           <input
                             type="email"
                             value={editData.email}
-                            onChange={(e) => handleEditChange("email", e.target.value)}
+                            onChange={(e) =>
+                              handleEditChange("email", e.target.value)
+                            }
                             required
                           />
                         ) : (
                           member.email
                         )}
                       </td>
+
                       <td>
                         {editingId === member._id ? (
                           <input
                             type="tel"
                             value={editData.phone}
-                            onChange={(e) => handleEditChange("phone", e.target.value)}
+                            onChange={(e) =>
+                              handleEditChange("phone", e.target.value)
+                            }
                             required
                           />
                         ) : (
                           member.phone
                         )}
                       </td>
+
                       <td>
                         {editingId === member._id ? (
                           <select
                             value={editData.role}
-                            onChange={(e) => handleEditChange("role", e.target.value)}
+                            onChange={(e) =>
+                              handleEditChange("role", e.target.value)
+                            }
                             required
                           >
                             <option value="Housekeeper">Housekeeper</option>
                             <option value="Maintenance">Maintenance</option>
                             <option value="Guest Service">Guest Service</option>
                             <option value="Groundskeeper">Groundskeeper</option>
-                            <option value="Activities Coordinator">Activities Coordinator</option>
+                            <option value="Activities Coordinator">
+                              Activities Coordinator
+                            </option>
                           </select>
                         ) : (
                           member.role
                         )}
                       </td>
-                      <td className="action-buttons">
-                        {editingId === member._id ? (
-                          <>
-                            <button
-                              type="button"
-                              className="save-btn"
-                              onClick={() => handleSaveEdit(member._id)}
-                            >
-                              Save
-                            </button>
-                            <button
-                              type="button"
-                              className="cancel-btn"
-                              onClick={handleCancelEdit}
-                            >
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              type="button"
-                              className="edit-btn"
-                              onClick={() => handleEditClick(member)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              type="button"
-                              className="delete-btn"
-                              onClick={() => handleDelete(member._id)}
-                            >
-                              DELETE
-                            </button>
-                          </>
-                        )}
+
+                      <td>
+                        <div className="operation-staff-actions">
+                          {editingId === member._id ? (
+                            <>
+                              <button
+                                type="button"
+                                className="save-btn"
+                                onClick={() => handleSaveEdit(member._id)}
+                              >
+                                Save
+                              </button>
+
+                              <button
+                                type="button"
+                                className="cancel-btn"
+                                onClick={handleCancelEdit}
+                              >
+                                Cancel
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                type="button"
+                                className="edit-btn"
+                                onClick={() => handleEditClick(member)}
+                              >
+                                Edit
+                              </button>
+
+                              <button
+                                type="button"
+                                className="delete-btn"
+                                onClick={() => handleDelete(member._id)}
+                              >
+                                DELETE
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5">No operation staff records found.</td>
+                    <td colSpan="5" className="empty-table-message">
+                      No operation staff records found.
+                    </td>
                   </tr>
                 )}
               </tbody>

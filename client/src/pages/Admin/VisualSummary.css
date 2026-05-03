@@ -1,493 +1,110 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap");
-
-/* ================================
-   Visual Summary Page Layout
-================================ */
-
 .visual-summary-page {
   min-height: 100vh;
+  background: #0e081f;
   padding: 32px;
-  background: #f7f8f6;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+  color: #ffffff;
 }
 
 .visual-summary-header {
   background: #ffffff;
+  color: #0e081f;
   border-radius: 18px;
-  padding: 28px 32px;
-  border: 1px solid #e7e7e7;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
+  padding: 34px 36px;
+  margin-bottom: 28px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
 }
 
 .page-eyebrow {
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
+  margin: 0 0 10px;
+  font-size: 13px;
   font-weight: 700;
-  color: #2f5148;
-  text-transform: uppercase;
   letter-spacing: 1px;
-  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  color: #123f45;
 }
 
 .visual-summary-header h1 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 42px;
-  font-weight: 600;
-  color: #0e081f;
   margin: 0;
+  font-size: 42px;
+  line-height: 1.1;
+  font-weight: 500;
+  color: #05010f;
+  font-family: Georgia, "Times New Roman", serif;
 }
 
 .page-subtitle {
-  font-family: "Inter", sans-serif;
-  font-size: 15px;
-  color: #666;
-  margin: 8px 0 0 0;
+  margin: 14px 0 0;
+  font-size: 16px;
+  color: #6b6478;
+}
+
+.summary-alert {
+  background: #fff1f1;
+  color: #b42318;
+  border: 1px solid #f5b5b5;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  font-size: 14px;
+}
+
+.summary-loading-card {
+  background: #ffffff;
+  color: #0e081f;
+  border-radius: 18px;
+  padding: 28px;
+  text-align: center;
+  font-size: 16px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
 }
 
 .summary-dashboard-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
 }
 
 .summary-section {
   background: #ffffff;
+  color: #0e081f;
   border-radius: 18px;
   padding: 26px;
-  border: 1px solid #e7e7e7;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
 }
 
 .summary-full-width {
   width: 100%;
 }
 
-.summary-alert {
-  background: #fff3f3;
-  color: #9f2f2f;
-  border: 1px solid #f0c5c5;
-  border-radius: 12px;
-  padding: 14px 18px;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-}
-
-.summary-loading-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 32px;
-  border: 1px solid #e7e7e7;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
-  font-family: "Inter", sans-serif;
-  color: #666;
-}
-
-/* ================================
-   Shared Section Titles
-================================ */
-
-.section-header {
-  margin-bottom: 20px;
-}
-
-.section-header h2,
-.overall-stats h2 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 26px;
-  font-weight: 600;
-  color: #2f5148;
-  margin: 0 0 6px 0;
-}
-
-.section-header p {
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-.empty-card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 22px;
-  border: 1px solid #e7e7e7;
-  font-family: "Inter", sans-serif;
-  color: #777;
-}
-
-/* ================================
-   Overall Statistics
-================================ */
-
-.overall-stats {
-  width: 100%;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
-}
-
-.stat-card {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-  border: 1px solid #ececec;
-  text-align: center;
-}
-
-.stat-card h3 {
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+/* Makes the OverallStats component blend correctly inside VisualSummary */
+.summary-section .overall-stats {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
   color: #0e081f;
-  margin: 0 0 14px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  box-shadow: none;
 }
 
-.overall-stats .stat-number {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 42px;
-  font-weight: 600;
-  color: #2f5148;
-  margin: 0 0 10px 0;
+.summary-section .overall-stats h2 {
+  color: #123f45;
 }
 
-.sub-stats {
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  color: #666;
-}
-
-.sub-stats p {
-  margin: 5px 0;
-}
-
-/* ================================
-   Room Charts
-================================ */
-
-.room-charts-container {
-  width: 100%;
-}
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.chart-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-  border: 1px solid #ececec;
-}
-
-.wide-chart-card {
-  grid-column: 1 / -1;
-}
-
-.chart-card h3 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: #0e081f;
-  margin: 0 0 18px 0;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #2f5148;
-}
-
-.availability-summary {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.availability-summary div {
-  background: #f8f8f8;
-  border-radius: 12px;
-  padding: 14px;
-  text-align: center;
-}
-
-.summary-label {
-  display: block;
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 6px;
-}
-
-.availability-summary strong {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 28px;
-  color: #2f5148;
-}
-
-.progress-chart {
-  width: 100%;
-  height: 18px;
-  background: #e8eceb;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(135deg, #2f5148 0%, #1f3d2f 100%);
-  border-radius: 999px;
-  transition: width 0.4s ease;
-}
-
-.chart-note {
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  color: #666;
-  margin: 12px 0 0 0;
-}
-
-.bar-chart,
-.price-chart {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.bar-row {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.bar-info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #0e081f;
-}
-
-.bar-info span {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.bar-info strong {
-  color: #2f5148;
-  flex-shrink: 0;
-}
-
-.bar-track {
-  width: 100%;
-  height: 12px;
-  background: #edf0ef;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.bar-fill {
-  height: 100%;
-  background: #2f5148;
-  border-radius: 999px;
-  transition: width 0.4s ease;
-}
-
-.price-fill {
-  background: #0e081f;
-}
-
-/* ================================
-   Booking Statistics
-================================ */
-
-.booking-stats-container {
-  display: grid;
-  grid-template-columns: minmax(260px, 0.8fr) minmax(320px, 1.2fr);
-  gap: 20px;
-}
-
-.price-card,
-.guests-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 25px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
-  border: 1px solid #ececec;
-}
-
-.price-card h3,
-.guests-card h3 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 22px;
-  font-weight: 600;
-  color: #0e081f;
-  margin: 0 0 15px 0;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #2f5148;
-}
-
-.price-value {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 44px;
-  font-weight: 600;
-  color: #2f5148;
-  margin: 20px 0 10px 0;
-}
-
-.price-month {
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  color: #999;
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.month-selector {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.month-selector label {
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: #2f5148;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.month-selector input {
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.month-selector input:focus {
-  outline: none;
-  border-color: #2f5148;
-  box-shadow: 0 0 0 3px rgba(47, 81, 72, 0.12);
-}
-
-.stat-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  border-left: 4px solid #2f5148;
-}
-
-.stat-row.highlight {
-  background: linear-gradient(135deg, #2f5148 0%, #1f3d2f 100%);
-  border-left-color: #ffffff;
-}
-
-.stat-label {
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #0e081f;
-}
-
-.booking-stat-number {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 30px;
-  font-weight: 600;
-  color: #2f5148;
-}
-
-.stat-row.highlight .stat-label,
-.stat-row.highlight .booking-stat-number {
-  color: #ffffff;
-}
-
-/* ================================
-   Responsive Design
-================================ */
-
-@media (max-width: 1000px) {
-  .visual-summary-page {
-    padding: 24px;
-  }
-
-  .charts-grid,
-  .booking-stats-container {
-    grid-template-columns: 1fr;
-  }
-
-  .wide-chart-card {
-    grid-column: auto;
-  }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
   .visual-summary-page {
-    padding: 18px;
-    gap: 20px;
+    padding: 20px;
   }
 
-  .visual-summary-header,
-  .summary-section {
-    padding: 22px;
-    border-radius: 14px;
+  .visual-summary-header {
+    padding: 28px 24px;
   }
 
   .visual-summary-header h1 {
-    font-size: 32px;
-  }
-
-  .page-subtitle {
-    font-size: 14px;
-  }
-
-  .section-header h2,
-  .overall-stats h2 {
-    font-size: 23px;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .availability-summary {
-    grid-template-columns: 1fr;
-  }
-
-  .price-value {
     font-size: 34px;
   }
 
-  .overall-stats .stat-number {
-    font-size: 34px;
-  }
-
-  .booking-stat-number {
-    font-size: 26px;
+  .summary-section {
+    padding: 20px;
   }
 }
 
@@ -496,24 +113,11 @@
     padding: 14px;
   }
 
-  .visual-summary-header,
-  .summary-section,
-  .chart-card,
-  .price-card,
-  .guests-card,
-  .stat-card {
-    padding: 18px;
-  }
-
   .visual-summary-header h1 {
-    font-size: 28px;
+    font-size: 30px;
   }
 
-  .charts-grid {
-    gap: 16px;
-  }
-
-  .booking-stats-container {
-    gap: 16px;
+  .page-subtitle {
+    font-size: 14px;
   }
 }
