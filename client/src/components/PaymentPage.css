@@ -17,14 +17,21 @@
 }
 
 .payment-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   margin-bottom: 24px;
 }
 
+.payment-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+}
+
 .payment-back {
+  justify-self: start;
   border: none;
   background: transparent;
   color: #12284b;
@@ -33,6 +40,7 @@
 }
 
 .payment-total {
+  justify-self: end;
   font-weight: 700;
   color: #0e081f;
 }
@@ -180,6 +188,14 @@
   font-size: 40px;
   margin-bottom: 18px;
   color: #1a1a1a;
+}
+
+.payment-wallet-brand {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1033;
+  margin-bottom: 14px;
 }
 
 .payment-wallet-desc {
