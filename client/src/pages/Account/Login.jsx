@@ -315,7 +315,12 @@ export default function Login() {
               <div style={{ marginBottom: 20 }}>
                 <div style={S.passHeader}>
                   <span style={S.passLabel}>Password</span>
-                  <a href="#" style={S.forgotLink}>Forgot password?</a>
+                  <span
+                    style={S.forgotLink}
+                    onClick={() => navigate("/forgot-password")}
+                  >
+                    Forgot password?
+                  </span>
                 </div>
                 <div style={{ position: "relative" }}>
                   <input

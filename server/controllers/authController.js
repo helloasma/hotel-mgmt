@@ -81,8 +81,51 @@ const getMe = async (req, res, next) => {
   }
 };
 
+const crypto = require("crypto");
+
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(404);
+      throw new Error("No account found with that email.");
+    }
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    user.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    user.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
+    await user.save({ validateBeforeSave: false });
+    res.status(200).json({ success: true, resetToken });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token, password } = req.body;
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+    if (!user) {
+      res.status(400);
+      throw new Error("Invalid or expired reset token");
+    }
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+    res.status(200).json({ success: true, message: "Password reset successful" });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
   getMe,
+  forgotPassword,
+  resetPassword,
 };

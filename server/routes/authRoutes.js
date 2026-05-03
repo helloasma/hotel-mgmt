@@ -4,6 +4,8 @@ const {
   registerUser,
   loginUser,
   getMe,
+  forgotPassword,
+  resetPassword
 } = require("../controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
 const handleValidationErrors = require("../middleware/validateMiddleware");
@@ -49,5 +51,8 @@ router.get("/admin-test", protect, adminOnly, (req, res) => {
 });
 
 router.get("/me", protect, getMe);
+
+router.post("/forgot-password", forgotPassword);
+router.put("/reset-password", resetPassword);
 
 module.exports = router;
