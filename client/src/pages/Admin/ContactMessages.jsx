@@ -12,7 +12,7 @@ const ContactMessages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/contact-messages", {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/contact-messages`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -29,7 +29,7 @@ const ContactMessages = () => {
   const handleDeleteMessage = async (id) => {
     if (window.confirm("Are you sure you want to delete this message?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/contact-messages/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/contact-messages/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -64,7 +64,7 @@ const ContactMessages = () => {
   const handleUpdateMessage = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/contact-messages/${id}`,
+        `${import.meta.env.VITE_API_URL}/contact-messages/${id}`,
         { status: editingData.status },
         {
           headers: {
@@ -85,7 +85,9 @@ const ContactMessages = () => {
     if (!attachments || attachments.length === 0) return "None";
     return attachments.map((att, idx) => (
       <div key={idx}>
-        <a href={att.url} target="_blank" rel="noopener noreferrer">{att.filename}</a>
+        <a href={att.url} target="_blank" rel="noopener noreferrer">
+          {att.filename}
+        </a>
       </div>
     ));
   };

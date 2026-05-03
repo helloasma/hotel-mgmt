@@ -25,6 +25,12 @@ const Contact = () => {
       return;
     }
 
+    // File size check (1MB max)
+    if (file && file.size > 1 * 1024 * 1024) {
+      setError("File size must be under 1MB.");
+      return;
+    }
+
     try {
       const payload = {
         name: name.trim(),
@@ -33,13 +39,22 @@ const Contact = () => {
       };
 
       if (file) {
-        const extension = file.name.split(".").pop()?.toLowerCase() || "";
+        const toBase64 = (file) =>
+          new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+          });
+
+        const base64 = await toBase64(file);
+
         payload.attachments = [
           {
             filename: file.name,
-            fileType: extension,
+            fileType: file.name.split(".").pop()?.toLowerCase() || "",
             size: file.size,
-            url: "",
+            url: base64,
           },
         ];
       }
@@ -129,6 +144,11 @@ const Contact = () => {
               className="file-input"
               onChange={(e) => setFile(e.target.files?.[0] || null)}
             />
+            {file && (
+              <p className="file-info">
+                Selected: {file.name} ({(file.size / 1024).toFixed(1)} KB)
+              </p>
+            )}
 
             {status && <p className="contact-success">{status}</p>}
             {error && <p className="contact-error">{error}</p>}
