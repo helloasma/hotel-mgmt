@@ -157,21 +157,12 @@ const resetPassword = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = {
-  registerUser,
-  loginUser,
-  getMe,
-  forgotPassword,
-  resetPassword,
-};
-
-
-
-
 
 
 module.exports = {
   registerUser,
   loginUser,
   loginManagementStaff,
+  forgotPassword,
+  resetPassword,
 };
