@@ -37,13 +37,13 @@ const AdminLogin = () => {
       localStorage.setItem("name", user.fullName || user.name || "");
       navigate("/admin/dashboard");
     } catch (err) {
-      console.log("FULL ERROR:", err);
-      console.log("STATUS:", err.response?.status);
-      console.log("BACKEND RESPONSE:", err.response?.data);
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
 
-      setErrorMessage(err.response?.data?.message || "Login failed");
+      setErrorMessage(err.response?.data?.message || "Invalid email or password");
     }
-  };
+      };
 
   return (
     <main className="admin-login-page">

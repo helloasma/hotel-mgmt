@@ -10,33 +10,55 @@ api.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
     const authToken = token || user?.token;
+
     if (authToken) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${authToken}`;
     }
   } catch {
     const authToken = localStorage.getItem("token");
+
     if (authToken) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${authToken}`;
     }
   }
+
   return config;
 });
 
-// On 401 responses, clear the stored user and reload to force logout
+// On 401 responses, clear auth data and redirect only when appropriate
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    const requestUrl = error.config?.url || "";
+    const currentPath = window.location.pathname;
+
+    const isLoginRequest =
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/auth/management-login");
+
+    const isAuthPage =
+      currentPath.toLowerCase() === "/login" ||
+      currentPath.toLowerCase() === "/signup" ||
+      currentPath.toLowerCase() === "/admin/login";
+
+    if (status === 401) {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-      // Only redirect if not already on an auth page
-      const authPaths = ["/login", "/Login", "/signup", "/Signup"];
-      if (!authPaths.includes(window.location.pathname)) {
-        window.location.href = "/Login";
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
+
+      // Important: failed login should stay on the same login page
+      if (isLoginRequest || isAuthPage) {
+        return Promise.reject(error);
       }
+
+      // Expired/invalid token elsewhere should redirect
+      window.location.href = "/Login";
     }
+
     return Promise.reject(error);
   }
 );
