@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./UserForm.css";
 
 const UserForm = ({ onUserAdded, onClose }) => {
@@ -25,14 +25,14 @@ const UserForm = ({ onUserAdded, onClose }) => {
     setError("");
     setLoading(true);
 
+    if (!/^\d{10}$/.test(formData.phone.trim())) {
+      setError("Enter a 10 digit phone number.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:5000/api/users", {
-        ...formData,
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await api.post("/users", { ...formData });
 
       onUserAdded(response.data.data);
       onClose();

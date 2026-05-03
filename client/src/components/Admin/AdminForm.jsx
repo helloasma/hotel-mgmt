@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./UserForm.css";
 
 const AdminForm = ({ onAdminAdded, onClose }) => {
@@ -28,8 +28,14 @@ const AdminForm = ({ onAdminAdded, onClose }) => {
     setError("");
     setLoading(true);
 
+    if (!/^\d{10}$/.test(formData.phone.trim())) {
+      setError("Enter a 10 digit phone number.");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", {
+      const response = await api.post("/auth/register", {
         ...formData,
         role: "admin",
       });

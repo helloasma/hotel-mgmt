@@ -418,3 +418,32 @@
     font-size: 11px;
   }
 }
+
+@media (max-width: 480px) {
+  .admin-content h1 {
+    font-size: 24px;
+  }
+
+  .add-staff-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+
+  .confirm-modal {
+    width: 90vw;
+  }
+}

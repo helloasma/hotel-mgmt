@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./ContactMessages.css";
 
 const EditIcon = () => (
@@ -39,11 +39,7 @@ const ContactMessages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/contact-messages`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await api.get("/contact-messages");
         setMessages(response.data.data);
       } catch (error) {
         console.error("Error fetching messages", error);
@@ -59,11 +55,7 @@ const ContactMessages = () => {
 
   const confirmDeleteMessage = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/contact-messages/${pendingDeleteId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await api.delete(`/contact-messages/${pendingDeleteId}`);
       setMessages(messages.filter((msg) => msg._id !== pendingDeleteId));
     } catch (error) {
       console.error("Failed to delete message", error);
@@ -89,15 +81,7 @@ const ContactMessages = () => {
 
   const handleUpdateMessage = async (id) => {
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/contact-messages/${id}`,
-        { status: editingData.status },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/contact-messages/${id}`, { status: editingData.status });
 
       setMessages(messages.map((msg) => (msg._id === id ? response.data.data : msg)));
       setEditingMessageId(null);

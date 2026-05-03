@@ -389,7 +389,7 @@
 
 @media (max-width: 768px) {
   .operation-staff-table {
-    min-width: 900px;
+    min-width: 760px;
   }
 
   .operation-staff-table th,
@@ -409,5 +409,38 @@
   .cancel-btn {
     width: 82px;
     font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-content h1 {
+    font-size: 24px;
+  }
+
+  .page-actions {
+    justify-content: flex-start;
+  }
+
+  .add-staff-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+
+  .confirm-modal {
+    width: 90vw;
   }
 }

@@ -551,7 +551,7 @@
   }
 
   .admin-page table {
-    min-width: 900px;
+    min-width: 760px;
   }
 
   .add-room-grid {
@@ -579,5 +579,35 @@
   .cancel-btn {
     width: 82px;
     font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-page {
+    margin: 8px;
+    padding: 12px;
+  }
+
+  .admin-page h1 {
+    font-size: 20px;
+  }
+
+  .add-room-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .add-form-actions {
+    align-items: stretch;
+  }
+
+  .create-room-btn,
+  .cancel-add-room-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .confirm-modal {
+    width: 90vw;
   }
 }

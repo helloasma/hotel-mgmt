@@ -103,7 +103,16 @@ const Contact = () => {
                 <tr>
                   <td><img src={contactImage4} alt="website" /></td>
                   <td className="label">Website:</td>
-                  <td>Lovender.com</td>
+                  <td>
+                    <a
+                      href="https://resortlovender.onrender.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="website-link"
+                    >
+                      resortlovender.onrender.com
+                    </a>
+                  </td>
                 </tr>
               </tbody>
             </table>

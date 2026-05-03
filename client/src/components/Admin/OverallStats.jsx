@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./OverallStats.css";
 
 const OverallStats = () => {
@@ -13,14 +13,7 @@ const OverallStats = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/admin/dashboard",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get("/admin/dashboard");
 
         setStats(response.data.data || {});
       } catch (error) {

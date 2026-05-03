@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import OverallStats from "../../components/Admin/OverallStats";
 import RoomCharts from "../../components/Admin/RoomCharts";
 import IncomeStats from "../../components/Admin/IncomeStats";
@@ -14,15 +14,9 @@ const VisualSummary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
         const [roomsResult, bookingsResult] = await Promise.allSettled([
-          axios.get("http://localhost:5000/api/rooms/admin/all", { headers }),
-          axios.get("http://localhost:5000/api/bookings/all", { headers }),
+          api.get("/rooms/admin/all"),
+          api.get("/bookings/all"),
         ]);
 
         const messages = [];

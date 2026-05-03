@@ -182,6 +182,54 @@
   border-color: #a890d8;
 }
 
+/* Table scroll wrapper */
+.admin-content {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(14, 8, 31, 0.06);
+}
+
+thead {
+  background: linear-gradient(135deg, #0e081f 0%, #1a1238 55%, #241654 100%);
+}
+
+th {
+  padding: 16px 14px;
+  text-align: left;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #ece9f6;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #1f1b33;
+  vertical-align: middle;
+  word-break: break-word;
+  background: #ffffff;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover td {
+  background: #faf8ff;
+}
+
 table input,
 table select {
   width: 100%;
@@ -284,5 +332,35 @@ table select {
   .cancel-btn {
     width: 82px;
     font-size: 11px;
+  }
+
+  table {
+    min-width: 580px;
+  }
+
+  th, td {
+    padding: 11px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
   }
 }

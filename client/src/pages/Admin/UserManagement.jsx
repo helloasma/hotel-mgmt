@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./UserManagement.css";
 
 const EditIcon = () => (
@@ -52,11 +52,7 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/users", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await api.get("/users");
 
         setUsers(response.data.data);
       } catch (error) {
@@ -73,11 +69,7 @@ const UserManagement = () => {
 
   const confirmDeleteUser = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${pendingDeleteId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await api.delete(`/users/${pendingDeleteId}`);
 
       setUsers(users.filter((user) => user._id !== pendingDeleteId));
     } catch (error) {
@@ -109,6 +101,10 @@ const UserManagement = () => {
   };
 
   const handleUpdateUser = async (id) => {
+    if (!/^\d{10}$/.test(editingData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
     try {
       const payload = {
         name: editingData.name,
@@ -120,15 +116,7 @@ const UserManagement = () => {
         payload.password = editingData.password;
       }
 
-      const response = await axios.put(
-        `http://localhost:5000/api/users/${id}`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/users/${id}`, payload);
 
       setUsers(users.map((user) => (user._id === id ? response.data.data : user)));
       setEditingUserId(null);
@@ -145,10 +133,12 @@ const UserManagement = () => {
 
   const handleAddSubmit = async (e) => {
     e.preventDefault();
+    if (!/^\d{10}$/.test(addData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
     try {
-      const response = await axios.post("http://localhost:5000/api/users", addData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await api.post("/users", addData);
       setUsers([...users, response.data.data]);
       setShowUserForm(false);
       setAddData({ name: "", email: "", phone: "", password: "" });

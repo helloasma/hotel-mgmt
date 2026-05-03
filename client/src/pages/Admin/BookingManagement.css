@@ -24,7 +24,7 @@
 .booking-table-wrapper h1 {
   color: #1a1033;
   font-family: "Cormorant Garamond", serif;
-  font-size: 34px;
+  font-size: 42px;
   font-weight: 600;
   margin-bottom: 6px;
   border-bottom: none;
@@ -893,7 +893,7 @@
   }
 
   .booking-table-wrapper h1 {
-    font-size: 26px;
+    font-size: 30px;
   }
 
   .booking-search-form input {
@@ -926,5 +926,57 @@
 
   .admin-page table {
     min-width: 1050px;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-card {
+    padding: 16px 12px;
+  }
+
+  .booking-table-wrapper h1 {
+    font-size: 24px;
+  }
+
+  .actions-top {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .add-booking-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .booking-form {
+    width: 100%;
+    max-width: 100vw;
+    border-radius: 12px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-header {
+    padding: 16px 18px 12px;
+  }
+
+  .form-grid {
+    padding: 12px 18px 6px;
+  }
+
+  .form-actions {
+    padding: 12px 18px 18px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions-right {
+    justify-content: flex-end;
+  }
+
+  .confirm-modal {
+    width: 90vw;
   }
 }
