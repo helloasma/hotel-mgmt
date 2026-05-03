@@ -6,7 +6,11 @@ const {
   updateRoom,
   deleteRoom,
 } = require("../controllers/roomController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
+
+const {
+  protectAdmin,
+  allowRoles,
+} = require("../middleware/adminAuthMiddleware");
 
 const router = express.Router();
 
@@ -14,10 +18,26 @@ const router = express.Router();
 router.get("/", getAllRooms);
 router.get("/:id", getRoomById);
 
-// Admin only routes — must be logged in as admin
-router.post("/", protect, adminOnly, createRoom);
-router.put("/:id", protect, adminOnly, updateRoom);
-router.delete("/:id", protect, adminOnly, deleteRoom);
-router.put("/:id", protect, adminOnly, updateRoom);
+// Admin routes — Chief Manager and Manager only
+router.post(
+  "/",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  createRoom
+);
+
+router.put(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  updateRoom
+);
+
+router.delete(
+  "/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  deleteRoom
+);
 
 module.exports = router;

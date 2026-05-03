@@ -1,5 +1,39 @@
 const User = require("../models/User");
 
+// ADMIN: create user
+const createUser = async (req, res, next) => {
+  try {
+    const { name, email, password, phone } = req.body;
+
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+      res.status(400);
+      throw new Error("User already exists");
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      phone,
+    });
+
+    res.status(201).json({
+      success: true,
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // ADMIN: get all users
 const getAllUsers = async (req, res, next) => {
   try {
@@ -17,7 +51,7 @@ const getAllUsers = async (req, res, next) => {
 // ADMIN: update user
 const updateUser = async (req, res, next) => {
   try {
-    const { name, email, phone, responsibility } = req.body;
+    const { name, email, phone, password } = req.body;
 
     const user = await User.findById(req.params.id);
 
@@ -29,7 +63,7 @@ const updateUser = async (req, res, next) => {
     if (name !== undefined) user.name = name;
     if (email !== undefined) user.email = email;
     if (phone !== undefined) user.phone = phone;
-    if (responsibility !== undefined) user.responsibility = responsibility;
+    if (password !== undefined) user.password = password;
 
     const updatedUser = await user.save();
 
@@ -41,7 +75,6 @@ const updateUser = async (req, res, next) => {
         email: updatedUser.email,
         phone: updatedUser.phone,
         role: updatedUser.role,
-        responsibility: updatedUser.responsibility,
       },
     });
   } catch (error) {
@@ -69,6 +102,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = {
+  createUser,
   getAllUsers,
   updateUser,
   deleteUser,

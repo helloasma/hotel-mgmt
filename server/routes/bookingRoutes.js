@@ -1,7 +1,22 @@
 const express = require("express");
-const { checkAvailability, createBooking, getAllBookings, getUserBookings, cancelBooking } = require("../controllers/bookingController");
-const { protect, adminOnly } = require("../middleware/authMiddleware");
-const { updateBookingStatus, deleteBooking } = require("../controllers/bookingController");
+
+const {
+  checkAvailability,
+  createBooking,
+  createAdminBooking,
+  getAllBookings,
+  getUserBookings,
+  cancelBooking,
+  updateBookingStatus,
+  deleteBooking,
+} = require("../controllers/bookingController");
+
+const { protect } = require("../middleware/authMiddleware");
+
+const {
+  protectAdmin,
+  allowRoles,
+} = require("../middleware/adminAuthMiddleware");
 
 const router = express.Router();
 
@@ -17,13 +32,36 @@ router.get("/my", protect, getUserBookings);
 // Logged-in user: cancel a booking
 router.put("/:id/cancel", protect, cancelBooking);
 
-// Admin: view all bookings
-router.get("/all", protect, adminOnly, getAllBookings); // Admin route to get all bookings
+// Admin: Chief Manager and Receptionist can create a booking for a guest
+router.post(
+  "/admin/create",
+  protectAdmin,
+  allowRoles("Chief Manager", "Receptionist"),
+  createAdminBooking
+);
 
-// Admin: update booking status
-router.put("/admin/:id", protect, adminOnly, updateBookingStatus);
+// Admin: Chief Manager and Receptionist can view all bookings
+router.get(
+  "/all",
+  protectAdmin,
+  allowRoles("Chief Manager", "Receptionist"),
+  getAllBookings
+);
 
-// Admin: delete booking
-router.delete("/admin/:id", protect, adminOnly, deleteBooking);
+// Admin: Chief Manager and Receptionist can update booking status
+router.put(
+  "/admin/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "Receptionist"),
+  updateBookingStatus
+);
+
+// Admin: Chief Manager and Receptionist can delete booking
+router.delete(
+  "/admin/:id",
+  protectAdmin,
+  allowRoles("Chief Manager", "Receptionist"),
+  deleteBooking
+);
 
 module.exports = router;

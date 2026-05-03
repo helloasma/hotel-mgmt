@@ -947,6 +947,9 @@
 
 .pp-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
+.pp-input-error { border-color: #c0392b !important; background-color: #fff8f7; }
+.pp-field-error { display: block; color: #c0392b; font-size: 12px; margin-top: 4px; }
+
 /* Card number with brand icons */
 .pp-card-wrap { position: relative; }
 .pp-card-wrap input { padding-right: 120px; }

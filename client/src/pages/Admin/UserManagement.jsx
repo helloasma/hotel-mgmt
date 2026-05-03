@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UserForm from "../../components/Admin/UserForm";
-import AdminForm from "../../components/Admin/AdminForm";
 import "./UserManagement.css";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
-  const [activeTab, setActiveTab] = useState("users");
   const [showUserForm, setShowUserForm] = useState(false);
-  const [showAdminForm, setShowAdminForm] = useState(false);
   const [editingUserId, setEditingUserId] = useState(null);
   const [editingData, setEditingData] = useState({
     name: "",
     email: "",
+    password: "",
     phone: "",
-    responsibility: "",
   });
 
   useEffect(() => {
@@ -55,8 +52,8 @@ const UserManagement = () => {
     setEditingData({
       name: user.name || "",
       email: user.email || "",
+      password: "",
       phone: user.phone || "",
-      responsibility: user.responsibility || "New Staff",
     });
   };
 
@@ -74,15 +71,13 @@ const UserManagement = () => {
 
   const handleUpdateUser = async (id) => {
     try {
-      const userToUpdate = users.find((user) => user._id === id);
       const payload = {
         name: editingData.name,
         email: editingData.email,
         phone: editingData.phone,
       };
-
-      if (userToUpdate?.role === "admin") {
-        payload.responsibility = editingData.responsibility;
+      if (editingData.password) {
+        payload.password = editingData.password;
       }
 
       const response = await axios.put(
@@ -107,237 +102,121 @@ const UserManagement = () => {
     setUsers([...users, newUser]);
   };
 
-  const regularUsers = users.filter((user) => user.role === "user");
-  const staffUsers = users.filter((user) => user.role === "admin");
-
   return (
     <div className="admin-page">
       <div className="admin-content">
-        <h1>Users Management</h1>
+        <h1>Website Users</h1>
 
-        <div className="tabs">
-          <button
-            className={`tab-btn ${activeTab === "users" ? "active" : ""}`}
-            onClick={() => setActiveTab("users")}
-          >
-            Regular Users
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "staff" ? "active" : ""}`}
-            onClick={() => setActiveTab("staff")}
-          >
-            Staff
-          </button>
-        </div>
+        <button
+          className="add-btn"
+          onClick={() => setShowUserForm(true)}
+        >
+          + Add New User
+        </button>
 
-        {/* Regular Users Tab */}
-        {activeTab === "users" && (
-          <div className="tab-content">
-            <table>
-              <thead>
-                <tr>
-                  <th>Full Name</th>
-                  <th>Email</th>
-                  <th>Phone Number</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {regularUsers.map((user) => (
-                  <tr key={user._id}>
-                    <td>
-                      {editingUserId === user._id ? (
-                        <input
-                          type="text"
-                          name="name"
-                          value={editingData.name}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        user.name
-                      )}
-                    </td>
-                    <td>
-                      {editingUserId === user._id ? (
-                        <input
-                          type="email"
-                          name="email"
-                          value={editingData.email}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        user.email
-                      )}
-                    </td>
-                    <td>
-                      {editingUserId === user._id ? (
-                        <input
-                          type="tel"
-                          name="phone"
-                          value={editingData.phone}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        user.phone
-                      )}
-                    </td>
-                    <td>
-                      <div className="action-buttons">
-                        {editingUserId === user._id ? (
-                          <>
-                            <button
-                              className="save-btn"
-                              onClick={() => handleUpdateUser(user._id)}
-                            >
-                              Save
-                            </button>
-                            <button className="cancel-btn" onClick={handleCancelEdit}>
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              className="edit-btn"
-                              onClick={() => handleEditUser(user)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="delete-btn"
-                              onClick={() => handleDeleteUser(user._id)}
-                            >
-                              Delete
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <button
-              className="add-btn"
-              onClick={() => setShowUserForm(true)}
-            >
-              + Add New User
-            </button>
-          </div>
-        )}
-
-        {/* Staff Tab */}
-        {activeTab === "staff" && (
-          <div className="tab-content">
-            <table>
-              <thead>
-                <tr>
-                  <th>Full Name</th>
-                  <th>Email</th>
-                  <th>Responsibility</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {staffUsers.map((user) => (
-                  <tr key={user._id}>
-                    <td>
-                      {editingUserId === user._id ? (
-                        <input
-                          type="text"
-                          name="name"
-                          value={editingData.name}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        user.name
-                      )}
-                    </td>
-                    <td>
-                      {editingUserId === user._id ? (
-                        <input
-                          type="email"
-                          name="email"
-                          value={editingData.email}
-                          onChange={handleEditChange}
-                        />
-                      ) : (
-                        user.email
-                      )}
-                    </td>
-                    <td>
-                      {editingUserId === user._id ? (
-                        <select
-                          name="responsibility"
-                          value={editingData.responsibility}
-                          onChange={handleEditChange}
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td>
+                  {editingUserId === user._id ? (
+                    <input
+                      type="text"
+                      name="name"
+                      value={editingData.name}
+                      onChange={handleEditChange}
+                    />
+                  ) : (
+                    user.name
+                  )}
+                </td>
+                <td>
+                  {editingUserId === user._id ? (
+                    <input
+                      type="email"
+                      name="email"
+                      value={editingData.email}
+                      onChange={handleEditChange}
+                    />
+                  ) : (
+                    user.email
+                  )}
+                </td>
+                <td>
+                  {editingUserId === user._id ? (
+                    <input
+                      type="password"
+                      name="password"
+                      value={editingData.password}
+                      onChange={handleEditChange}
+                      placeholder="Enter new password"
+                    />
+                  ) : (
+                    "********"
+                  )}
+                </td>
+                <td>
+                  {editingUserId === user._id ? (
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={editingData.phone}
+                      onChange={handleEditChange}
+                    />
+                  ) : (
+                    user.phone
+                  )}
+                </td>
+                <td>
+                  <div className="action-buttons">
+                    {editingUserId === user._id ? (
+                      <>
+                        <button
+                          className="save-btn"
+                          onClick={() => handleUpdateUser(user._id)}
                         >
-                          <option value="Manager">Manager</option>
-                          <option value="Receptionist">Receptionist</option>
-                          <option value="Housekeeper">Housekeeper</option>
-                          <option value="Maintenance">Maintenance</option>
-                          <option value="New Staff">New Staff</option>
-                        </select>
-                      ) : (
-                        user.responsibility
-                      )}
-                    </td>
-                    <td>
-                      <div className="action-buttons">
-                        {editingUserId === user._id ? (
-                          <>
-                            <button
-                              className="save-btn"
-                              onClick={() => handleUpdateUser(user._id)}
-                            >
-                              Save
-                            </button>
-                            <button className="cancel-btn" onClick={handleCancelEdit}>
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button
-                              className="edit-btn"
-                              onClick={() => handleEditUser(user)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="delete-btn"
-                              onClick={() => handleDeleteUser(user._id)}
-                            >
-                              Delete
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <button
-              className="add-btn"
-              onClick={() => setShowAdminForm(true)}
-            >
-              + Add New Admin
-            </button>
-          </div>
-        )}
+                          Save
+                        </button>
+                        <button className="cancel-btn" onClick={handleCancelEdit}>
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          className="edit-btn"
+                          onClick={() => handleEditUser(user)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="delete-btn"
+                          onClick={() => handleDeleteUser(user._id)}
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
         {showUserForm && (
           <UserForm
             onUserAdded={handleUserAdded}
             onClose={() => setShowUserForm(false)}
-          />
-        )}
-
-        {showAdminForm && (
-          <AdminForm
-            onAdminAdded={handleUserAdded}
-            onClose={() => setShowAdminForm(false)}
           />
         )}
       </div>

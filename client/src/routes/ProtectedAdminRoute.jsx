@@ -1,13 +1,13 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-// This component checks if the user is logged in and is an admin
+// This component checks if the user is logged in and has a management role
 const ProtectedAdminRoute = () => {
   const token = localStorage.getItem('token');
-  const userRole = localStorage.getItem('role');  // Assuming you store the role after login
-  
-  if (!token || userRole !== 'admin') {
-    // Redirect to admin login page if no token or not an admin
+  const userRole = localStorage.getItem('role');
+  const allowedRoles = ["Chief Manager", "Manager", "Receptionist", "User support"];
+
+  if (!token || !allowedRoles.includes(userRole)) {
     return <Navigate to="/admin/login" replace />;
   }
 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import RoomCharts from "../../components/Admin/RoomCharts";
 import "./RoomManagement.css";
 
 const RoomManagement = () => {
   const [rooms, setRooms] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadRooms = async () => {
@@ -16,9 +16,13 @@ const RoomManagement = () => {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        setRooms(response.data.data);
+
+        setRooms(response.data.data || []);
       } catch (error) {
         console.error("Error fetching rooms", error);
+        alert("Failed to load rooms");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -27,11 +31,16 @@ const RoomManagement = () => {
 
   const handleEditClick = (room) => {
     setEditingId(room._id);
+
     setEditData({
       description: room.description || "",
-      amenities: room.amenities || "",
+      amenities: Array.isArray(room.amenities)
+        ? room.amenities.join(", ")
+        : room.amenities || "",
       view: room.view || "",
       bed: room.bed || "",
+      price: room.price || 0,
+      capacity: room.capacity || 0,
     });
   };
 
@@ -44,21 +53,39 @@ const RoomManagement = () => {
 
   const handleSaveEdit = async (roomId) => {
     try {
-      await axios.put(
+      const amenities =
+        typeof editData.amenities === "string"
+          ? editData.amenities
+              .split(",")
+              .map((item) => item.trim())
+              .filter((item) => item)
+          : editData.amenities;
+
+      const payload = {
+        ...editData,
+        price: Number(editData.price),
+        capacity: Number(editData.capacity),
+        amenities,
+      };
+
+      const response = await axios.put(
         `http://localhost:5000/api/rooms/${roomId}`,
-        editData,
+        payload,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      setRooms(
-        rooms.map((room) =>
-          room._id === roomId ? { ...room, ...editData } : room
+
+      setRooms((prevRooms) =>
+        prevRooms.map((room) =>
+          room._id === roomId ? { ...room, ...response.data.data } : room
         )
       );
+
       setEditingId(null);
+      setEditData({});
     } catch (error) {
       console.error("Error saving room", error);
       alert("Failed to save room details");
@@ -70,10 +97,51 @@ const RoomManagement = () => {
     setEditData({});
   };
 
+  const handleDeleteRoom = async (roomId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this room?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/api/rooms/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      setRooms((prevRooms) => prevRooms.filter((room) => room._id !== roomId));
+    } catch (error) {
+      console.error("Error deleting room", error);
+      alert("Failed to delete room");
+    }
+  };
+
+  const formatAmenities = (amenities) => {
+    if (Array.isArray(amenities)) {
+      return amenities.join(", ");
+    }
+
+    return amenities || "-";
+  };
+
+  if (loading) {
+    return (
+      <div className="admin-page">
+        <div className="admin-content">
+          <h1>Rooms Management</h1>
+          <p>Loading rooms...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="admin-page">
       <div className="admin-content">
         <h1>Rooms Management</h1>
+
         <table>
           <thead>
             <tr>
@@ -82,6 +150,7 @@ const RoomManagement = () => {
               <th>Type</th>
               <th>Price</th>
               <th>Units</th>
+              <th>Capacity</th>
               <th>Description</th>
               <th>Amenities</th>
               <th>View</th>
@@ -89,101 +158,127 @@ const RoomManagement = () => {
               <th>Action</th>
             </tr>
           </thead>
+
           <tbody>
-            {rooms.map((room) => (
-              <tr key={room._id}>
-                <td>{room.title}</td>
-                <td>{room.category}</td>
-                <td>{room.type}</td>
-                <td>${room.price}</td>
-                <td>{room.totalRooms}</td>
-                <td>
-                  {editingId === room._id ? (
-                    <textarea
-                      value={editData.description}
-                      onChange={(e) =>
-                        handleEditChange("description", e.target.value)
-                      }
-                      className="edit-input"
-                      rows="2"
-                    />
-                  ) : (
-                    <span className="cell-content">
-                      {room.description || "-"}
-                    </span>
-                  )}
-                </td>
-                <td>
-                  {editingId === room._id ? (
-                    <textarea
-                      value={editData.amenities}
-                      onChange={(e) =>
-                        handleEditChange("amenities", e.target.value)
-                      }
-                      className="edit-input"
-                      rows="2"
-                    />
-                  ) : (
-                    <span className="cell-content">{room.amenities || "-"}</span>
-                  )}
-                </td>
-                <td>
-                  {editingId === room._id ? (
-                    <input
-                      type="text"
-                      value={editData.view}
-                      onChange={(e) => handleEditChange("view", e.target.value)}
-                      className="edit-input"
-                    />
-                  ) : (
-                    <span className="cell-content">{room.view || "-"}</span>
-                  )}
-                </td>
-                <td>
-                  {editingId === room._id ? (
-                    <input
-                      type="text"
-                      value={editData.bed}
-                      onChange={(e) => handleEditChange("bed", e.target.value)}
-                      className="edit-input"
-                    />
-                  ) : (
-                    <span className="cell-content">{room.bed || "-"}</span>
-                  )}
-                </td>
-                <td>
-                  <div className="action-buttons">
+            {rooms.length > 0 ? (
+              rooms.map((room) => (
+                <tr key={room._id}>
+                  <td>{room.title}</td>
+                  <td>{room.category}</td>
+                  <td>{room.type}</td>
+                  <td>${room.price}</td>
+                  <td>{room.totalRooms}</td>
+
+                  <td>
                     {editingId === room._id ? (
-                      <>
-                        <button
-                          className="save-btn"
-                          onClick={() => handleSaveEdit(room._id)}
-                        >
-                          Save
-                        </button>
-                        <button
-                          className="cancel-btn"
-                          onClick={handleCancelEdit}
-                        >
-                          Cancel
-                        </button>
-                      </>
+                      <textarea
+                        value={editData.description}
+                        onChange={(e) =>
+                          handleEditChange("description", e.target.value)
+                        }
+                        className="edit-input"
+                        rows="2"
+                      />
                     ) : (
-                      <button
-                        className="edit-btn"
-                        onClick={() => handleEditClick(room)}
-                      >
-                        Edit
-                      </button>
+                      <span className="cell-content">
+                        {room.description || "-"}
+                      </span>
                     )}
-                  </div>
-                </td>
+                  </td>
+
+                  <td>
+                    {editingId === room._id ? (
+                      <textarea
+                        value={editData.amenities}
+                        onChange={(e) =>
+                          handleEditChange("amenities", e.target.value)
+                        }
+                        className="edit-input"
+                        rows="2"
+                      />
+                    ) : (
+                      <span className="cell-content">
+                        {formatAmenities(room.amenities)}
+                      </span>
+                    )}
+                  </td>
+
+                  <td>
+                    {editingId === room._id ? (
+                      <input
+                        type="text"
+                        value={editData.view}
+                        onChange={(e) =>
+                          handleEditChange("view", e.target.value)
+                        }
+                        className="edit-input"
+                      />
+                    ) : (
+                      <span className="cell-content">{room.view || "-"}</span>
+                    )}
+                  </td>
+
+                  <td>
+                    {editingId === room._id ? (
+                      <input
+                        type="text"
+                        value={editData.bed}
+                        onChange={(e) =>
+                          handleEditChange("bed", e.target.value)
+                        }
+                        className="edit-input"
+                      />
+                    ) : (
+                      <span className="cell-content">{room.bed || "-"}</span>
+                    )}
+                  </td>
+
+                  <td>
+                    <div className="action-buttons">
+                      {editingId === room._id ? (
+                        <>
+                          <button
+                            className="save-btn"
+                            onClick={() => handleSaveEdit(room._id)}
+                          >
+                            Save
+                          </button>
+
+                          <button
+                            className="cancel-btn"
+                            onClick={handleCancelEdit}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="edit-btn"
+                            onClick={() => handleEditClick(room)}
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            className="delete-btn"
+                            onClick={() => handleDeleteRoom(room._id)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="10">No rooms found.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
-
-        <RoomCharts rooms={rooms} />
       </div>
     </div>
   );

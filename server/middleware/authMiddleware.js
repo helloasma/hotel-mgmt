@@ -33,18 +33,4 @@ const protect = asyncHandler(async (req, res, next) => {
   next();
 });
 
-// Admin-only middleware - ensures only admin users can access specific routes
-const adminOnly = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({ success: false, message: "Not authorized" });
-  }
-
-  // Check if the logged-in user is an admin
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ success: false, message: "Access denied: Admins only" });
-  }
-
-  next();
-};
-
-module.exports = { protect, adminOnly };
+module.exports = { protect};

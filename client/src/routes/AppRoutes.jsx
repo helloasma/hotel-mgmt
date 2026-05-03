@@ -17,8 +17,12 @@ import ResetPassword from "../pages/Account/ResetPassword";
 import AdminLogin from "../pages/Account/AdminLogin";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import BookingManagement from "../pages/Admin/BookingManagement";
-import RoomManagement from "../pages/Admin/RoomManagement";
-import UserManagement from "../pages/Admin/UserManagement";
+import RoomManagement from "../pages/Admin/RoomManagement.jsx";
+import UserManagement from "../pages/Admin/UserManagement.jsx";
+import OperationStaffs from "../pages/Admin/OperationStaffs.jsx";
+import ManagementStaffs from "../pages/Admin/ManagementStaffs.jsx";
+import ContactMessages from "../pages/Admin/ContactMessages.jsx";
+import VisualSummary from "../pages/Admin/VisualSummary.jsx";
 import AdminLayout from "../layouts/AdminLayout";
 import ProtectedAdminRoute from "./ProtectedAdminRoute";
 
@@ -47,6 +51,10 @@ function AppRoutes() {
         <Route path="/admin/bookings" element={<AdminLayout><BookingManagement /></AdminLayout>} />
         <Route path="/admin/rooms" element={<AdminLayout><RoomManagement /></AdminLayout>} />
         <Route path="/admin/users" element={<AdminLayout><UserManagement /></AdminLayout>} />
+        <Route path="/admin/operation-staffs" element={<AdminLayout><OperationStaffs /></AdminLayout>} />
+        <Route path="/admin/management-staffs" element={<AdminLayout><ManagementStaffs /></AdminLayout>} />
+        <Route path="/admin/contact-messages" element={<AdminLayout><ContactMessages /></AdminLayout>} />
+        <Route path="/admin/visual-summary" element={<AdminLayout><VisualSummary /></AdminLayout>} />
       </Route>
 
       <Route path="/Login" element={<Login />} />

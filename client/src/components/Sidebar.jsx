@@ -28,9 +28,7 @@ function Sidebar({ isOpen, setIsOpen }) {
             <li><Link to="/about">About Us</Link></li>
           </ul>
           <div className="sidebar-footer">
-            <button className="staff-btn" onClick={handleAdminLogin}>
-              Lovender staff?
-            </button>
+            <p className="sidebar-credit">Site by Lovender Island Resort</p>
           </div>
       </div>
     </>

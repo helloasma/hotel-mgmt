@@ -44,11 +44,18 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
   const [cardCvv,    setCardCvv]    = useState("");
   const [billing,    setBilling]    = useState(true);
   const [paypalEmail, setPaypalEmail] = useState("");
+  const [cardNumberError, setCardNumberError] = useState("");
   const [loading,    setLoading]    = useState(false);
   const [error,      setError]      = useState("");
 
   function formatCardNumber(v) {
     return v.replace(/\D/g, "").slice(0, 16).replace(/(.{4})/g, "$1 ").trim();
+  }
+  function checkCardNumber(v) {
+    const d = v.replace(/\s/g, "");
+    if (!d) return "";
+    if (d.length !== 16) return `Card number must be 16 digits (${d.length} entered).`;
+    return "";
   }
   function formatExpiry(v) {
     const d = v.replace(/\D/g, "").slice(0, 4);
@@ -66,8 +73,10 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
 
     if (payTab === "card") {
       const digits = cardNumber.replace(/\s/g, "");
-      if (!digits || !/^\d+$/.test(digits)) {
-        setError("Please enter a valid card number.");
+      if (!digits || digits.length !== 16 || !/^\d+$/.test(digits)) {
+        const msg = !digits ? "Please enter a card number." : `Card number must be 16 digits (${digits.length} entered).`;
+        setCardNumberError(msg);
+        setError(msg);
         return;
       }
       const expiryParts = cardExpiry.split("/");
@@ -178,8 +187,14 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
                     type="text"
                     placeholder="1234 5678 9012 3456"
                     value={cardNumber}
-                    onChange={e => setCardNumber(formatCardNumber(e.target.value))}
+                    onChange={e => {
+                      const formatted = formatCardNumber(e.target.value);
+                      setCardNumber(formatted);
+                      setCardNumberError(checkCardNumber(formatted));
+                    }}
+                    onBlur={() => setCardNumberError(checkCardNumber(cardNumber))}
                     maxLength={19}
+                    className={cardNumberError ? "pp-input-error" : ""}
                     required
                   />
                   <span className="pp-card-brands">
@@ -190,6 +205,7 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
                     <span className="pp-stripe">stripe</span>
                   </span>
                 </div>
+                {cardNumberError && <span className="pp-field-error">{cardNumberError}</span>}
               </div>
               <div className="pp-two-col">
                 <div className="pp-field">
