@@ -24,7 +24,8 @@ const corsOptions = {
     if (!origin) return callback(null, true);
     if (
       origin.startsWith("http://localhost:") ||
-      origin.startsWith("http://127.0.0.1:")
+      origin.startsWith("http://127.0.0.1:") ||
+      origin.endsWith(".onrender.com")
     ) {
       return callback(null, true);
     }
