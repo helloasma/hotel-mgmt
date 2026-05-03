@@ -30,6 +30,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("user");
+      localStorage.removeItem("token");
       // Only redirect if not already on an auth page
       const authPaths = ["/login", "/Login", "/signup", "/Signup"];
       if (!authPaths.includes(window.location.pathname)) {
