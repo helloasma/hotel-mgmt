@@ -149,8 +149,8 @@ const RoomManagement = () => {
               <th>Category</th>
               <th>Type</th>
               <th>Price</th>
-              <th>Capacity</th>
               <th>Units</th>
+              <th>Capacity</th>
               <th>Description</th>
               <th>Amenities</th>
               <th>View</th>
@@ -166,39 +166,7 @@ const RoomManagement = () => {
                   <td>{room.title}</td>
                   <td>{room.category}</td>
                   <td>{room.type}</td>
-
-                  <td>
-                    {editingId === room._id ? (
-                      <input
-                        type="number"
-                        value={editData.price}
-                        onChange={(e) =>
-                          handleEditChange("price", e.target.value)
-                        }
-                        className="edit-input"
-                        min="0"
-                      />
-                    ) : (
-                      `$${room.price}`
-                    )}
-                  </td>
-
-                  <td>
-                    {editingId === room._id ? (
-                      <input
-                        type="number"
-                        value={editData.capacity}
-                        onChange={(e) =>
-                          handleEditChange("capacity", e.target.value)
-                        }
-                        className="edit-input"
-                        min="1"
-                      />
-                    ) : (
-                      room.capacity || "-"
-                    )}
-                  </td>
-
+                  <td>${room.price}</td>
                   <td>{room.totalRooms}</td>
 
                   <td>
@@ -306,7 +274,7 @@ const RoomManagement = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="11">No rooms found.</td>
+                <td colSpan="10">No rooms found.</td>
               </tr>
             )}
           </tbody>
