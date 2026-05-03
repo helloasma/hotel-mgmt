@@ -1,113 +1,288 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
 
-.action-buttons {
+.add-user-row {
   display: flex;
-  gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
-.edit-btn {
-  padding: 8px 14px;
-  background: #2f5148;
+/* Add button */
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 20px;
+  background: #5c3d9e;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
   font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.add-btn:hover {
+  background: #4a2f82;
+  transform: translateY(-1px);
+}
+
+.add-staff-form {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  color: #2e2a3d;
+}
+
+.input-group span {
   font-size: 13px;
   font-weight: 600;
-  transition: all 0.3s ease;
+}
+
+.input-group input {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #7c5cbf;
+  box-shadow: 0 0 0 3px rgba(124, 92, 191, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Edit button – outlined purple */
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #4b3b8c;
+  border: 1.5px solid #c8bff0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .edit-btn:hover {
-  background: #1f3d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(47, 81, 72, 0.3);
+  background: #f0ecfb;
+  border-color: #9880d8;
 }
 
+/* Delete button – outlined danger */
 .delete-btn {
-  padding: 8px 14px;
-  background: #c84d3d;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #c0392b;
+  border: 1.5px solid #f0bcba;
+  border-radius: 8px;
   cursor: pointer;
   font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .delete-btn:hover {
-  background: #a53d2d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(200, 77, 61, 0.3);
+  background: #fff0f0;
+  border-color: #e08080;
 }
 
-.save-btn,
-.cancel-btn {
-  padding: 8px 14px;
+/* Save button – purple filled */
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #5c3d9e;
+  color: #ffffff;
   border: none;
-  border-radius: 4px;
-  color: white;
+  border-radius: 8px;
   cursor: pointer;
   font-family: "Inter", sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  width: 90px;
+  transition: background 0.2s ease;
 }
 
-.save-btn {
-  background: #2f5148;
+.save-btn:hover {
+  background: #4a2f82;
 }
 
-.save-btn:hover,
-.cancel-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(47, 81, 72, 0.3);
-}
-
+/* Cancel button – outlined secondary */
 .cancel-btn {
-  background: #c84d3d;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #6b6890;
+  border: 1.5px solid #d4cfe8;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-input,
-select {
+.cancel-btn:hover {
+  background: #f4f1fb;
+  border-color: #a890d8;
+}
+
+table input,
+table select {
   width: 100%;
   padding: 8px 10px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
   font-family: "Inter", sans-serif;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
-.add-btn {
-  margin-bottom: 20px;
-  padding: 12px 24px;
-  background: #2f5148;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-family: "Cormorant Garamond", serif;
+/* Confirm delete modal */
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.confirm-modal {
+  background: white;
+  border-radius: 14px;
+  padding: 32px 28px;
+  width: 360px;
+  box-shadow: 0 12px 40px rgba(80, 50, 140, 0.18);
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+.confirm-modal p {
   font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-block;
+  color: #1a1033;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
-.add-btn:hover {
-  background: #1f3d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(47, 81, 72, 0.3);
+.confirm-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirm-modal-cancel {
+  padding: 10px 24px;
+  background: #f0edf9;
+  color: #4b3b8c;
+  border: 1.5px solid #d0c8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.confirm-modal-cancel:hover {
+  background: #e4dff5;
+}
+
+.confirm-modal-delete {
+  padding: 10px 24px;
+  background: #ffffff;
+  color: #c0392b;
+  border: 1.5px solid #f0bcba;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.confirm-modal-delete:hover {
+  background: #fff0f0;
+  border-color: #e08080;
+}
+
+@media (max-width: 900px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
+  .add-user-row {
+    justify-content: flex-start;
+  }
+
   .action-buttons {
     flex-direction: column;
   }
 
   .edit-btn,
-  .delete-btn {
-    width: 100%;
+  .delete-btn,
+  .save-btn,
+  .cancel-btn {
+    width: 82px;
+    font-size: 11px;
   }
 }

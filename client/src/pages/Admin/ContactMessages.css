@@ -2,72 +2,104 @@
 
 .action-buttons {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
+/* Edit button – outlined purple */
 .edit-btn {
-  padding: 8px 14px;
-  background: #2f5148;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #4b3b8c;
+  border: 1.5px solid #c8bff0;
+  border-radius: 8px;
   cursor: pointer;
   font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .edit-btn:hover {
-  background: #1f3d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(47, 81, 72, 0.3);
+  background: #f0ecfb;
+  border-color: #9880d8;
 }
 
+/* Delete button – outlined danger */
 .delete-btn {
-  padding: 8px 14px;
-  background: #c84d3d;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #c0392b;
+  border: 1.5px solid #f0bcba;
+  border-radius: 8px;
   cursor: pointer;
   font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .delete-btn:hover {
-  background: #a53d2d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(200, 77, 61, 0.3);
+  background: #fff0f0;
+  border-color: #e08080;
 }
 
-.save-btn,
-.cancel-btn {
-  padding: 8px 14px;
+/* Save button – purple filled */
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #5c3d9e;
+  color: #ffffff;
   border: none;
-  border-radius: 4px;
-  color: white;
+  border-radius: 8px;
   cursor: pointer;
   font-family: "Inter", sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  width: 90px;
+  transition: background 0.2s ease;
 }
 
-.save-btn {
-  background: #2f5148;
+.save-btn:hover {
+  background: #4a2f82;
 }
 
-.save-btn:hover,
-.cancel-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(47, 81, 72, 0.3);
-}
-
+/* Cancel button – outlined secondary */
 .cancel-btn {
-  background: #c84d3d;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #6b6890;
+  border: 1.5px solid #d4cfe8;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #f4f1fb;
+  border-color: #a890d8;
 }
 
 select {
@@ -79,13 +111,86 @@ select {
   font-size: 14px;
 }
 
+/* Confirm delete modal */
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.confirm-modal {
+  background: white;
+  border-radius: 14px;
+  padding: 32px 28px;
+  width: 360px;
+  box-shadow: 0 12px 40px rgba(80, 50, 140, 0.18);
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+.confirm-modal p {
+  font-size: 16px;
+  color: #1a1033;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirm-modal-cancel {
+  padding: 10px 24px;
+  background: #f0edf9;
+  color: #4b3b8c;
+  border: 1.5px solid #d0c8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.confirm-modal-cancel:hover {
+  background: #e4dff5;
+}
+
+.confirm-modal-delete {
+  padding: 10px 24px;
+  background: #ffffff;
+  color: #c0392b;
+  border: 1.5px solid #f0bcba;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.confirm-modal-delete:hover {
+  background: #fff0f0;
+  border-color: #e08080;
+}
+
 @media (max-width: 768px) {
   .action-buttons {
     flex-direction: column;
   }
 
   .edit-btn,
-  .delete-btn {
-    width: 100%;
+  .delete-btn,
+  .save-btn,
+  .cancel-btn {
+    width: 82px;
+    font-size: 11px;
   }
 }

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap");
 
 .admin-page {
   margin: 30px;
@@ -9,20 +9,200 @@
   border: 1px solid #e2d9f5;
   box-shadow: 0 18px 45px rgba(14, 8, 31, 0.08);
   overflow-x: auto;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f1b33;
+  position: relative;
+}
+
+.admin-page * {
+  font-family: "Inter", sans-serif;
 }
 
 .admin-page h1 {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 36px;
+  font-size: 15px;
   font-weight: 600;
-  color: #0e081f;
-  margin: 0 0 28px;
+  color: #1f1b33;
+  line-height: 1.6;
+  margin: 0;
   padding-bottom: 18px;
   border-bottom: 2px solid #2f5148;
 }
 
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin: 18px 0 16px;
+}
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sort-control label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f1b33;
+  line-height: 1.6;
+}
+
+.sort-control select {
+  min-width: 190px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #c4b9df;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f1b33;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.sort-control select:focus {
+  outline: none;
+  border-color: #7c5cbf;
+  box-shadow: 0 0 0 3px rgba(124, 92, 191, 0.1);
+}
+
+/* Add Room button */
+.add-room-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 20px;
+  background: #5c3d9e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.add-room-btn:hover {
+  background: #4a2f82;
+  transform: translateY(-1px);
+}
+
+/* Add Room form */
+.add-room-form {
+  background: #ffffff;
+  border: 1px solid #d8cdea;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 26px rgba(14, 8, 31, 0.07);
+}
+
+.add-room-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f1b33;
+  line-height: 1.6;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #c4b9df;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f1b33;
+  font-size: 15px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #7c5cbf;
+  box-shadow: 0 0 0 3px rgba(124, 92, 191, 0.1);
+}
+
+.add-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+/* Save Room (form submit) – purple filled */
+.create-room-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 20px;
+  background: #5c3d9e;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+.create-room-btn:hover {
+  background: #4a2f82;
+}
+
+/* Cancel Add Room – outlined secondary */
+.cancel-add-room-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 20px;
+  background: #ffffff;
+  color: #6b6890;
+  border: 1.5px solid #d4cfe8;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.cancel-add-room-btn:hover {
+  background: #f4f1fb;
+  border-color: #a890d8;
+}
+
+/* Table */
 .admin-page table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   background: #ffffff;
@@ -36,163 +216,301 @@
 }
 
 .admin-page th {
-  padding: 17px 16px;
-  text-align: left;
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
+  padding: 18px 16px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
   color: #ffffff !important;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  text-transform: none;
+  letter-spacing: 0;
   vertical-align: middle;
 }
 
 .admin-page td {
   padding: 18px 16px;
-  border-bottom: 1px solid #d8cdea;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #252236;
+  border-bottom: 1px solid #ece9f6;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f1b33;
   line-height: 1.55;
-  vertical-align: top;
-  max-width: 290px;
+  vertical-align: middle;
+  text-align: center;
   word-break: break-word;
-}
-
-/* Alternating row colors */
-.admin-page tbody tr:nth-child(odd) {
-  background: #a4a6a8;
-}
-
-.admin-page tbody tr:nth-child(even) {
-  background: #a4a6a8;
-}
-
-.admin-page tbody tr:hover {
   background: #ffffff;
+}
+
+.admin-page tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-page th:first-child,
+.admin-page td:first-child {
+  text-align: left;
+  width: 22%;
+}
+
+.admin-page th:nth-child(2),
+.admin-page td:nth-child(2) {
+  width: 14%;
+}
+
+.admin-page th:nth-child(3),
+.admin-page td:nth-child(3) {
+  width: 18%;
+}
+
+.admin-page th:nth-child(4),
+.admin-page td:nth-child(4) {
+  width: 12%;
+}
+
+.admin-page th:nth-child(5),
+.admin-page td:nth-child(5) {
+  width: 12%;
+}
+
+.admin-page th:nth-child(6),
+.admin-page td:nth-child(6) {
+  width: 10%;
+}
+
+.admin-page th:nth-child(7),
+.admin-page td:nth-child(7) {
+  width: 12%;
+}
+
+.admin-page tbody tr:hover td {
+  background: #faf8ff;
   transition: background 0.2s ease;
 }
 
 .cell-content {
+  display: block;
+  width: 100%;
   white-space: normal;
   overflow: visible;
   text-overflow: unset;
   line-height: 1.6;
-  color: #2f2b42;
+  color: #1f1b33;
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.edit-input,
-.edit-input-text {
+.edit-input {
   width: 100%;
-  min-height: 38px;
+  min-height: 40px;
   padding: 9px 11px;
   border: 1px solid #c4b9df;
   border-radius: 7px;
   background: #ffffff;
-  color: #222033;
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
+  color: #1f1b33;
+  font-size: 15px;
+  font-weight: 600;
   box-sizing: border-box;
+  text-align: center;
 }
 
-.edit-input-text {
-  min-height: 90px;
-  resize: vertical;
+.admin-page td:first-child .edit-input {
+  text-align: left;
 }
 
-.edit-input:focus,
-.edit-input-text:focus {
+.edit-input:focus {
   outline: none;
-  border-color: #6d5dfc;
-  box-shadow: 0 0 0 3px rgba(30, 23, 99, 0.16);
+  border-color: #7c5cbf;
+  box-shadow: 0 0 0 3px rgba(124, 92, 191, 0.1);
 }
 
-/* Action column */
+/* Action buttons column */
 .action-buttons {
-  width: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
+  gap: 6px;
 }
 
-/* Force all action buttons to be exactly the same size */
-.action-buttons button,
-.edit-btn,
-.save-btn,
-.cancel-btn,
-.delete-btn {
-  width: 120px !important;
-  min-width: 120px !important;
-  max-width: 120px !important;
-
-  height: 40px !important;
-  min-height: 40px !important;
-  max-height: 40px !important;
-
-  padding: 0 !important;
-  margin: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  box-sizing: border-box !important;
-  border: none;
-  border-radius: 7px;
-  cursor: pointer;
-
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-/* Edit button: force purple */
-.action-buttons button:first-child,
+/* Edit button – outlined purple */
 .edit-btn {
-  background: rgb(59, 6, 59) !important;
-  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #4b3b8c;
+  border: 1.5px solid #c8bff0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.action-buttons button:first-child:hover,
 .edit-btn:hover {
-  background: rgb(110, 35, 110) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(74, 13, 74, 0.25);
+  background: #f0ecfb;
+  border-color: #9880d8;
 }
 
-/* Save button */
+/* Delete button – outlined danger */
+.delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #c0392b;
+  border: 1.5px solid #f0bcba;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.delete-btn:hover {
+  background: #fff0f0;
+  border-color: #e08080;
+}
+
+/* Save button – purple filled */
 .save-btn {
-  background: rgb(8, 62, 8) !important;
-  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #5c3d9e;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  width: 90px;
+  transition: background 0.2s ease;
 }
 
 .save-btn:hover {
-  background: rgb(81, 140, 81) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(8, 62, 8, 0.25);
+  background: #4a2f82;
 }
 
-/* Delete / Cancel button: force dark red */
-.action-buttons button:last-child,
-.cancel-btn,
-.delete-btn {
-  background: rgb(144, 30, 30) !important;
-  color: #ffffff !important;
+/* Cancel edit button – outlined secondary */
+.cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: #ffffff;
+  color: #6b6890;
+  border: 1.5px solid #d4cfe8;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  width: 90px;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.action-buttons button:last-child:hover,
-.cancel-btn:hover,
-.delete-btn:hover {
-  background: rgb(110, 20, 20) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(144, 30, 30, 0.25);
+.cancel-btn:hover {
+  background: #f4f1fb;
+  border-color: #a890d8;
+}
+
+/* Status messages */
+.ui-message {
+  margin: 10px 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ui-message.success {
+  background: #e6f9f0;
+  color: #1a7a4a;
+}
+
+.ui-message.error {
+  background: #fce8e8;
+  color: #c0392b;
+}
+
+/* Confirm delete modal */
+.confirm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.confirm-modal {
+  background: white;
+  border-radius: 14px;
+  padding: 32px 28px;
+  width: 360px;
+  box-shadow: 0 12px 40px rgba(80, 50, 140, 0.18);
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+.confirm-modal p {
+  font-size: 16px;
+  color: #1a1033;
+  margin-bottom: 24px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirm-modal-cancel {
+  padding: 10px 24px;
+  background: #f0edf9;
+  color: #4b3b8c;
+  border: 1.5px solid #d0c8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.confirm-modal-cancel:hover {
+  background: #e4dff5;
+}
+
+.confirm-modal-delete {
+  padding: 10px 24px;
+  background: #ffffff;
+  color: #c0392b;
+  border: 1.5px solid #f0bcba;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.confirm-modal-delete:hover {
+  background: #fff0f0;
+  border-color: #e08080;
 }
 
 @media (max-width: 1400px) {
@@ -200,15 +518,29 @@
     margin: 22px;
     padding: 24px;
   }
+}
 
-  .admin-page td {
-    max-width: 230px;
-    font-size: 13px;
+@media (max-width: 900px) {
+  .add-room-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .admin-page th {
-    font-size: 12px;
-    padding: 14px;
+  .table-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sort-control {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sort-control select {
+    min-width: 220px;
+  }
+
+  .add-room-btn {
+    align-self: flex-end;
   }
 }
 
@@ -219,26 +551,33 @@
   }
 
   .admin-page table {
-    min-width: 1000px;
+    min-width: 900px;
   }
 
-  .action-buttons {
-    width: 130px;
+  .add-room-grid {
+    grid-template-columns: 1fr;
   }
 
-  .action-buttons button,
+  .add-form-actions {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .sort-control {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sort-control select {
+    width: 100%;
+    min-width: 100%;
+  }
+
   .edit-btn,
+  .delete-btn,
   .save-btn,
-  .cancel-btn,
-  .delete-btn {
-    width: 105px !important;
-    min-width: 105px !important;
-    max-width: 105px !important;
-
-    height: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
-
-    font-size: 12px;
+  .cancel-btn {
+    width: 82px;
+    font-size: 11px;
   }
 }

@@ -79,7 +79,7 @@ const VisualSummary = () => {
       ) : (
         <div className="summary-dashboard-grid">
           <section className="summary-section summary-full-width">
-            <OverallStats />
+            <OverallStats rooms={rooms} />
           </section>
 
           <section className="summary-section summary-full-width">
