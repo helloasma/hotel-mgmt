@@ -109,8 +109,26 @@ const deleteRoom = async (req, res, next) => {
   }
 };
 
+
+// GET /api/rooms/admin/all — get all rooms for admin dashboard
+const getAllRoomsForAdmin = async (req, res, next) => {
+  try {
+    const rooms = await Room.find({}).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: rooms.length,
+      data: rooms,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 module.exports = {
   getAllRooms,
+  getAllRoomsForAdmin,
   getRoomById,
   createRoom,
   updateRoom,

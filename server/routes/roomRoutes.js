@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getAllRooms,
+  getAllRoomsForAdmin,
   getRoomById,
   createRoom,
   updateRoom,
@@ -16,6 +17,14 @@ const router = express.Router();
 
 // Public routes — anyone can view rooms
 router.get("/", getAllRooms);
+
+router.get(
+  "/admin/all",
+  protectAdmin,
+  allowRoles("Chief Manager", "Manager"),
+  getAllRoomsForAdmin
+);
+
 router.get("/:id", getRoomById);
 
 // Admin routes — Chief Manager and Manager only
@@ -39,5 +48,6 @@ router.delete(
   allowRoles("Chief Manager", "Manager"),
   deleteRoom
 );
+
 
 module.exports = router;
