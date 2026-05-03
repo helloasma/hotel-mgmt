@@ -70,7 +70,7 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
           <div className="payment-total">${Number(total).toFixed(2)}</div>
         </div>
 
-        <form className="payment-form" onSubmit={handleSubmit}>
+        <form className="payment-form" onSubmit={handleSubmit} autoComplete="off">
           <div className="payment-methods">
             <button
               type="button"
@@ -107,14 +107,6 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
                     placeholder="1234 5678 9012 3456"
                     maxLength={19}
                   />
-                  <span className="payment-card-brands">
-                    <span className="payment-visa">VISA</span>
-                    <span className="payment-mc-wrap">
-                      <span className="payment-mc-o payment-mc-r">●</span>
-                      <span className="payment-mc-o payment-mc-y">●</span>
-                    </span>
-                    <span className="payment-stripe">stripe</span>
-                  </span>
                 </div>
               </label>
               <div className="payment-two-col">
@@ -142,29 +134,20 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
                   </div>
                 </label>
               </div>
-              <label className="payment-checkbox-row">
-                <input type="checkbox" checked readOnly />
-                <span>Billing is same as booking information</span>
-              </label>
-              <p className="payment-legal">
-                By providing your card information, you confirm this is a demo booking and no real payment will be charged.
-              </p>
             </div>
           )}
 
           {paymentMethod === "apple_pay" && (
             <div className="payment-wallet-screen">
-              <div className="payment-wallet-logo"></div>
+              <p className="payment-wallet-brand">Apple Pay</p>
               <p className="payment-wallet-desc">
                 You&rsquo;ll be charged <strong>${Number(total).toFixed(2)}</strong> via Apple Pay.
               </p>
-              <p className="payment-demo-note">🔒 Demo only — no real payment is processed.</p>
             </div>
           )}
 
           {paymentMethod === "paypal" && (
             <div className="payment-wallet-screen">
-              <div className="payment-wallet-logo">PayPal</div>
               <label className="payment-field payment-field-full">
                 PayPal email
                 <input
@@ -177,7 +160,6 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
               <p className="payment-wallet-desc">
                 You&rsquo;ll be redirected to PayPal to pay <strong>${Number(total).toFixed(2)}</strong>.
               </p>
-              <p className="payment-demo-note">🔒 Demo only — no real payment is processed.</p>
             </div>
           )}
 

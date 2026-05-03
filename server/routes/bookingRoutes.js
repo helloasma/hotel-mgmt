@@ -3,6 +3,7 @@ const express = require("express");
 const {
   checkAvailability,
   createBooking,
+  createAdminBooking,
   getAllBookings,
   getUserBookings,
   cancelBooking,
@@ -30,6 +31,14 @@ router.get("/my", protect, getUserBookings);
 
 // Logged-in user: cancel a booking
 router.put("/:id/cancel", protect, cancelBooking);
+
+// Admin: Chief Manager and Receptionist can create a booking for a guest
+router.post(
+  "/admin/create",
+  protectAdmin,
+  allowRoles("Chief Manager", "Receptionist"),
+  createAdminBooking
+);
 
 // Admin: Chief Manager and Receptionist can view all bookings
 router.get(
