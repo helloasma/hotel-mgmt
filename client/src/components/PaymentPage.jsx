@@ -17,10 +17,19 @@ function validateEmail(value) {
 const PaymentPage = ({ total = 0, onResult, onClose }) => {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardNumber, setCardNumber] = useState("");
+  const [cardNumberError, setCardNumberError] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvc, setCardCvc] = useState("");
   const [paypalEmail, setPaypalEmail] = useState("");
   const [error, setError] = useState("");
+
+  const validateCardNumber = (value) => {
+    const cleaned = value.replace(/\s/g, "");
+    if (cleaned.length === 0) return "";
+    if (!/^\d+$/.test(cleaned)) return "Card number must contain digits only.";
+    if (cleaned.length !== 16) return `Card number must be 16 digits (${cleaned.length} entered).`;
+    return "";
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -70,26 +79,26 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
           <div className="payment-total">${Number(total).toFixed(2)}</div>
         </div>
 
-        <form className="payment-form" onSubmit={handleSubmit} autoComplete="off">
+        <form className="payment-form" onSubmit={handleSubmit} autoComplete="off" noValidate>
           <div className="payment-methods">
             <button
               type="button"
               className={paymentMethod === "card" ? "payment-method payment-method--active" : "payment-method"}
-              onClick={() => setPaymentMethod("card")}
+              onClick={() => { setPaymentMethod("card"); setError(""); }}
             >
               Card
             </button>
             <button
               type="button"
               className={paymentMethod === "apple_pay" ? "payment-method payment-method--active" : "payment-method"}
-              onClick={() => setPaymentMethod("apple_pay")}
+              onClick={() => { setPaymentMethod("apple_pay"); setError(""); setCardNumberError(""); }}
             >
               Apple Pay
             </button>
             <button
               type="button"
               className={paymentMethod === "paypal" ? "payment-method payment-method--active" : "payment-method"}
-              onClick={() => setPaymentMethod("paypal")}
+              onClick={() => { setPaymentMethod("paypal"); setError(""); setCardNumberError(""); }}
             >
               PayPal
             </button>
@@ -103,11 +112,19 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
                   <input
                     type="text"
                     value={cardNumber}
-                    onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                    onChange={(e) => {
+                      const formatted = formatCardNumber(e.target.value);
+                      setCardNumber(formatted);
+                      setCardNumberError(validateCardNumber(formatted));
+                    }}
+                    onBlur={() => setCardNumberError(validateCardNumber(cardNumber))}
                     placeholder="1234 5678 9012 3456"
                     maxLength={19}
+                    className={cardNumberError ? "payment-input-error" : ""}
+                    autoComplete="off"
                   />
                 </div>
+                {cardNumberError && <span className="payment-field-error">{cardNumberError}</span>}
               </label>
               <div className="payment-two-col">
                 <label className="payment-field">
@@ -117,6 +134,7 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
                     value={formatExpiry(cardExpiry)}
                     onChange={(e) => setCardExpiry(formatExpiry(e.target.value))}
                     placeholder="MM/YY"
+                    autoComplete="off"
                     maxLength={5}
                   />
                 </label>
@@ -128,6 +146,7 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
                       value={cardCvc}
                       onChange={(e) => setCardCvc(e.target.value.replace(/\D/g, "").slice(0, 4))}
                       placeholder="123"
+                      autoComplete="off"
                       maxLength={4}
                     />
                     <span className="payment-cvc-icon">⊡</span>
@@ -153,6 +172,7 @@ const PaymentPage = ({ total = 0, onResult, onClose }) => {
                 <input
                   type="email"
                   value={paypalEmail}
+                  autoComplete="off"
                   onChange={(e) => setPaypalEmail(e.target.value)}
                   placeholder="you@example.com"
                 />
