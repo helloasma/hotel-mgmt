@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import "../../Pages/Admin/VisualSummary.css";
+import "../../pages/Admin/VisualSummary.css";
 
 const OverallStats = ({ rooms = [] }) => {
   const [stats, setStats] = useState({

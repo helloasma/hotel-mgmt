@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import "../../Pages/Admin/VisualSummary.css";
+import "../../pages/Admin/VisualSummary.css";
 
 const BookingStats = ({ bookings = [] }) => {
   const [selectedMonth, setSelectedMonth] = useState(

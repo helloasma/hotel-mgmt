@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import accountIcon from "../assets/accountIcon.png";
-import logo from "../assets/LovenderWhite.png";
+import logo from "../assets/lovenderWhite.png";
 import Sidebar from "./Sidebar";
 import "./Navbar.css";
 

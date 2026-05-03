@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import "../../Pages/Admin/VisualSummary.css";
+import "../../pages/Admin/VisualSummary.css";
 
 const calculatePercentageFull = (room) => {
   const totalRooms = room.totalRooms || 0;
