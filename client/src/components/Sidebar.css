@@ -77,12 +77,13 @@
 
 .sidebar a {
   text-decoration: none;
-  color: inherit;
+  color: white;
 }
 
 /* SIDEBAR FOOTER - Staff Button */
 .sidebar-footer {
   border-top: 1px solid rgba(255,255,255,0.2);
+  color : white;
   padding-top: 16px;
   margin-top: auto;
 }

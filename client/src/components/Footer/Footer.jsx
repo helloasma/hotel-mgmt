@@ -58,7 +58,6 @@ function Footer() {
 
     <div className="footer-branding">
       <button className="footer-staff-btn" onClick={() => window.open("/admin/login", "_blank")}>Lovender staff?</button>
-      <p className="footer-credit">Site by Lovender Island Resort</p>
     </div>
     </div>
     </footer>
