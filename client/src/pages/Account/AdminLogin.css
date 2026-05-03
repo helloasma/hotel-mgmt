@@ -1,92 +1,125 @@
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+.admin-login-page {
+  min-height: 100vh;
+  background: #0e081f;
+  font-family: "Cormorant Garamond", serif;
+  padding: clamp(1rem, 4vw, 3rem);
+}
 
 .admin-login-container {
+  width: min(100%, 72rem);
+  min-height: calc(100vh - clamp(1rem, 4vw, 3rem) * 2);
+  margin-inline: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0e081f 0%, #1a0f2e 100%);
-  font-family: "Inter", sans-serif;
 }
 
 .admin-login-box {
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  width: 100%;
-  max-width: 400px;
+  width: min(100%, 28rem);
+  background: #ffffff;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  border-radius: 1rem;
+  box-shadow: 0 1.25rem 3rem rgba(0, 0, 0, 0.35);
 }
+
+
+.admin-login-logo {
+  display: block;
+  width: min(40%, 12rem);
+  height: auto;
+  margin: 0 auto clamp(1.25rem, 4vw, 2rem);
+  object-fit: contain;
+}
+
 
 .admin-login-box h2 {
   color: #0e081f;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 32px;
-  font-weight: 600;
-  margin-bottom: 30px;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 clamp(1.5rem, 4vw, 2rem);
   text-align: center;
-  border-bottom: 2px solid #2f5148;
-  padding-bottom: 15px;
+  border-bottom: 0.125rem solid #2f5148;
+  padding-bottom: 1rem;
 }
 
 .admin-login-box form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
 }
 
 .admin-login-box input {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  font-family: "Inter", sans-serif;
-  transition: all 0.3s ease;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 0.0625rem solid #ddd;
+  border-radius: 0.5rem;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  font-family: "Cormorant Garamond", serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .admin-login-box input:focus {
   outline: none;
   border-color: #2f5148;
-  box-shadow: 0 0 5px rgba(47, 81, 72, 0.2);
+  box-shadow: 0 0 0.5rem rgba(47, 81, 72, 0.25);
 }
 
 .admin-login-box button {
-  padding: 12px;
+  width: 100%;
+  padding: 0.9rem 1rem;
   background: #2f5148;
-  color: white;
+  color: #ffffff;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 0.5rem;
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  font-weight: 700;
   cursor: pointer;
-  font-family: "Inter", sans-serif;
-  transition: all 0.3s ease;
-  margin-top: 10px;
+  font-family: "Cormorant Garamond", serif;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 0.5rem;
 }
 
 .admin-login-box button:hover {
   background: #1f3d2f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(47, 81, 72, 0.3);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(47, 81, 72, 0.3);
+}
+
+.admin-login-box button:focus-visible {
+  outline: 0.125rem solid #2f5148;
+  outline-offset: 0.25rem;
 }
 
 .error-message {
   background: #f8d7da;
   color: #721c24;
-  padding: 12px;
-  border-radius: 4px;
-  border: 1px solid #f5c6cb;
-  margin-bottom: 15px;
-  font-size: 14px;
+  padding: 0.9rem 1rem;
+  border-radius: 0.5rem;
+  border: 0.0625rem solid #f5c6cb;
+  margin-bottom: 1rem;
+  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
   text-align: center;
+  font-family: "Cormorant Garamond", serif;
 }
 
-@media (max-width: 480px) {
-  .admin-login-box {
-    padding: 25px;
+@media (max-width: 36rem) {
+  .admin-login-page {
+    padding: 1rem;
   }
 
-  .admin-login-box h2 {
-    font-size: 24px;
+  .admin-login-container {
+    align-items: flex-start;
+    padding-top: 10vh;
+  }
+
+  .admin-login-box {
+    border-radius: 0.75rem;
   }
 }

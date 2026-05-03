@@ -1,11 +1,12 @@
 const express = require("express");
 const { body } = require("express-validator");
+
 const {
   registerUser,
   loginUser,
-  getMe,
+  loginManagementStaff,
 } = require("../controllers/authController");
-const { protect } = require("../middleware/authMiddleware");
+
 const handleValidationErrors = require("../middleware/validateMiddleware");
 
 const router = express.Router();
@@ -39,15 +40,15 @@ router.post(
   loginUser
 );
 
-const { adminOnly } = require("../middleware/authMiddleware");
+router.post(
+  "/management-login",
+  [
+    body("email").isEmail().withMessage("Valid email is required").normalizeEmail(),
+    body("password").notEmpty().withMessage("Password is required"),
+    handleValidationErrors,
+  ],
+  loginManagementStaff
+);
 
-router.get("/admin-test", protect, adminOnly, (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Admin access granted",
-  });
-});
-
-router.get("/me", protect, getMe);
 
 module.exports = router;

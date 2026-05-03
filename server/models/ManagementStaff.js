@@ -16,20 +16,21 @@ const managementStaffSchema = new mongoose.Schema(
         message: "Full Name must contain at least two words",
       },
     },
+
     email: {
-    type: String,
-    required: [true, "Email is required"],
-    unique: true,
-    lowercase: true,
-    trim: true,
-    validate: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      validate: {
         validator: function (value) {
-        // Email must match the pattern: letters, numbers, or underscores before the @ and must end with @Lovendermgmt.com
-        return /^[a-zA-Z0-9_]+@Lovendermgmt\.com$/.test(value);
+          return /^[a-zA-Z][a-zA-Z0-9_]*@lovendermgmt\.com$/i.test(value);
         },
         message: "Please enter a valid email address",
       },
     },
+
     password: {
       type: String,
       required: [true, "Password is required"],
@@ -41,6 +42,7 @@ const managementStaffSchema = new mongoose.Schema(
         message: "Password must contain at least one number and one special character",
       },
     },
+
     phone: {
       type: String,
       required: [true, "Phone number is required"],
@@ -52,6 +54,7 @@ const managementStaffSchema = new mongoose.Schema(
         message: "Phone number must be exactly 10 digits and start with 0",
       },
     },
+
     role: {
       type: String,
       required: [true, "Role is required"],
@@ -62,10 +65,12 @@ const managementStaffSchema = new mongoose.Schema(
       validate: {
         validator: async function (value) {
           if (value !== "Chief Manager") return true;
+
           const count = await mongoose.models.ManagementStaff.countDocuments({
             role: "Chief Manager",
             _id: { $ne: this._id },
           });
+
           return count === 0;
         },
         message: "You can't choose that role",
@@ -74,12 +79,23 @@ const managementStaffSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    collection: "managment_staff",
+    collection: "management_staff",
   }
 );
 
 managementStaffSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
+  if (!this.isModified("password")) {
+    return;
+  }
+
+  if (!this.password) {
+    return;
+  }
+
+  if (this.password.startsWith("$2")) {
+    return;
+  }
+
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });

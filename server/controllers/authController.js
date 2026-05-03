@@ -1,4 +1,5 @@
-const User = require("../models/User");
+﻿const User = require("../models/User");
+const ManagementStaff = require("../models/ManagementStaff");
 const generateToken = require("../utils/generateToken");
 
 const registerUser = async (req, res, next) => {
@@ -41,6 +42,8 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+
+
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -70,19 +73,57 @@ const loginUser = async (req, res, next) => {
   }
 };
 
-const getMe = async (req, res, next) => {
+const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+
+
+//Admin Login
+const loginManagementStaff = async (req, res, next) => {
   try {
+    const { email, password } = req.body;
+
+    const escapedEmail = escapeRegExp(email.trim());
+    const staff = await ManagementStaff.findOne({
+      email: { $regex: `^${escapedEmail}$`, $options: "i" },
+    });
+
+    if (!staff) {
+      res.status(401);
+      throw new Error("Invalid email or password");
+    }
+
+    const passwordMatch = await staff.matchPassword(password);
+
+    if (!passwordMatch) {
+      res.status(401);
+      throw new Error("Invalid email or password");
+    }
+
     res.status(200).json({
       success: true,
-      data: req.user,
+      message: "Login successful",
+      data: {
+        _id: staff._id,
+        fullName: staff.fullName,
+        email: staff.email,
+        phone: staff.phone,
+        role: staff.role,
+        token: generateToken(staff._id, staff.role),
+      },
     });
   } catch (error) {
     next(error);
   }
 };
 
+
+
+
+
+
+
 module.exports = {
   registerUser,
   loginUser,
-  getMe,
+  loginManagementStaff,
 };

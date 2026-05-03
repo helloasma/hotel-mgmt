@@ -1,163 +1,244 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
 
+.admin-page {
+  margin: 30px;
+  padding: 32px;
+  min-height: calc(100vh - 60px);
+  background: linear-gradient(135deg, #ffffff 0%, #f7f4ff 45%, #eef6ff 100%);
+  border-radius: 18px;
+  border: 1px solid #e2d9f5;
+  box-shadow: 0 18px 45px rgba(14, 8, 31, 0.08);
+  overflow-x: auto;
+}
+
+.admin-page h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: #0e081f;
+  margin: 0 0 28px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #2f5148;
+}
+
 .admin-page table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(14, 8, 31, 0.06);
 }
 
 .admin-page thead {
-  background: #0e081f;
-  color: white;
+  background: linear-gradient(135deg, #0e081f 0%, #1a1238 55%, #241654 100%);
 }
 
 .admin-page th {
-  padding: 15px;
+  padding: 17px 16px;
   text-align: left;
   font-family: "Inter", sans-serif;
-  font-weight: 600;
   font-size: 13px;
+  font-weight: 700;
+  color: #ffffff !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  vertical-align: middle;
 }
 
 .admin-page td {
-  padding: 12px 15px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 18px 16px;
+  border-bottom: 1px solid #d8cdea;
   font-family: "Inter", sans-serif;
   font-size: 14px;
-  color: #333;
-  max-width: 150px;
+  color: #252236;
+  line-height: 1.55;
+  vertical-align: top;
+  max-width: 290px;
   word-break: break-word;
 }
 
+/* Alternating row colors */
+.admin-page tbody tr:nth-child(odd) {
+  background: #a4a6a8;
+}
+
+.admin-page tbody tr:nth-child(even) {
+  background: #a4a6a8;
+}
+
 .admin-page tbody tr:hover {
-  background: #f9f9f9;
+  background: #ffffff;
+  transition: background 0.2s ease;
 }
 
 .cell-content {
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  line-height: 1.6;
+  color: #2f2b42;
 }
 
 .edit-input,
 .edit-input-text {
   width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #2f5148;
-  border-radius: 4px;
+  min-height: 38px;
+  padding: 9px 11px;
+  border: 1px solid #c4b9df;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #222033;
   font-family: "Inter", sans-serif;
   font-size: 13px;
-  resize: vertical;
   box-sizing: border-box;
 }
 
-.edit-input:focus {
+.edit-input-text {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.edit-input:focus,
+.edit-input-text:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(47, 81, 72, 0.3);
+  border-color: #6d5dfc;
+  box-shadow: 0 0 0 3px rgba(30, 23, 99, 0.16);
 }
 
+/* Action column */
 .action-buttons {
+  width: 150px;
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
 }
 
+/* Force all action buttons to be exactly the same size */
+.action-buttons button,
 .edit-btn,
 .save-btn,
-.cancel-btn {
-  padding: 8px 12px;
+.cancel-btn,
+.delete-btn {
+  width: 120px !important;
+  min-width: 120px !important;
+  max-width: 120px !important;
+
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  box-sizing: border-box !important;
   border: none;
-  border-radius: 4px;
+  border-radius: 7px;
   cursor: pointer;
+
   font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
   white-space: nowrap;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
+/* Edit button: force purple */
+.action-buttons button:first-child,
 .edit-btn {
-  background: #2f5148;
-  color: white;
+  background: rgb(59, 6, 59) !important;
+  color: #ffffff !important;
 }
 
+.action-buttons button:first-child:hover,
 .edit-btn:hover {
-  background: #1f3d2f;
+  background: rgb(110, 35, 110) !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(47, 81, 72, 0.3);
+  box-shadow: 0 6px 14px rgba(74, 13, 74, 0.25);
 }
 
+/* Save button */
 .save-btn {
-  background: #28a745;
-  color: white;
+  background: rgb(8, 62, 8) !important;
+  color: #ffffff !important;
 }
 
 .save-btn:hover {
-  background: #218838;
+  background: rgb(81, 140, 81) !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 6px 14px rgba(8, 62, 8, 0.25);
 }
 
-.cancel-btn {
-  background: #c84d3d;
-  color: white;
+/* Delete / Cancel button: force dark red */
+.action-buttons button:last-child,
+.cancel-btn,
+.delete-btn {
+  background: rgb(144, 30, 30) !important;
+  color: #ffffff !important;
 }
 
-.cancel-btn:hover {
-  background: #a53d2d;
+.action-buttons button:last-child:hover,
+.cancel-btn:hover,
+.delete-btn:hover {
+  background: rgb(110, 20, 20) !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(200, 77, 61, 0.3);
+  box-shadow: 0 6px 14px rgba(144, 30, 30, 0.25);
 }
 
 @media (max-width: 1400px) {
+  .admin-page {
+    margin: 22px;
+    padding: 24px;
+  }
+
   .admin-page td {
-    max-width: 120px;
-    font-size: 12px;
-    padding: 10px 12px;
+    max-width: 230px;
+    font-size: 13px;
   }
 
   .admin-page th {
-    font-size: 11px;
-    padding: 12px;
-  }
-
-  .edit-input {
     font-size: 12px;
-  }
-
-  .edit-btn,
-  .save-btn,
-  .cancel-btn {
-    font-size: 11px;
-    padding: 6px 10px;
+    padding: 14px;
   }
 }
 
 @media (max-width: 768px) {
   .admin-page {
-    overflow-x: auto;
+    margin: 12px;
+    padding: 16px;
   }
 
   .admin-page table {
     min-width: 1000px;
   }
 
-  .admin-page td,
-  .admin-page th {
-    padding: 8px 10px;
-    font-size: 11px;
-  }
-
   .action-buttons {
-    gap: 4px;
+    width: 130px;
   }
 
+  .action-buttons button,
   .edit-btn,
   .save-btn,
-  .cancel-btn {
-    padding: 5px 8px;
-    font-size: 10px;
+  .cancel-btn,
+  .delete-btn {
+    width: 105px !important;
+    min-width: 105px !important;
+    max-width: 105px !important;
+
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+
+    font-size: 12px;
   }
 }

@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AdminNavbar from '../components/Admin/AdminNavbar';
 import './AdminLayout.css';
 
 const AdminLayout = ({ children }) => {
+  useEffect(() => {
+    document.title = 'Lovender Opration Portal';
+  }, []);
+
   return (
     <div className="admin-layout">
       <AdminNavbar />

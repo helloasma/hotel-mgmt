@@ -1,221 +1,239 @@
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap");
 
+.account-page,
+.account-page * {
+  box-sizing: border-box;
+}
+
+.account-page {
+  min-height: calc(100vh - 92px);
+  width: 100%;
+  padding: 70px 32px;
+  background-image: url("../../assets/crew.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.account-content {
+  width: 100%;
+  max-width: 540px;
+  margin-left: auto;
+}
+
 .dashboard-header {
   margin-bottom: 30px;
 }
 
 .dashboard-header h1 {
-  color: #0e081f;
+  color: #ffffff;
   font-family: "Cormorant Garamond", serif;
-  font-size: 38px;
+  font-size: 42px;
   font-weight: 600;
   margin: 0;
-}
-
-.dashboard-layout {
-  display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: 30px;
-  align-items: start;
-}
-
-/* Left Side - Stats */
-.dashboard-left {
-  width: 100%;
-}
-
-.dashboard-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.stat-card {
-  background: linear-gradient(135deg, #2f5148 0%, #1f3d2f 100%);
-  color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(47, 81, 72, 0.3);
-}
-
-.stat-card h3 {
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin: 0 0 15px 0;
-  opacity: 0.9;
-}
-
-.stat-value {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 48px;
-  font-weight: 600;
-  margin: 0;
-}
-
-/* Right Side - User Info Card */
-.dashboard-right {
-  width: 100%;
+  padding-bottom: 18px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.85);
 }
 
 .user-info-card {
-  background: white;
+  background: rgba(255, 255, 255, 0.96);
   border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 38px;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 22px;
   border: 2px solid #2f5148;
-}
-
-.user-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.user-icon img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid #2f5148;
 }
 
 .user-details {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 }
 
 .detail-group {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
 }
 
 .detail-group label {
   font-family: "Inter", sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.7px;
   color: #2f5148;
 }
 
 .detail-group p {
   font-family: "Cormorant Garamond", serif;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
   color: #0e081f;
   margin: 0;
   word-break: break-word;
 }
 
-.logout-btn {
-  padding: 12px 24px;
-  background: #c84d3d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-family: "Cormorant Garamond", serif;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
+.user-details input,
+.password-card input {
   width: 100%;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  color: #0e081f;
+  background: #ffffff;
+  outline: none;
 }
 
-.logout-btn:hover {
-  background: #a53d2d;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(200, 77, 61, 0.3);
+.user-details input:focus,
+.password-card input:focus {
+  border-color: #2f5148;
+  box-shadow: 0 0 0 3px rgba(47, 81, 72, 0.15);
 }
 
 .dashboard-actions {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   margin-top: 10px;
 }
 
 .edit-profile-btn,
+.change-password-btn,
 .save-btn,
-.cancel-btn {
-  padding: 12px 24px;
-  background: #2f5148;
+.cancel-btn,
+.logout-btn {
+  padding: 13px 24px;
   color: white;
   border: none;
   border-radius: 4px;
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Inter", sans-serif;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
 }
 
-.cancel-btn {
+.edit-profile-btn,
+.save-btn {
+  background: #2f5148;
+}
+
+.change-password-btn {
+  background: #1f3d2f;
+}
+
+.cancel-btn,
+.logout-btn {
   background: #c84d3d;
 }
 
 .edit-profile-btn:hover,
+.change-password-btn:hover,
 .save-btn:hover,
-.cancel-btn:hover {
+.cancel-btn:hover,
+.logout-btn:hover {
   transform: translateY(-2px);
+}
+
+.edit-profile-btn:hover,
+.save-btn:hover {
   box-shadow: 0 4px 12px rgba(47, 81, 72, 0.2);
 }
 
-.user-details input,
-.user-details select {
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  font-family: "Inter", sans-serif;
-  font-size: 16px;
+.change-password-btn:hover {
+  box-shadow: 0 4px 12px rgba(31, 61, 47, 0.25);
 }
 
-@media (max-width: 1024px) {
-  .dashboard-layout {
-    grid-template-columns: 1fr;
+.cancel-btn:hover,
+.logout-btn:hover {
+  background: #a53d2d;
+  box-shadow: 0 4px 12px rgba(200, 77, 61, 0.3);
+}
+
+.password-card {
+  margin-top: 18px;
+  padding: 22px;
+  border-radius: 8px;
+  background: #f7fafc;
+  border: 1px solid #d1d5db;
+  display: grid;
+  gap: 16px;
+}
+
+.password-card .detail-group label {
+  color: #0e081f;
+}
+
+.dashboard-message {
+  width: 100%;
+  margin: 0 0 20px 0;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  animation: slideDown 0.25s ease;
+}
+
+.dashboard-message.success {
+  background-color: #e8f7ee;
+  color: #1f7a3f;
+  border: 1px solid #b9e6c9;
+}
+
+.dashboard-message.error {
+  background-color: #fdecec;
+  color: #b42318;
+  border: 1px solid #f5c2c0;
+}
+
+.loading-profile {
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  margin: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
   }
 
-  .dashboard-stats {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @media (max-width: 768px) {
+  .account-page {
+    padding: 40px 22px;
+    justify-content: center;
+  }
+
+  .account-content {
+    max-width: 100%;
+  }
+
   .dashboard-header h1 {
-    font-size: 28px;
+    font-size: 32px;
   }
 
-  .dashboard-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .stat-value {
-    font-size: 36px;
-  }
-
-  .user-icon img {
-    width: 60px;
-    height: 60px;
+  .user-info-card {
+    padding: 28px;
   }
 
   .detail-group p {
-    font-size: 16px;
+    font-size: 18px;
   }
 }

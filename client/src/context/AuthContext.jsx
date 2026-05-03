@@ -32,6 +32,10 @@ export function AuthProvider({ children }) {
       const res = await api.post("/auth/login", { email, password });
       const userData = res.data.data;
       setUser(userData);
+      // Store token separately for reliable access
+      if (userData.token) {
+        localStorage.setItem("token", userData.token);
+      }
       return { success: true, data: userData };
     } catch (err) {
       const message =
@@ -50,6 +54,10 @@ export function AuthProvider({ children }) {
       const res = await api.post("/auth/register", { name, email, password, phone });
       const userData = res.data.data;
       setUser(userData);
+      // Store token separately for reliable access
+      if (userData.token) {
+        localStorage.setItem("token", userData.token);
+      }
       return { success: true, data: userData };
     } catch (err) {
       const message =
@@ -60,7 +68,9 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   }, []);
-
+  // Clear token when logging out
+    localStorage.removeItem("token");
+  
   const logout = useCallback(() => {
     setUser(null);
     setError(null);
