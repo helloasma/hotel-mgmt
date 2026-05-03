@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./RoomManagement.css";
 
 const EditIcon = () => (
@@ -64,9 +64,7 @@ const RoomManagement = () => {
   useEffect(() => {
     const loadRooms = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/rooms", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
+        const response = await api.get("/rooms");
         setRooms(response.data.data || []);
       } catch (error) {
         console.error("Error fetching rooms", error);
@@ -137,11 +135,7 @@ const RoomManagement = () => {
         totalRooms: Number(editData.totalRooms),
       };
 
-      const response = await axios.put(
-        `http://localhost:5000/api/rooms/${roomId}`,
-        payload,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
+      const response = await api.put(`/rooms/${roomId}`, payload);
 
       setRooms((prevRooms) =>
         prevRooms.map((room) => (room._id === roomId ? { ...room, ...response.data.data } : room))
@@ -167,9 +161,7 @@ const RoomManagement = () => {
 
   const handleConfirmDeleteRoom = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/rooms/${deleteConfirmId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      await api.delete(`/rooms/${deleteConfirmId}`);
       setRooms((prevRooms) => prevRooms.filter((room) => room._id !== deleteConfirmId));
       showMessage("Room deleted successfully.", "success", "global");
     } catch (error) {
@@ -227,9 +219,7 @@ const RoomManagement = () => {
         available: true,
       };
 
-      const response = await axios.post("http://localhost:5000/api/rooms", payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await api.post("/rooms", payload);
 
       setRooms((prevRooms) => [...prevRooms, response.data.data]);
       setNewRoomData({ title: "", type: "", category: "", price: "", capacity: "", totalRooms: "" });

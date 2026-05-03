@@ -1,6 +1,6 @@
 // src/components/BookingsList.jsx
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 
 const BookingsList = () => {
   const [bookings, setBookings] = useState([]);
@@ -9,11 +9,7 @@ const BookingsList = () => {
     // Fetch bookings from API
     const fetchBookings = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/bookings/all", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await api.get("/bookings/all");
         setBookings(response.data.data);  // assuming response structure has 'data'
       } catch (error) {
         console.error("Error fetching bookings:", error);

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./ManagementStaffs.css";
 
 const EditIcon = () => (
@@ -67,14 +67,7 @@ const ManagementStaffs = () => {
 
     const fetchStaff = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/management-staff",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get("/management-staff");
         setStaff(response.data.data);
       } catch (error) {
         console.error("Error fetching management staff", error);
@@ -92,17 +85,12 @@ const ManagementStaffs = () => {
 
   const handleAddSubmit = async (event) => {
     event.preventDefault();
-
+    if (!/^\d{10}$/.test(addData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/management-staff",
-        addData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post("/management-staff", addData);
 
       setStaff((prev) => [response.data.data, ...prev]);
       setShowAddForm(false);
@@ -129,16 +117,12 @@ const ManagementStaffs = () => {
   };
 
   const handleSaveEdit = async (id) => {
+    if (!/^\d{10}$/.test(editData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/management-staff/${id}`,
-        editData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/management-staff/${id}`, editData);
 
       setStaff((prev) =>
         prev.map((member) => (member._id === id ? response.data.data : member))
@@ -163,11 +147,7 @@ const ManagementStaffs = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/management-staff/${pendingDeleteId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await api.delete(`/management-staff/${pendingDeleteId}`);
       setStaff((prev) => prev.filter((member) => member._id !== pendingDeleteId));
     } catch (error) {
       console.error("Could not delete management staff", error);

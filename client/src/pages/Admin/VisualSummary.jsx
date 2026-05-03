@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import OverallStats from "../../components/Admin/OverallStats";
 import RoomCharts from "../../components/Admin/RoomCharts";
-import BookingStats from "../../components/Admin/BookingStats";
+import IncomeStats from "../../components/Admin/IncomeStats";
 import "./VisualSummary.css";
 
 const VisualSummary = () => {
@@ -14,38 +14,49 @@ const VisualSummary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        const [roomsResponse, bookingsResponse] = await Promise.all([
-          axios.get("http://localhost:5000/api/rooms", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
-          axios.get("http://localhost:5000/api/bookings", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
+        const [roomsResult, bookingsResult] = await Promise.allSettled([
+          api.get("/rooms/admin/all"),
+          api.get("/bookings/all"),
         ]);
 
-        const roomsData =
-          roomsResponse.data.data ||
-          roomsResponse.data.rooms ||
-          roomsResponse.data ||
-          [];
+        const messages = [];
 
-        const bookingsData =
-          bookingsResponse.data.data ||
-          bookingsResponse.data.bookings ||
-          bookingsResponse.data ||
-          [];
+        if (roomsResult.status === "fulfilled") {
+          const roomsData =
+            roomsResult.value.data.data ||
+            roomsResult.value.data.rooms ||
+            roomsResult.value.data ||
+            [];
 
-        setRooms(Array.isArray(roomsData) ? roomsData : []);
-        setBookings(Array.isArray(bookingsData) ? bookingsData : []);
+          setRooms(Array.isArray(roomsData) ? roomsData : []);
+        } else {
+          console.error("Failed to load rooms", roomsResult.reason);
+          setRooms([]);
+          messages.push("Unable to load rooms data.");
+        }
+
+        if (bookingsResult.status === "fulfilled") {
+          const bookingsData =
+            bookingsResult.value.data.data ||
+            bookingsResult.value.data.bookings ||
+            bookingsResult.value.data ||
+            [];
+
+          setBookings(Array.isArray(bookingsData) ? bookingsData : []);
+        } else {
+          console.error("Failed to load bookings", bookingsResult.reason);
+          setBookings([]);
+          messages.push(
+            "Unable to load bookings data. Check booking admin access."
+          );
+        }
+
+        setErrorMessage(messages.join(" "));
       } catch (error) {
         console.error("Failed to load visual summary data", error);
         setErrorMessage("Unable to load visual summary data.");
+        setRooms([]);
+        setBookings([]);
       } finally {
         setLoading(false);
       }
@@ -61,21 +72,15 @@ const VisualSummary = () => {
           <p className="page-eyebrow">Admin Dashboard</p>
           <h1>Visual Summary</h1>
           <p className="page-subtitle">
-            A quick overview of staff, users, bookings, rooms, and guest activity.
+            A quick overview of staff, users, rooms, and booking activity.
           </p>
         </div>
       </div>
 
-      {errorMessage && (
-        <div className="summary-alert">
-          {errorMessage}
-        </div>
-      )}
+      {errorMessage && <div className="summary-alert">{errorMessage}</div>}
 
       {loading ? (
-        <div className="summary-loading-card">
-          Loading visual summary...
-        </div>
+        <div className="summary-loading-card">Loading visual summary...</div>
       ) : (
         <div className="summary-dashboard-grid">
           <section className="summary-section summary-full-width">
@@ -83,11 +88,11 @@ const VisualSummary = () => {
           </section>
 
           <section className="summary-section summary-full-width">
-            <RoomCharts rooms={rooms} />
+            <RoomCharts bookings={bookings} />
           </section>
 
           <section className="summary-section summary-full-width">
-            <BookingStats bookings={bookings} />
+            <IncomeStats bookings={bookings} />
           </section>
         </div>
       )}

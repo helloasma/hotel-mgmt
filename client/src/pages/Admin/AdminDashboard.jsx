@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
 
@@ -34,18 +34,10 @@ const AdminDashboard = () => {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get("http://localhost:5000/api/admin/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const response = await api.get("/admin/me");
         setAdminUser(response.data.data);
       } catch (error) {
         console.error("Error loading profile", error);
-
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         navigate("/admin/login");
@@ -103,22 +95,17 @@ const AdminDashboard = () => {
       return;
     }
 
-    try {
-      const token = localStorage.getItem("token");
+    if (!/^\d{10}$/.test(editForm.phone.trim())) {
+      showMessage("Enter a 10 digit phone number.", "error");
+      return;
+    }
 
-      const response = await axios.put(
-        "http://localhost:5000/api/admin/me",
-        {
-          name: editForm.name,
-          email: editForm.email,
-          phone: editForm.phone,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    try {
+      const response = await api.put("/admin/me", {
+        name: editForm.name,
+        email: editForm.email,
+        phone: editForm.phone,
+      });
 
       setAdminUser(response.data.data);
       setIsEditing(false);
@@ -181,20 +168,10 @@ const handleChangePassword = async () => {
   }
 
   try {
-    const token = localStorage.getItem("token");
-
-    const response = await axios.put(
-      "http://localhost:5000/api/admin/me/password",
-      {
-        newPassword: passwordForm.newPassword,
-        confirmPassword: passwordForm.confirmPassword,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await api.put("/admin/me/password", {
+      newPassword: passwordForm.newPassword,
+      confirmPassword: passwordForm.confirmPassword,
+    });
 
     if (response.data.data) {
       setAdminUser(response.data.data);

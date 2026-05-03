@@ -208,7 +208,7 @@ const getAllBookings = async (req, res, next) => {
     const bookings = await Booking.find()
       .populate({
         path: "room",
-        select: "title price images"
+        select: "title price images category type"
       })
       .sort({ createdAt: -1 });
     return res.json({ success: true, data: bookings });

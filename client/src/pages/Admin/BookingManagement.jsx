@@ -333,8 +333,7 @@ const BookingManagement = () => {
 
   const maxCheckOut = formData.checkIn ? new Date(formData.checkIn) : new Date();
   maxCheckOut.setDate(maxCheckOut.getDate() + 6);
-  const maxCheckOutStr = maxCheckOut.toISOString().split("T")[0];
-
+ 
   return (
     <div className="admin-page">
       <div className="admin-content-with-sidebar">

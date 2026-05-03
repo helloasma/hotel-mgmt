@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "./OperationStaffs.css";
 
 const EditIcon = () => (
@@ -61,14 +61,7 @@ const OperationStaffs = () => {
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/operation-staff",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const response = await api.get("/operation-staff");
 
         setStaff(response.data.data);
       } catch (error) {
@@ -87,17 +80,12 @@ const OperationStaffs = () => {
 
   const handleAddSubmit = async (event) => {
     event.preventDefault();
-
+    if (!/^\d{10}$/.test(addData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/operation-staff",
-        addData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post("/operation-staff", addData);
 
       setStaff((prev) => [response.data.data, ...prev]);
       setShowAddForm(false);
@@ -123,16 +111,12 @@ const OperationStaffs = () => {
   };
 
   const handleSaveEdit = async (id) => {
+    if (!/^\d{10}$/.test(editData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
     try {
-      const response = await axios.put(
-        `http://localhost:5000/api/operation-staff/${id}`,
-        editData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/operation-staff/${id}`, editData);
 
       setStaff((prev) =>
         prev.map((member) => (member._id === id ? response.data.data : member))
@@ -157,11 +141,7 @@ const OperationStaffs = () => {
 
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/operation-staff/${pendingDeleteId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await api.delete(`/operation-staff/${pendingDeleteId}`);
 
       setStaff((prev) => prev.filter((member) => member._id !== pendingDeleteId));
     } catch (error) {

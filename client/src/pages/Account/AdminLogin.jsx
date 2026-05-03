@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import lovenderLogo from "../../assets/lovenderBlack.png";
 import "./AdminLogin.css";
@@ -24,7 +24,7 @@ const AdminLogin = () => {
     });
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/management-login", {
+      const res = await api.post("/auth/management-login", {
         email: email.trim().toLowerCase(),
         password,
       });
