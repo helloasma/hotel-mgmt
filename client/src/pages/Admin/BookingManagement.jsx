@@ -9,7 +9,7 @@ const BookingManagement = () => {
     firstName: "",
     lastName: "",
     roomId: "",
-    adults: 1,
+    adults: 2,
     children: 0,
     checkIn: "",
     checkOut: "",
@@ -201,8 +201,6 @@ const BookingManagement = () => {
         errors.checkOut = "Check-out must be after check-in.";
       } else if (diffDays < 2) {
         errors.checkOut = "Check-out must be at least 2 days after check-in.";
-      } else if (diffDays > 6) {
-        errors.checkOut = "Check-out can be at most 6 days after check-in.";
       }
     }
 
@@ -661,7 +659,6 @@ const BookingManagement = () => {
                     onChange={handleFormChange}
                     onBlur={(e) => handleBlur(e.target.name)}
                     min={minCheckOutStr}
-                    max={maxCheckOutStr}
                   />
                   {shouldShowError('checkOut') && formErrors.checkOut && <span className="form-field-error">{formErrors.checkOut}</span>}
                 </div>

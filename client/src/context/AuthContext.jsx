@@ -68,10 +68,8 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   }, []);
-  // Clear token when logging out
-    localStorage.removeItem("token");
-  
   const logout = useCallback(() => {
+    localStorage.removeItem("token");
     setUser(null);
     setError(null);
   }, []);
