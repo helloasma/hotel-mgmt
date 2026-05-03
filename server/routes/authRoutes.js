@@ -4,6 +4,9 @@ const { body } = require("express-validator");
 const {
   registerUser,
   loginUser,
+  getMe,
+  forgotPassword,
+  resetPassword
   loginManagementStaff,
 } = require("../controllers/authController");
 
@@ -50,5 +53,8 @@ router.post(
   loginManagementStaff
 );
 
+
+router.post("/forgot-password", forgotPassword);
+router.put("/reset-password", resetPassword);
 
 module.exports = router;

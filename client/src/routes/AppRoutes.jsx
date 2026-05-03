@@ -11,6 +11,8 @@ import Signup from "../pages/Account/Signup";
 import Validation from "../pages/Account/Validation";
 import Booking from "../pages/Rooms/Booking";
 import Journey from "../pages/Journey/Journey";
+import ForgotPassword from "../pages/Account/ForgotPassword";
+import ResetPassword from "../pages/Account/ResetPassword";
 
 import AdminLogin from "../pages/Account/AdminLogin";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
@@ -37,7 +39,8 @@ function AppRoutes() {
       <Route path="/contact" element={<Contact />} />
       <Route path="/about" element={<About />} />
       <Route path="/journey" element={<Journey />} />
-
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
 
       {/* Admin Routes */}
       <Route path="/admin/login" element={<AdminLogin />} />
@@ -85,6 +88,7 @@ function AppRoutes() {
       />
     </Routes>
   );
+
 }
 
 export default AppRoutes;

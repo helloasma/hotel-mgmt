@@ -35,6 +35,8 @@ const userSchema = new mongoose.Schema(
       default: "New Staff",
       // Only applicable when role is "admin"
     },
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
   },
   {
     timestamps: true,
