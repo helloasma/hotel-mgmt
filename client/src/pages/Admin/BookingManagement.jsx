@@ -67,6 +67,7 @@ const BookingManagement = () => {
   const fetchBookings = async () => {
     setLoading(true);
     setError("");
+
     try {
       const response = await api.get("/bookings/all");
       setBookings(response.data.data);
@@ -99,11 +100,13 @@ const BookingManagement = () => {
   const handleStatusEdit = async (id, newStatus) => {
     try {
       await api.put(`/bookings/admin/${id}`, { status: newStatus });
+
       setBookings(
         bookings.map((booking) =>
           booking._id === id ? { ...booking, status: newStatus } : booking
         )
       );
+
       setEditingStatus(null);
     } catch (error) {
       console.error("Error updating status", error);
@@ -118,7 +121,10 @@ const BookingManagement = () => {
   const confirmDelete = async () => {
     try {
       await api.delete(`/bookings/admin/${pendingDeleteId}`);
-      setBookings(bookings.filter((booking) => booking._id !== pendingDeleteId));
+
+      setBookings(
+        bookings.filter((booking) => booking._id !== pendingDeleteId)
+      );
     } catch (error) {
       console.error("Failed to delete booking", error);
       setError("Failed to delete booking. Please try again.");
@@ -129,7 +135,11 @@ const BookingManagement = () => {
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
     if (name === "roomId") {
       const room = rooms.find((room) => room._id === value);
@@ -212,6 +222,7 @@ const BookingManagement = () => {
       const checkIn = new Date(formData.checkIn);
       const checkOut = new Date(formData.checkOut);
       const days = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+
       setTotalPrice(days * selectedRoom.price);
     } else {
       setTotalPrice(0);
@@ -229,6 +240,7 @@ const BookingManagement = () => {
 
   const handleConfirmPay = () => {
     setSubmitAttempted(true);
+
     const errors = validateForm();
     setFormErrors(errors);
 
@@ -263,19 +275,17 @@ const BookingManagement = () => {
       };
 
       await api.post("/bookings/admin/create", bookingData);
+
       setSuccessMessage("Booking created successfully.");
       setShowForm(false);
       resetForm();
       fetchBookings();
+
       setTimeout(() => setSuccessMessage(""), 4000);
     } catch (error) {
-      const status = error.response?.status;
-      const message = error.response?.data?.message || "Failed to create booking.";
-      if (status === 404) {
-        setBookingError(message);
-      } else {
-        setBookingError(message);
-      }
+      const message =
+        error.response?.data?.message || "Failed to create booking.";
+      setBookingError(message);
     }
   };
 
@@ -331,236 +341,239 @@ const BookingManagement = () => {
   minCheckOut.setDate(minCheckOut.getDate() + 2);
   const minCheckOutStr = minCheckOut.toISOString().split("T")[0];
 
-  const maxCheckOut = formData.checkIn ? new Date(formData.checkIn) : new Date();
-  maxCheckOut.setDate(maxCheckOut.getDate() + 6);
- 
   return (
     <div className="admin-page">
       <div className="admin-content-with-sidebar">
         <div className="booking-table-wrapper">
           <div className="booking-card">
-          <h1>Booking Management</h1>
-          <p className="booking-subtitle">View, filter, and manage guest bookings.</p>
+            <h1 className="booking-management-title">Booking Management</h1>
+            <p className="booking-subtitle">
+              View, filter, and manage guest bookings.
+            </p>
 
-          {loading && <p>Loading bookings...</p>}
-          {error && <p className="error">{error}</p>}
+            {loading && <p>Loading bookings...</p>}
+            {error && <p className="error">{error}</p>}
 
-          {!loading && !error && (
-            <>
-              <div className="booking-toolbar">
-                <form className="booking-search-form" onSubmit={handleSearchSubmit}>
-                  <span className="search-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Search by email"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                  />
-                </form>
-
-                <div className="actions-top">
-                  <button
-                    className="add-booking-btn"
-                    onClick={() => setShowForm(true)}
+            {!loading && !error && (
+              <>
+                <div className="booking-toolbar">
+                  <form
+                    className="booking-search-form"
+                    onSubmit={handleSearchSubmit}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    Add New Booking
-                  </button>
+                    <input
+                      type="text"
+                      placeholder="Search by email"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                    />
+                  </form>
 
-                  <button
-                    className="filter-btn"
-                    onClick={() => setShowFilter((prev) => !prev)}
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                      <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
-                    </svg>
-                    Filter
-                  </button>
+                  <div className="actions-top">
+                    <button
+                      className="add-booking-btn"
+                      onClick={() => setShowForm(true)}
+                    >
+                      Add New Booking
+                    </button>
 
-                  <button className="reset-table-btn" onClick={handleResetTable}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/>
-                    </svg>
-                    Reset
-                  </button>
+                    <button
+                      className="filter-btn"
+                      onClick={() => setShowFilter((prev) => !prev)}
+                    >
+                      Filter
+                    </button>
 
-                  {showFilter && (
-                    <div className="filter-panel">
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={selectedFilterStatus === "confirmed"}
-                          onChange={(e) =>
-                            setSelectedFilterStatus(
-                              e.target.checked ? "confirmed" : ""
-                            )
-                          }
-                        />
-                        Confirmed
-                      </label>
+                    <button
+                      className="reset-table-btn"
+                      onClick={handleResetTable}
+                    >
+                      Reset
+                    </button>
 
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={selectedFilterStatus === "cancelled"}
-                          onChange={(e) =>
-                            setSelectedFilterStatus(
-                              e.target.checked ? "cancelled" : ""
-                            )
-                          }
-                        />
-                        Cancelled
-                      </label>
+                    {showFilter && (
+                      <div className="filter-panel">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={selectedFilterStatus === "confirmed"}
+                            onChange={(e) =>
+                              setSelectedFilterStatus(
+                                e.target.checked ? "confirmed" : ""
+                              )
+                            }
+                          />
+                          Confirmed
+                        </label>
 
-                      <button
-                        type="button"
-                        className="apply-filter-btn"
-                        onClick={handleApplyFiltering}
-                      >
-                        Apply Filtering
-                      </button>
-                    </div>
-                  )}
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={selectedFilterStatus === "cancelled"}
+                            onChange={(e) =>
+                              setSelectedFilterStatus(
+                                e.target.checked ? "cancelled" : ""
+                              )
+                            }
+                          />
+                          Cancelled
+                        </label>
+
+                        <button
+                          type="button"
+                          className="apply-filter-btn"
+                          onClick={handleApplyFiltering}
+                        >
+                          Apply Filtering
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="table-center-container">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Guest Name</th>
-                      <th>Email</th>
-                      <th>Room Type</th>
-                      <th>Check-in</th>
-                      <th>Check-out</th>
-                      <th>Adults</th>
-                      <th>Children</th>
-                      <th>Total</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
+                <div className="table-center-container">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Guest Name</th>
+                        <th>Email</th>
+                        <th>Room Type</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Adults</th>
+                        <th>Children</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
 
-                  <tbody>
-                    {displayedBookings.map((booking) => {
-                      const adults = getAdults(booking);
-                      const children = getChildren(booking);
-                      const totalGuests = adults + children;
+                    <tbody>
+                      {displayedBookings.map((booking) => {
+                        const adults = getAdults(booking);
+                        const children = getChildren(booking);
+                        const totalGuests = adults + children;
 
-                      return (
-                        <tr key={booking._id}>
-                          <td>
-                            {booking.firstName} {booking.lastName}
-                          </td>
-                          <td>{booking.email}</td>
-                          <td>{booking.room?.title || "Unknown room"}</td>
-                          <td>{new Date(booking.checkIn).toLocaleDateString("en-GB").replace(/\//g, "/")}</td>
-                          <td>{new Date(booking.checkOut).toLocaleDateString("en-GB").replace(/\//g, "/")}</td>
-                          <td>{adults}</td>
-                          <td>{children}</td>
-                          <td>{totalGuests}</td>
-                          <td>
-                            {editingStatus === booking._id ? (
-                              <select
-                                value={booking.status}
-                                onChange={(e) =>
-                                  handleStatusEdit(booking._id, e.target.value)
-                                }
-                              >
-                                <option value="confirmed">Confirmed</option>
-                                <option value="cancelled">Cancelled</option>
-                              </select>
-                            ) : (
-                              <span
-                                className={`status-badge status-${booking.status}`}
-                              >
-                                {booking.status}
-                              </span>
-                            )}
-                          </td>
-                          <td>
-                            <div className="action-cell">
-                              <button
-                                className="edit-btn"
-                                onClick={() =>
-                                  setEditingStatus(
-                                    editingStatus === booking._id
-                                      ? null
-                                      : booking._id
-                                  )
-                                }
-                              >
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                                </svg>
-                                Edit
-                              </button>
+                        return (
+                          <tr key={booking._id}>
+                            <td>
+                              {booking.firstName} {booking.lastName}
+                            </td>
+                            <td>{booking.email}</td>
+                            <td>{booking.room?.title || "Unknown room"}</td>
+                            <td>
+                              {new Date(booking.checkIn).toLocaleDateString(
+                                "en-GB"
+                              )}
+                            </td>
+                            <td>
+                              {new Date(booking.checkOut).toLocaleDateString(
+                                "en-GB"
+                              )}
+                            </td>
+                            <td>{adults}</td>
+                            <td>{children}</td>
+                            <td>{totalGuests}</td>
 
-                              {booking.status === "cancelled" && (
-                                <button
-                                  className="delete-btn"
-                                  onClick={() => handleDeleteBooking(booking._id)}
+                            <td>
+                              {editingStatus === booking._id ? (
+                                <select
+                                  value={booking.status}
+                                  onChange={(e) =>
+                                    handleStatusEdit(
+                                      booking._id,
+                                      e.target.value
+                                    )
+                                  }
                                 >
-                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                                  </svg>
-                                  Delete
+                                  <option value="confirmed">Confirmed</option>
+                                  <option value="cancelled">Cancelled</option>
+                                </select>
+                              ) : (
+                                <span
+                                  className={`status-badge status-${booking.status}`}
+                                >
+                                  {booking.status}
+                                </span>
+                              )}
+                            </td>
+
+                            <td>
+                              <div className="action-cell">
+                                <button
+                                  className="edit-btn"
+                                  onClick={() =>
+                                    setEditingStatus(
+                                      editingStatus === booking._id
+                                        ? null
+                                        : booking._id
+                                    )
+                                  }
+                                >
+                                  Edit
                                 </button>
-                              )}
 
-                              {booking.status !== "cancelled" && (
-                                <span className="no-action">-</span>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+                                {booking.status === "cancelled" && (
+                                  <button
+                                    className="delete-btn"
+                                    onClick={() =>
+                                      handleDeleteBooking(booking._id)
+                                    }
+                                  >
+                                    Delete
+                                  </button>
+                                )}
 
-              <p className="booking-footer">
-                Showing {displayedBookings.length} of {bookings.length} bookings
-              </p>
-            </>
-          )}
+                                {booking.status !== "cancelled" && (
+                                  <span className="no-action">-</span>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                <p className="booking-footer">
+                  Showing {displayedBookings.length} of {bookings.length}{" "}
+                  bookings
+                </p>
+              </>
+            )}
           </div>
         </div>
 
         {showForm && (
           <div className="booking-form-modal">
             <div className="booking-form">
-
-              {/* Header */}
               <div className="form-header">
                 <div>
                   <h2>Add New Booking</h2>
-                  <p className="form-subtitle">Create a new guest booking.</p>
+                  <p className="form-subtitle">
+                    Create a new guest booking.
+                  </p>
                 </div>
+
                 <button
                   className="form-close-btn"
-                  onClick={() => { resetForm(); setShowPayment(false); setShowForm(false); }}
+                  onClick={() => {
+                    resetForm();
+                    setShowPayment(false);
+                    setShowForm(false);
+                  }}
                   aria-label="Close"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
+                  X
                 </button>
               </div>
 
-              {/* Form grid */}
               <div className="form-grid">
-
-                {/* First Name + Last Name */}
                 <div className="form-group">
-                  <label className="form-label"><span className="required-star">*</span>First Name</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>First Name
+                  </label>
                   <input
                     className="form-input"
                     type="text"
@@ -570,11 +583,17 @@ const BookingManagement = () => {
                     onBlur={(e) => handleBlur(e.target.name)}
                     placeholder="First name"
                   />
-                  {shouldShowError('firstName') && formErrors.firstName && <span className="form-field-error">{formErrors.firstName}</span>}
+                  {shouldShowError("firstName") && formErrors.firstName && (
+                    <span className="form-field-error">
+                      {formErrors.firstName}
+                    </span>
+                  )}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label"><span className="required-star">*</span>Last Name</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>Last Name
+                  </label>
                   <input
                     className="form-input"
                     type="text"
@@ -584,12 +603,17 @@ const BookingManagement = () => {
                     onBlur={(e) => handleBlur(e.target.name)}
                     placeholder="Last name"
                   />
-                  {shouldShowError('lastName') && formErrors.lastName && <span className="form-field-error">{formErrors.lastName}</span>}
+                  {shouldShowError("lastName") && formErrors.lastName && (
+                    <span className="form-field-error">
+                      {formErrors.lastName}
+                    </span>
+                  )}
                 </div>
 
-                {/* Email — full width */}
                 <div className="form-group form-full">
-                  <label className="form-label"><span className="required-star">*</span>Email</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>Email
+                  </label>
                   <input
                     className="form-input"
                     type="email"
@@ -599,12 +623,17 @@ const BookingManagement = () => {
                     onBlur={(e) => handleBlur(e.target.name)}
                     placeholder="guest@email.com"
                   />
-                  {shouldShowError('userEmail') && formErrors.userEmail && <span className="form-field-error">{formErrors.userEmail}</span>}
+                  {shouldShowError("userEmail") && formErrors.userEmail && (
+                    <span className="form-field-error">
+                      {formErrors.userEmail}
+                    </span>
+                  )}
                 </div>
 
-                {/* Room Type — full width */}
                 <div className="form-group form-full">
-                  <label className="form-label"><span className="required-star">*</span>Room Type</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>Room Type
+                  </label>
                   <select
                     className="form-input form-select"
                     name="roomId"
@@ -614,28 +643,49 @@ const BookingManagement = () => {
                   >
                     <option value="">Select a room</option>
                     {rooms.map((room) => (
-                      <option key={room._id} value={room._id}>{room.title}</option>
+                      <option key={room._id} value={room._id}>
+                        {room.title}
+                      </option>
                     ))}
                   </select>
-                  {shouldShowError('roomId') && formErrors.roomId && <span className="form-field-error">{formErrors.roomId}</span>}
-                  {shouldShowError('roomId') && formErrors.selectedRoom && <span className="form-field-error">{formErrors.selectedRoom}</span>}
+
+                  {shouldShowError("roomId") && formErrors.roomId && (
+                    <span className="form-field-error">
+                      {formErrors.roomId}
+                    </span>
+                  )}
+
+                  {shouldShowError("roomId") && formErrors.selectedRoom && (
+                    <span className="form-field-error">
+                      {formErrors.selectedRoom}
+                    </span>
+                  )}
                 </div>
 
-                {/* Room details card */}
                 {selectedRoom && (
                   <div className="room-details form-full">
                     <div className="room-details-grid">
-                      <span><strong>Room:</strong> {selectedRoom.title}</span>
-                      <span><strong>Price:</strong> ${selectedRoom.price}/night</span>
-                      <span><strong>Capacity:</strong> {selectedRoom.capacity} guests</span>
-                      <span><strong>Bed:</strong> {selectedRoom.bed}</span>
+                      <span>
+                        <strong>Room:</strong> {selectedRoom.title}
+                      </span>
+                      <span>
+                        <strong>Price:</strong> ${selectedRoom.price}/night
+                      </span>
+                      <span>
+                        <strong>Capacity:</strong> {selectedRoom.capacity}{" "}
+                        guests
+                      </span>
+                      <span>
+                        <strong>Bed:</strong> {selectedRoom.bed}
+                      </span>
                     </div>
                   </div>
                 )}
 
-                {/* Check-in + Check-out */}
                 <div className="form-group">
-                  <label className="form-label"><span className="required-star">*</span>Check-In</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>Check-In
+                  </label>
                   <input
                     className="form-input"
                     type="date"
@@ -645,11 +695,17 @@ const BookingManagement = () => {
                     onBlur={(e) => handleBlur(e.target.name)}
                     min={minCheckInStr}
                   />
-                  {shouldShowError('checkIn') && formErrors.checkIn && <span className="form-field-error">{formErrors.checkIn}</span>}
+                  {shouldShowError("checkIn") && formErrors.checkIn && (
+                    <span className="form-field-error">
+                      {formErrors.checkIn}
+                    </span>
+                  )}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label"><span className="required-star">*</span>Check-Out</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>Check-Out
+                  </label>
                   <input
                     className="form-input"
                     type="date"
@@ -659,12 +715,17 @@ const BookingManagement = () => {
                     onBlur={(e) => handleBlur(e.target.name)}
                     min={minCheckOutStr}
                   />
-                  {shouldShowError('checkOut') && formErrors.checkOut && <span className="form-field-error">{formErrors.checkOut}</span>}
+                  {shouldShowError("checkOut") && formErrors.checkOut && (
+                    <span className="form-field-error">
+                      {formErrors.checkOut}
+                    </span>
+                  )}
                 </div>
 
-                {/* Adults + Children */}
                 <div className="form-group">
-                  <label className="form-label"><span className="required-star">*</span>Adults</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>Adults
+                  </label>
                   <select
                     className="form-input form-select"
                     name="adults"
@@ -673,14 +734,22 @@ const BookingManagement = () => {
                     onBlur={(e) => handleBlur(e.target.name)}
                   >
                     {[1, 2, 3, 4, 5].map((n) => (
-                      <option key={n} value={n}>{n}</option>
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
                     ))}
                   </select>
-                  {shouldShowError('adults') && formErrors.adults && <span className="form-field-error">{formErrors.adults}</span>}
+                  {shouldShowError("adults") && formErrors.adults && (
+                    <span className="form-field-error">
+                      {formErrors.adults}
+                    </span>
+                  )}
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label"><span className="required-star">*</span>Children</label>
+                  <label className="form-label">
+                    <span className="required-star">*</span>Children
+                  </label>
                   <select
                     className="form-input form-select"
                     name="children"
@@ -689,43 +758,61 @@ const BookingManagement = () => {
                     onBlur={(e) => handleBlur(e.target.name)}
                   >
                     {[0, 1, 2, 3, 4].map((n) => (
-                      <option key={n} value={n}>{n}</option>
+                      <option key={n} value={n}>
+                        {n}
+                      </option>
                     ))}
                   </select>
-                  {shouldShowError('children') && formErrors.children && <span className="form-field-error">{formErrors.children}</span>}
+                  {shouldShowError("children") && formErrors.children && (
+                    <span className="form-field-error">
+                      {formErrors.children}
+                    </span>
+                  )}
                 </div>
 
-                {/* Capacity / global errors */}
-                {((submitAttempted && formErrors.capacity) || paymentError || bookingError) && (
+                {((submitAttempted && formErrors.capacity) ||
+                  paymentError ||
+                  bookingError) && (
                   <div className="form-full form-error-block">
-                    {submitAttempted && formErrors.capacity && <p className="error">{formErrors.capacity}</p>}
+                    {submitAttempted && formErrors.capacity && (
+                      <p className="error">{formErrors.capacity}</p>
+                    )}
+
                     {paymentError && <p className="error">{paymentError}</p>}
+
                     {bookingError && <p className="error">{bookingError}</p>}
                   </div>
                 )}
 
-                {/* Total price */}
                 {totalPrice > 0 && (
                   <div className="form-full form-total">
                     Total Price: <strong>${totalPrice.toFixed(2)}</strong>
                   </div>
                 )}
-
               </div>
 
-              {/* Action buttons */}
               <div className="form-actions">
-                <button type="button" className="form-btn-secondary" onClick={resetForm}>
+                <button
+                  type="button"
+                  className="form-btn-secondary"
+                  onClick={resetForm}
+                >
                   Reset
                 </button>
+
                 <div className="form-actions-right">
                   <button
                     type="button"
                     className="form-btn-ghost"
-                    onClick={() => { resetForm(); setShowPayment(false); setShowForm(false); }}
+                    onClick={() => {
+                      resetForm();
+                      setShowPayment(false);
+                      setShowForm(false);
+                    }}
                   >
                     Cancel
                   </button>
+
                   <button
                     type="button"
                     className="form-btn-primary"
@@ -736,7 +823,6 @@ const BookingManagement = () => {
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         )}
@@ -757,11 +843,19 @@ const BookingManagement = () => {
           <div className="confirm-modal-overlay">
             <div className="confirm-modal">
               <p>Are you sure you want to delete this booking?</p>
+
               <div className="confirm-modal-actions">
-                <button className="confirm-modal-cancel" onClick={() => setPendingDeleteId(null)}>
+                <button
+                  className="confirm-modal-cancel"
+                  onClick={() => setPendingDeleteId(null)}
+                >
                   Cancel
                 </button>
-                <button className="confirm-modal-delete" onClick={confirmDelete}>
+
+                <button
+                  className="confirm-modal-delete"
+                  onClick={confirmDelete}
+                >
                   Delete
                 </button>
               </div>

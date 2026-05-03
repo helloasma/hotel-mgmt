@@ -4,9 +4,7 @@ import { Link } from "react-router-dom";
 function Sidebar({ isOpen, setIsOpen }) {
   if (!isOpen) return null;
 
-  const handleAdminLogin = () => {
-    window.open("/admin/login", "_blank");
-  };
+
 
   return (
     <>

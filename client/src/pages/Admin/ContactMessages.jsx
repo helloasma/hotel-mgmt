@@ -2,34 +2,6 @@ import { useEffect, useState } from "react";
 import api from "../../services/api";
 import "./ContactMessages.css";
 
-const EditIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-  </svg>
-);
-
-const DeleteIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="3 6 5 6 21 6"/>
-    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-    <path d="M10 11v6"/><path d="M14 11v6"/>
-    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-  </svg>
-);
-
-const SaveIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="20 6 9 17 4 12"/>
-  </svg>
-);
-
-const CancelIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-  </svg>
-);
-
 const ContactMessages = () => {
   const [messages, setMessages] = useState([]);
   const [editingMessageId, setEditingMessageId] = useState(null);
@@ -72,7 +44,11 @@ const ContactMessages = () => {
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
-    setEditingData((prev) => ({ ...prev, [name]: value }));
+
+    setEditingData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleCancelEdit = () => {
@@ -81,9 +57,14 @@ const ContactMessages = () => {
 
   const handleUpdateMessage = async (id) => {
     try {
-      const response = await api.put(`/contact-messages/${id}`, { status: editingData.status });
+      const response = await api.put(`/contact-messages/${id}`, {
+        status: editingData.status,
+      });
 
-      setMessages(messages.map((msg) => (msg._id === id ? response.data.data : msg)));
+      setMessages(
+        messages.map((msg) => (msg._id === id ? response.data.data : msg))
+      );
+
       setEditingMessageId(null);
     } catch (error) {
       console.error("Failed to update message", error);
@@ -93,6 +74,7 @@ const ContactMessages = () => {
 
   const renderAttachments = (attachments) => {
     if (!attachments || attachments.length === 0) return "None";
+
     return attachments.map((att, idx) => (
       <div key={idx}>
         <a href={att.url} target="_blank" rel="noopener noreferrer">
@@ -118,6 +100,7 @@ const ContactMessages = () => {
               <th>Action</th>
             </tr>
           </thead>
+
           <tbody>
             {messages.map((msg) => (
               <tr key={msg._id}>
@@ -125,6 +108,7 @@ const ContactMessages = () => {
                 <td>{msg.email}</td>
                 <td>{msg.message}</td>
                 <td>{renderAttachments(msg.attachments)}</td>
+
                 <td>
                   {editingMessageId === msg._id ? (
                     <select
@@ -139,6 +123,7 @@ const ContactMessages = () => {
                     msg.status
                   )}
                 </td>
+
                 <td>
                   <div className="action-buttons">
                     {editingMessageId === msg._id ? (
@@ -147,11 +132,13 @@ const ContactMessages = () => {
                           className="save-btn"
                           onClick={() => handleUpdateMessage(msg._id)}
                         >
-                          <SaveIcon />
                           Save
                         </button>
-                        <button className="cancel-btn" onClick={handleCancelEdit}>
-                          <CancelIcon />
+
+                        <button
+                          className="cancel-btn"
+                          onClick={handleCancelEdit}
+                        >
                           Cancel
                         </button>
                       </>
@@ -161,15 +148,14 @@ const ContactMessages = () => {
                           className="edit-btn"
                           onClick={() => handleEditMessage(msg)}
                         >
-                          <EditIcon />
                           Edit
                         </button>
+
                         {msg.status === "Closed" && (
                           <button
                             className="delete-btn"
                             onClick={() => handleDeleteMessage(msg._id)}
                           >
-                            <DeleteIcon />
                             Delete
                           </button>
                         )}
@@ -187,11 +173,19 @@ const ContactMessages = () => {
         <div className="confirm-modal-overlay">
           <div className="confirm-modal">
             <p>Are you sure you want to delete this message?</p>
+
             <div className="confirm-modal-actions">
-              <button className="confirm-modal-cancel" onClick={() => setPendingDeleteId(null)}>
+              <button
+                className="confirm-modal-cancel"
+                onClick={() => setPendingDeleteId(null)}
+              >
                 Cancel
               </button>
-              <button className="confirm-modal-delete" onClick={confirmDeleteMessage}>
+
+              <button
+                className="confirm-modal-delete"
+                onClick={confirmDeleteMessage}
+              >
                 Delete
               </button>
             </div>

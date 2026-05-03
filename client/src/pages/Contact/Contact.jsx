@@ -98,7 +98,7 @@ const Contact = () => {
                 <tr>
                   <td><img src={contactImage3} alt="email" /></td>
                   <td className="label">Email:</td>
-                  <td>heyLovender@gmail.com</td>
+                  <td>concierge@lovender.com</td>
                 </tr>
                 <tr>
                   <td><img src={contactImage4} alt="website" /></td>
