@@ -72,17 +72,6 @@ const ContactMessages = () => {
     }
   };
 
-  const renderAttachments = (attachments) => {
-    if (!attachments || attachments.length === 0) return "None";
-
-    return attachments.map((att, idx) => (
-      <div key={idx}>
-        <a href={att.url} target="_blank" rel="noopener noreferrer">
-          {att.filename}
-        </a>
-      </div>
-    ));
-  };
 
   return (
     <div className="admin-page">
@@ -95,7 +84,6 @@ const ContactMessages = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Message</th>
-              <th>Attachments</th>
               <th>Status</th>
               <th>Action</th>
             </tr>
@@ -107,8 +95,7 @@ const ContactMessages = () => {
                 <td>{msg.name}</td>
                 <td>{msg.email}</td>
                 <td>{msg.message}</td>
-                <td>{renderAttachments(msg.attachments)}</td>
-
+          
                 <td>
                   {editingMessageId === msg._id ? (
                     <select
