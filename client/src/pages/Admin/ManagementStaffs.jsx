@@ -1,174 +1,435 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
-import "./ContactMessages.css";
+import "./ManagementStaffs.css";
 
-const ContactMessages = () => {
-  const [messages, setMessages] = useState([]);
-  const [editingMessageId, setEditingMessageId] = useState(null);
-  const [editingData, setEditingData] = useState({ status: "" });
+const ManagementStaffs = () => {
+  const [staff, setStaff] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
+  const [addData, setAddData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    phone: "",
+    role: "Manager",
+  });
+
+  const [editingId, setEditingId] = useState(null);
+
+  const [editData, setEditData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    phone: "",
+    role: "Manager",
+  });
+
+  const userRole = localStorage.getItem("role");
+
   useEffect(() => {
-    const fetchMessages = async () => {
+    if (userRole !== "Chief Manager") {
+      setLoading(false);
+      return;
+    }
+
+    const fetchStaff = async () => {
       try {
-        const response = await api.get("/contact-messages");
-        setMessages(response.data.data);
+        const response = await api.get("/management-staff");
+        setStaff(response.data.data);
       } catch (error) {
-        console.error("Error fetching messages", error);
+        console.error("Error fetching management staff", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchMessages();
-  }, []);
+    fetchStaff();
+  }, [userRole]);
 
-  const handleDeleteMessage = (id) => {
+  const handleAddChange = (field, value) => {
+    setAddData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleAddSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!/^\d{10}$/.test(addData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
+
+    try {
+      const response = await api.post("/management-staff", addData);
+
+      setStaff((prev) => [response.data.data, ...prev]);
+      setShowAddForm(false);
+
+      setAddData({
+        fullName: "",
+        email: "",
+        password: "",
+        phone: "",
+        role: "Manager",
+      });
+    } catch (error) {
+      console.error("Could not add management staff", error);
+      alert("Unable to add new management staff member.");
+    }
+  };
+
+  const handleEditClick = (member) => {
+    setEditingId(member._id);
+
+    setEditData({
+      fullName: member.fullName || "",
+      email: member.email || "",
+      password: "",
+      phone: member.phone || "",
+      role: member.role || "Manager",
+    });
+  };
+
+  const handleEditChange = (field, value) => {
+    setEditData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSaveEdit = async (id) => {
+    if (!/^\d{10}$/.test(editData.phone.trim())) {
+      alert("Enter a 10 digit phone number.");
+      return;
+    }
+
+    try {
+      const response = await api.put(`/management-staff/${id}`, editData);
+
+      setStaff((prev) =>
+        prev.map((member) =>
+          member._id === id ? response.data.data : member
+        )
+      );
+
+      setEditingId(null);
+
+      setEditData({
+        fullName: "",
+        email: "",
+        password: "",
+        phone: "",
+        role: "Manager",
+      });
+    } catch (error) {
+      console.error("Could not update management staff", error);
+      alert("Unable to save management staff updates.");
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+
+    setEditData({
+      fullName: "",
+      email: "",
+      password: "",
+      phone: "",
+      role: "Manager",
+    });
+  };
+
+  const handleDelete = (id) => {
     setPendingDeleteId(id);
   };
 
-  const confirmDeleteMessage = async () => {
+  const confirmDelete = async () => {
     try {
-      await api.delete(`/contact-messages/${pendingDeleteId}`);
-      setMessages(messages.filter((msg) => msg._id !== pendingDeleteId));
+      await api.delete(`/management-staff/${pendingDeleteId}`);
+
+      setStaff((prev) =>
+        prev.filter((member) => member._id !== pendingDeleteId)
+      );
     } catch (error) {
-      console.error("Failed to delete message", error);
-      alert("Failed to delete message");
+      console.error("Could not delete management staff", error);
+      alert("Unable to delete this management staff member.");
     } finally {
       setPendingDeleteId(null);
     }
   };
 
-  const handleEditMessage = (message) => {
-    setEditingMessageId(message._id);
-    setEditingData({ status: message.status });
-  };
+  if (userRole !== "Chief Manager") {
+    return (
+      <div className="admin-page">
+        <div className="admin-content">
+          <h1>Management Staffs</h1>
 
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditingData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCancelEdit = () => {
-    setEditingMessageId(null);
-  };
-
-  const handleUpdateMessage = async (id) => {
-    try {
-      const response = await api.put(`/contact-messages/${id}`, {
-        status: editingData.status,
-      });
-
-      setMessages(
-        messages.map((msg) => (msg._id === id ? response.data.data : msg))
-      );
-
-      setEditingMessageId(null);
-    } catch (error) {
-      console.error("Failed to update message", error);
-      alert("Failed to update message");
-    }
-  };
-
-  const renderAttachments = (attachments) => {
-    if (!attachments || attachments.length === 0) return "None";
-
-    return attachments.map((att, idx) => (
-      <div key={idx}>
-        <a href={att.url} target="_blank" rel="noopener noreferrer">
-          {att.filename}
-        </a>
+          <p className="unauthorized">
+            Only the Chief Manager can access this page.
+          </p>
+        </div>
       </div>
-    ));
-  };
+    );
+  }
 
   return (
     <div className="admin-page">
       <div className="admin-content">
-        <h1>Website Messages</h1>
+        <h1>Management Staffs</h1>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Message</th>
-              <th>Attachments</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+        <div className="page-actions">
+          <button
+            type="button"
+            className="add-staff-button"
+            onClick={() => setShowAddForm((prev) => !prev)}
+          >
+            {showAddForm ? "Close Form" : "Add New Staff"}
+          </button>
+        </div>
 
-          <tbody>
-            {messages.map((msg) => (
-              <tr key={msg._id}>
-                <td>{msg.name}</td>
-                <td>{msg.email}</td>
-                <td>{msg.message}</td>
-                <td>{renderAttachments(msg.attachments)}</td>
+        {showAddForm && (
+          <form className="staff-form" onSubmit={handleAddSubmit}>
+            <div className="form-grid">
+              <label className="input-group">
+                <span>Full Name</span>
+                <input
+                  type="text"
+                  value={addData.fullName}
+                  onChange={(e) =>
+                    handleAddChange("fullName", e.target.value)
+                  }
+                  required
+                />
+              </label>
 
-                <td>
-                  {editingMessageId === msg._id ? (
-                    <select
-                      name="status"
-                      value={editingData.status}
-                      onChange={handleEditChange}
-                    >
-                      <option value="New">New</option>
-                      <option value="Closed">Closed</option>
-                    </select>
+              <label className="input-group">
+                <span>Email</span>
+                <input
+                  type="email"
+                  value={addData.email}
+                  onChange={(e) => handleAddChange("email", e.target.value)}
+                  required
+                />
+              </label>
+
+              <label className="input-group">
+                <span>Password</span>
+                <input
+                  type="password"
+                  value={addData.password}
+                  onChange={(e) =>
+                    handleAddChange("password", e.target.value)
+                  }
+                  required
+                />
+              </label>
+
+              <label className="input-group">
+                <span>Phone</span>
+                <input
+                  type="tel"
+                  value={addData.phone}
+                  onChange={(e) => handleAddChange("phone", e.target.value)}
+                  required
+                />
+              </label>
+
+              <label className="input-group">
+                <span>Role</span>
+                <select
+                  value={addData.role}
+                  onChange={(e) => handleAddChange("role", e.target.value)}
+                  required
+                >
+                  <option value="Chief Manager">Chief Manager</option>
+                  <option value="Manager">Manager</option>
+                  <option value="User support">User support</option>
+                  <option value="Receptionist">Receptionist</option>
+                </select>
+              </label>
+            </div>
+
+            <div className="form-actions">
+              <button type="submit" className="save-btn">
+                Add Staff
+              </button>
+
+              <button
+                type="button"
+                className="cancel-btn"
+                onClick={() => setShowAddForm(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+
+        {loading ? (
+          <p>Loading management staff...</p>
+        ) : (
+          <div className="staff-table-wrapper">
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th className="action-column">Action</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {staff.length > 0 ? (
+                    staff.map((member) => (
+                      <tr key={member._id}>
+                        <td>
+                          {editingId === member._id ? (
+                            <input
+                              type="text"
+                              value={editData.fullName}
+                              onChange={(e) =>
+                                handleEditChange("fullName", e.target.value)
+                              }
+                              required
+                            />
+                          ) : (
+                            member.fullName
+                          )}
+                        </td>
+
+                        <td>
+                          {editingId === member._id ? (
+                            <input
+                              type="email"
+                              value={editData.email}
+                              onChange={(e) =>
+                                handleEditChange("email", e.target.value)
+                              }
+                              required
+                            />
+                          ) : (
+                            member.email
+                          )}
+                        </td>
+
+                        <td>
+                          {editingId === member._id ? (
+                            <input
+                              type="password"
+                              value={editData.password}
+                              onChange={(e) =>
+                                handleEditChange("password", e.target.value)
+                              }
+                              placeholder="Enter new password"
+                            />
+                          ) : (
+                            "********"
+                          )}
+                        </td>
+
+                        <td>
+                          {editingId === member._id ? (
+                            <input
+                              type="tel"
+                              value={editData.phone}
+                              onChange={(e) =>
+                                handleEditChange("phone", e.target.value)
+                              }
+                              required
+                            />
+                          ) : (
+                            member.phone
+                          )}
+                        </td>
+
+                        <td>
+                          {editingId === member._id ? (
+                            <select
+                              value={editData.role}
+                              onChange={(e) =>
+                                handleEditChange("role", e.target.value)
+                              }
+                              required
+                            >
+                              <option value="Chief Manager">
+                                Chief Manager
+                              </option>
+                              <option value="Manager">Manager</option>
+                              <option value="User support">User support</option>
+                              <option value="Receptionist">Receptionist</option>
+                            </select>
+                          ) : (
+                            member.role
+                          )}
+                        </td>
+
+                        <td className="action-column">
+                          <div className="action-buttons">
+                            {editingId === member._id ? (
+                              <>
+                                <button
+                                  type="button"
+                                  className="save-btn"
+                                  onClick={() => handleSaveEdit(member._id)}
+                                >
+                                  Save
+                                </button>
+
+                                <button
+                                  type="button"
+                                  className="cancel-btn"
+                                  onClick={handleCancelEdit}
+                                >
+                                  Cancel
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  className="edit-btn"
+                                  onClick={() => handleEditClick(member)}
+                                >
+                                  Edit
+                                </button>
+
+                                <button
+                                  type="button"
+                                  className="delete-btn"
+                                  onClick={() => handleDelete(member._id)}
+                                >
+                                  Delete
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
                   ) : (
-                    msg.status
+                    <tr>
+                      <td colSpan="6">No management staff records found.</td>
+                    </tr>
                   )}
-                </td>
-
-                <td>
-                  <div className="action-buttons">
-                    {editingMessageId === msg._id ? (
-                      <>
-                        <button
-                          className="save-btn"
-                          onClick={() => handleUpdateMessage(msg._id)}
-                        >
-                          Save
-                        </button>
-
-                        <button
-                          className="cancel-btn"
-                          onClick={handleCancelEdit}
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          className="edit-btn"
-                          onClick={() => handleEditMessage(msg)}
-                        >
-                          Edit
-                        </button>
-
-                        {msg.status === "Closed" && (
-                          <button
-                            className="delete-btn"
-                            onClick={() => handleDeleteMessage(msg._id)}
-                          >
-                            Delete
-                          </button>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
       </div>
 
       {pendingDeleteId && (
         <div className="confirm-modal-overlay">
           <div className="confirm-modal">
-            <p>Are you sure you want to delete this message?</p>
+            <p>Are you sure you want to delete this staff member?</p>
 
             <div className="confirm-modal-actions">
               <button
@@ -180,7 +441,7 @@ const ContactMessages = () => {
 
               <button
                 className="confirm-modal-delete"
-                onClick={confirmDeleteMessage}
+                onClick={confirmDelete}
               >
                 Delete
               </button>
@@ -192,4 +453,4 @@ const ContactMessages = () => {
   );
 };
 
-export default ContactMessages;
+export default ManagementStaffs;
