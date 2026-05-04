@@ -4,31 +4,50 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+const MODELS = ["gemini-2.0-flash", "gemini-1.5-flash"];
+
+async function sendWithRetry(modelName, chatHistory, contextMessage, retries = 3) {
+  const model = genAI.getGenerativeModel({ model: modelName });
+  const chat = model.startChat({
+    history: chatHistory,
+    generationConfig: { maxOutputTokens: 1000, temperature: 0.7 },
+  });
+
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const result = await chat.sendMessage(contextMessage);
+      return result.response.text();
+    } catch (err) {
+      const isRateLimit = err.status === 429;
+      const isLastAttempt = attempt === retries - 1;
+
+      if (!isRateLimit || isLastAttempt) throw err;
+
+      const retryAfterMs = parseRetryDelay(err) || (2 ** attempt) * 2000;
+      await new Promise(resolve => setTimeout(resolve, retryAfterMs));
+    }
+  }
+}
+
+function parseRetryDelay(err) {
+  try {
+    const retryInfo = err.errorDetails?.find(d => d["@type"]?.includes("RetryInfo"));
+    if (retryInfo?.retryDelay) {
+      return parseFloat(retryInfo.retryDelay) * 1000;
+    }
+  } catch (_) {}
+  return null;
+}
+
 router.post("/", async (req, res) => {
   try {
     const { message, history } = req.body;
 
-    // Initialize model - using gemini-2.5-flash which is free tier compatible
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
-    });
-
-    // Build chat history in correct format
     const chatHistory = (history || []).map(msg => ({
       role: msg.role === "assistant" ? "model" : msg.role,
       parts: [{ text: msg.content }]
     }));
 
-    // Start chat with history
-    const chat = model.startChat({
-      history: chatHistory,
-      generationConfig: {
-        maxOutputTokens: 1000,
-        temperature: 0.7,
-      },
-    });
-
-    // System context - prepend to user message
     const systemContext = `You are Lova, a helpful concierge for Lovender Hotel. Help guests with room inquiries, bookings, and amenities. Be warm, professional, and concise. Keep responses brief and friendly.
 
 IMPORTANT: Format responses naturally without markdown symbols like **, --, or ##. Use clear sentences and line breaks instead.
@@ -69,16 +88,32 @@ When guests ask to book or make a reservation, direct them to:
 Be helpful, knowledgeable, and encourage guests to explore all room options.`;
     const contextMessage = `[System Context: ${systemContext}]\n\nUser query: ${message}`;
 
-    // Send user message
-    const result = await chat.sendMessage(contextMessage);
-    
-    // Extract reply text
-    const reply = result.response.text();
-    
-    res.json({ reply });
+    let reply = null;
+    let lastErr = null;
+
+    for (const modelName of MODELS) {
+      try {
+        reply = await sendWithRetry(modelName, chatHistory, contextMessage);
+        break;
+      } catch (err) {
+        lastErr = err;
+        if (err.status !== 429) break;
+      }
+    }
+
+    if (reply !== null) {
+      return res.json({ reply });
+    }
+
+    console.error("Gemini API error:", lastErr);
+    if (lastErr?.status === 429) {
+      return res.status(503).json({
+        error: "Lova is currently unavailable due to high demand. Please try again in a few minutes.",
+      });
+    }
+    res.status(500).json({ error: "AI service unavailable", details: lastErr?.message });
   } catch (err) {
-    console.error("Gemini API error:", err);
-    console.error("Error message:", err.message || err);
+    console.error("Chat route error:", err);
     res.status(500).json({ error: "AI service unavailable", details: err.message });
   }
 });
