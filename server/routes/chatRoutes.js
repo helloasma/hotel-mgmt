@@ -4,7 +4,38 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
+// Debug: Check if API key is loaded
+if (!process.env.GEMINI_API_KEY) {
+  console.warn("WARNING: GEMINI_API_KEY environment variable is not set!");
+} else {
+  console.log("GEMINI_API_KEY loaded (key starts with:", process.env.GEMINI_API_KEY.substring(0, 10) + "...)");
+}
+
 const MODELS = ["gemini-2.0-flash"];
+
+// Rate limiting for free tier
+const requestQueue = [];
+let isProcessing = false;
+const MIN_REQUEST_INTERVAL = 3000; // 3 seconds between requests (safe for free tier)
+
+async function queueRequest(fn) {
+  requestQueue.push(fn);
+  if (!isProcessing) {
+    isProcessing = true;
+    while (requestQueue.length > 0) {
+      const request = requestQueue.shift();
+      try {
+        await request();
+      } catch (err) {
+        throw err;
+      }
+      if (requestQueue.length > 0) {
+        await new Promise(resolve => setTimeout(resolve, MIN_REQUEST_INTERVAL));
+      }
+    }
+    isProcessing = false;
+  }
+}
 
 async function sendWithRetry(modelName, chatHistory, contextMessage, retries = 3) {
   const model = genAI.getGenerativeModel({ model: modelName });
@@ -93,7 +124,18 @@ Be helpful, knowledgeable, and encourage guests to explore all room options.`;
 
     for (const modelName of MODELS) {
       try {
-        reply = await sendWithRetry(modelName, chatHistory, contextMessage);
+        // Queue requests to stay within free tier rate limits
+        reply = await new Promise((resolve, reject) => {
+          const startRequest = async () => {
+            try {
+              const result = await sendWithRetry(modelName, chatHistory, contextMessage);
+              resolve(result);
+            } catch (err) {
+              reject(err);
+            }
+          };
+          queueRequest(startRequest);
+        });
         break;
       } catch (err) {
         lastErr = err;
@@ -106,9 +148,21 @@ Be helpful, knowledgeable, and encourage guests to explore all room options.`;
     }
 
     console.error("Gemini API error:", lastErr);
+    
     if (lastErr?.status === 429) {
+      const hasQuotaFailure = lastErr?.errorDetails?.some(d => 
+        d["@type"]?.includes("QuotaFailure")
+      );
+      
+      if (hasQuotaFailure) {
+        return res.status(503).json({
+          error: "API quota exceeded. Please upgrade your Gemini API plan to continue using the chat feature.",
+          details: "Free tier quota exhausted. Visit https://console.cloud.google.com to upgrade."
+        });
+      }
+      
       return res.status(503).json({
-        error: "Lova is currently unavailable due to high demand. Please try again in a few minutes.",
+        error: "Lova is currently unavailable due to high demand. Please try again in a few moments.",
       });
     }
     res.status(500).json({ error: "AI service unavailable", details: lastErr?.message });
