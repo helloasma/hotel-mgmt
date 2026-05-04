@@ -62,57 +62,83 @@ function PaymentPage({ total, bookingData, room, onSuccess, onBack }) {
     return d.length >= 3 ? d.slice(0, 2) + "/" + d.slice(2) : d;
   }
 
-  function buildMockBooking(paymentMethod) {
-    const code = "BK-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    return { confirmationCode: code, ...bookingData, paymentMethod, totalPrice: total, status: "confirmed" };
-  }
+async function handlePay(e) {
+  e.preventDefault();
+  setError("");
 
-  async function handlePay(e) {
-    e.preventDefault();
-    setError("");
+  if (payTab === "card") {
+    const digits = cardNumber.replace(/\s/g, "");
 
-    if (payTab === "card") {
-      const digits = cardNumber.replace(/\s/g, "");
-      if (!digits || digits.length !== 16 || !/^\d+$/.test(digits)) {
-        const msg = !digits ? "Please enter a card number." : `Card number must be 16 digits (${digits.length} entered).`;
-        setCardNumberError(msg);
-        setError(msg);
-        return;
-      }
-      const expiryParts = cardExpiry.split("/");
-      const expMonth = parseInt(expiryParts[0], 10);
-      const expYear = 2000 + parseInt(expiryParts[1] ?? "", 10);
-      const now = new Date();
-      const currentYear = now.getFullYear();
-      const currentMonth = now.getMonth() + 1;
-      if (expiryParts.length !== 2 || isNaN(expMonth) || isNaN(expYear) || expMonth < 1 || expMonth > 12) {
-        setError("Please enter a valid expiry date (MM/YY).");
-        return;
-      }
-      if (expYear < currentYear || (expYear === currentYear && expMonth <= currentMonth)) {
-        setError("Your card has expired. Please use a card with a future expiry date.");
-        return;
-      }
+    if (!digits || digits.length !== 16 || !/^\d+$/.test(digits)) {
+      const msg = !digits
+        ? "Please enter a card number."
+        : `Card number must be 16 digits (${digits.length} entered).`;
+
+      setCardNumberError(msg);
+      setError(msg);
+      return;
     }
 
-    if (payTab === "paypal") {
-      if (!paypalEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paypalEmail)) {
-        setError("Please enter a valid PayPal email address.");
-        return;
-      }
+    const expiryParts = cardExpiry.split("/");
+    const expMonth = parseInt(expiryParts[0], 10);
+    const expYear = 2000 + parseInt(expiryParts[1] ?? "", 10);
+
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+
+    if (
+      expiryParts.length !== 2 ||
+      isNaN(expMonth) ||
+      isNaN(expYear) ||
+      expMonth < 1 ||
+      expMonth > 12
+    ) {
+      setError("Please enter a valid expiry date (MM/YY).");
+      return;
     }
 
-    setLoading(true);
-    const paymentMethod = payTab === "card" ? "card" : payTab === "apple" ? "apple_pay" : "paypal";
-    try {
-      const res = await api.post("/bookings/create", { ...bookingData, paymentMethod });
-      onSuccess(res.data.data);
-    } catch {
-      onSuccess(buildMockBooking(paymentMethod));
-    } finally {
-      setLoading(false);
+    if (
+      expYear < currentYear ||
+      (expYear === currentYear && expMonth <= currentMonth)
+    ) {
+      setError("Your card has expired. Please use a card with a future expiry date.");
+      return;
     }
   }
+
+  if (payTab === "paypal") {
+    if (!paypalEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(paypalEmail)) {
+      setError("Please enter a valid PayPal email address.");
+      return;
+    }
+  }
+
+  setLoading(true);
+
+  const paymentMethod =
+    payTab === "card"
+      ? "card"
+      : payTab === "apple"
+      ? "apple_pay"
+      : "paypal";
+
+  try {
+    const res = await api.post("/bookings/create", {
+      ...bookingData,
+      paymentMethod,
+    });
+
+    onSuccess(res.data.data);
+  } catch (err) {
+    setError(
+      err.response?.data?.message ||
+      "Booking failed. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+}
 
   return (
     <div className="pp-overlay">
