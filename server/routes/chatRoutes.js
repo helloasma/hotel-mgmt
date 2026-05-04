@@ -4,7 +4,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const MODELS = ["gemini-2.0-flash", "gemini-1.5-flash"];
+const MODELS = ["gemini-2.0-flash"];
 
 async function sendWithRetry(modelName, chatHistory, contextMessage, retries = 3) {
   const model = genAI.getGenerativeModel({ model: modelName });
