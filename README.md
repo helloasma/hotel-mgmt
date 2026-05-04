@@ -5,6 +5,7 @@ The platform allows guests to browse rooms, make bookings, and chat with an AI c
 while management staff have a dedicated admin dashboard to manage rooms, bookings, users, and staff.
 
 **Live Website:** https://resortlovender.onrender.com
+GitHub Link: https://github.com/helloasma/hotel-mgmt
 
 ---
 
